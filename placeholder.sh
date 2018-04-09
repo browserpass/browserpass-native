@@ -1,13 +1,22 @@
 #!/bin/bash
 set -e
-declare -gr REQUEST=$(cat)
+LENGTH=$(head -c 4 | od -A d --endian=little -N 4 -i | head -n 1 | awk -F ' ' '{print $2}')
+declare -gr REQUEST=$(head -c $LENGTH)
 VERSION=3000000
+
+# Write a number as little-endian binary
+function writelen()
+{
+    printf
+}
 
 # Require a command to be present, and quit if it's not
 function require()
 {
     if ! `command -v "$1" >/dev/null`; then
-        echo -e "{\n  \"status\": \"error\"\n  "version": $VERSION,\n  \"message\": \"Required dependency '$1' is missing\"\n  \"code\": 1\n}"
+        OUTPUT="{\n  \"status\": \"error\"\n  "version": $VERSION,\n  \"message\": \"Required dependency '$1' is missing\"\n  \"code\": 1\n}"
+        LANG=C LC_ALL=C LENGTH=${#OUTPUT}
+        echo -n 
         exit 1
     fi
 }
@@ -147,6 +156,7 @@ function run()
 }
 
 # Ensure dependencies are present
+require awk
 require cat
 require envsubst
 require find
@@ -154,6 +164,7 @@ require gpg
 require grep
 require head
 require jq
+require od
 require sed
 require tac
 
