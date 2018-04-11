@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-LENGTH=$(head -c 4 | od -A d --endian=little -N 4 -i | head -n 1 | awk -F ' ' '{print $2}')
+LENGTH=$(head -c 4 | perl -ne 'print unpack("L", $_)')
 declare -gr REQUEST=$(head -c $LENGTH)
 VERSION=3000000
 
@@ -43,7 +43,9 @@ function error()
         ERROR=$(cat)
     fi
     [ -n "$2" ] && CODE="$2" || CODE=1
-    jq -n '.status = "error"' | jq --arg message "$ERROR" --arg code "$CODE" '.message = $message | .code = ($code|tonumber)'
+    OUTPUT="$(jq -n '.status = "error"' | jq --arg message "$ERROR" --arg code "$CODE" '.message = $message | .code = ($code|tonumber)')"
+    perl -e "print pack('L', ${#OUTPUT})"
+    echo -n "$OUTPUT"
 }
 
 # Wrap a shell command and bail with a valid response message on error
@@ -59,7 +61,9 @@ function wrap()
             error "$@" $EXIT
         fi
     else
-        jq -n --arg version $VERSION --arg response "$STDOUT" '.status = "ok" | .version = $version | .response = ($response | if .[:1] == "{" then ( . | fromjson) else . end)'
+        OUTPUT="$(jq -n --arg version $VERSION --arg response "$STDOUT" '.status = "ok" | .version = $version | .response = ($response | if .[:1] == "{" then ( . | fromjson) else . end)')"
+        perl -e "print pack('L', ${#OUTPUT})"
+        echo -n "$OUTPUT"
     fi
     return $EXIT
 }
@@ -156,7 +160,6 @@ function run()
 }
 
 # Ensure dependencies are present
-require awk
 require cat
 require envsubst
 require find
@@ -164,7 +167,7 @@ require gpg
 require grep
 require head
 require jq
-require od
+require perl
 require sed
 require tac
 
