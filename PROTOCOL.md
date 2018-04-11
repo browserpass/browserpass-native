@@ -11,7 +11,7 @@ may be of any type.
 
 The app version is an integer, calculated by `(MAJOR * 1000000) + (MINOR * 1000) + PATCH`.
 
-```JSON
+```
 {
     “status”: “ok”,
     “version”: <int>
@@ -24,7 +24,7 @@ The app version is an integer, calculated by `(MAJOR * 1000000) + (MINOR * 1000)
 Consists solely of an `error` status, a nonzero integer error code, and an optional `params`
 object that provides any parameters that should accompany the error.
 
-```JSON
+```
 {
     “status”: “error”,
     “code”: <int>
@@ -83,7 +83,7 @@ is alive, determine the version at startup, and provide per-store defaults.
 
 #### Request
 
-```JSON
+```
 {
     “settings”: <settings object>,
     “action”: “configure”
@@ -92,7 +92,7 @@ is alive, determine the version at startup, and provide per-store defaults.
 
 #### Response
 
-```JSON
+```
 {
 
     “status”: “ok”,
@@ -112,7 +112,7 @@ is the name of a password store, the key in `“settings.stores”` object.
 
 #### Request
 
-```JSON
+```
 {
     “settings”: <settings object>,
     “action”: “list”
@@ -121,7 +121,7 @@ is the name of a password store, the key in `“settings.stores”` object.
 
 #### Response
 
-```JSON
+```
 {
     “status”: “ok”,
     “version”: <int>,
@@ -140,7 +140,7 @@ Get the decrypted contents of a specific file.
 
 #### Request
 
-```JSON
+```
 {
     “settings”: <settings object>,
     “action”: “fetch”,
@@ -151,7 +151,7 @@ Get the decrypted contents of a specific file.
 
 #### Response
 
-```JSON
+```
 {
     “status”: “ok”,
     “version”: <int>,
