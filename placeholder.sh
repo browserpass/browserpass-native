@@ -93,7 +93,9 @@ function configure()
         fi
     done
 
-    OUTPUT='{}'
+    [ -n "$PASSWORD_STORE_DIR" ] || PASSWORD_STORE_DIR="~/.password-store"
+    OUTPUT="$(jq -n --arg defaultPath "$PASSWORD_STORE_DIR" '.defaultPath = $defaultPath')"
+
     for STORE in "${!STORES[@]}"; do
         OUTPUT=$(jq --arg store "$STORE" --arg settings "${STORES[$STORE]}" '.storeSettings[$store] = $settings' <<< "$OUTPUT")
     done
