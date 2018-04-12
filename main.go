@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/maximbaz/browserpass-native/openbsd"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -22,6 +23,8 @@ func main() {
 		fmt.Println("Browserpass host app version:", VERSION)
 		os.Exit(0)
 	}
+
+	openbsd.Pledge("stdio rpath proc exec")
 
 	log.SetFormatter(&log.TextFormatter{FullTimestamp: true})
 	if verbose {
