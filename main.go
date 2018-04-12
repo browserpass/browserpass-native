@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"os"
 
 	log "github.com/sirupsen/logrus"
@@ -17,14 +18,14 @@ func main() {
 	flag.BoolVar(&version, "version", false, "print version and exit")
 	flag.Parse()
 
+	if version {
+		fmt.Println("Browserpass host app version:", VERSION)
+		os.Exit(0)
+	}
+
 	log.SetFormatter(&log.TextFormatter{FullTimestamp: true})
 	if verbose {
 		log.SetLevel(log.DebugLevel)
-	}
-
-	if version {
-		log.Info("Browserpass host app version: ", VERSION)
-		os.Exit(0)
 	}
 
 	log.Debugf("Starting browserpass host app v%v", VERSION)
