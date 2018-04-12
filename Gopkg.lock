@@ -2,8 +2,17 @@
 
 
 [[projects]]
-  name = "github.com/sirupsen/logrus"
+  name = "github.com/rifflock/lfshook"
   packages = ["."]
+  revision = "bf539943797a1f34c1f502d07de419b5238ae6c6"
+  version = "v2.3"
+
+[[projects]]
+  name = "github.com/sirupsen/logrus"
+  packages = [
+    ".",
+    "hooks/syslog"
+  ]
   revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
   version = "v1.0.5"
 
@@ -25,6 +34,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "559be3832a82b6c8884ca8103c92b2343135b96374cdf98f6cc294427bd26219"
+  inputs-digest = "f6199a143c790c5c1422bd35477ede08e5d2e3a0e5552d769e7c4de6ed8a14b1"
   solver-name = "gps-cdcl"
   solver-version = 1

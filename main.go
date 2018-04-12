@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/maximbaz/browserpass-native/openbsd"
+	"github.com/maximbaz/browserpass-native/persistentlog"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -30,6 +31,8 @@ func main() {
 	if verbose {
 		log.SetLevel(log.DebugLevel)
 	}
+
+	persistentlog.AddPersistentLogHook()
 
 	log.Debugf("Starting browserpass host app v%v", VERSION)
 	process()
