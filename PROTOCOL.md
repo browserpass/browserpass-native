@@ -98,6 +98,7 @@ is alive, determine the version at startup, and provide per-store defaults.
     “status”: “ok”,
     “version”: <int>
     “response”: {
+        "defaultPath": "/path/to/default/store",
         “storeSettings”: {
             “storeName”: <raw contents of storePath/.browserpass.json>
         }
