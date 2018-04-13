@@ -10,9 +10,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// VERSION host app version
-const VERSION = "3.0.0"
-
 func main() {
 	var verbose bool
 	var version bool
@@ -21,7 +18,7 @@ func main() {
 	flag.Parse()
 
 	if version {
-		fmt.Println("Browserpass host app version:", VERSION)
+		fmt.Println("Browserpass host app version:", versionString())
 		os.Exit(0)
 	}
 
@@ -34,6 +31,6 @@ func main() {
 
 	persistentlog.AddPersistentLogHook()
 
-	log.Debugf("Starting browserpass host app v%v", VERSION)
+	log.Debugf("Starting browserpass host app v%v", versionString())
 	process()
 }
