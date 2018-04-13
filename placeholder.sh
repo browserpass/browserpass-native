@@ -96,6 +96,13 @@ function configure()
     [ -n "$PASSWORD_STORE_DIR" ] || PASSWORD_STORE_DIR="~/.password-store"
     OUTPUT="$(jq -n --arg defaultPath "$PASSWORD_STORE_DIR" '.defaultPath = $defaultPath')"
 
+    STOREPATH=$(echo "$PASSWORD_STORE_DIR" | sed 's/^~/$HOME/' | envsubst)
+    if [ -f "$STOREPATH/.browserpass.json" ]; then
+        OUTPUT=$(jq --arg settings "$(cat "$STOREPATH/.browserpass.json")" '.defaultSettings = $settings' <<< "$OUTPUT")
+    else
+        OUTPUT=$(jq '.defaultSettings = ""' <<< "$OUTPUT")
+    fi
+
     for STORE in "${!STORES[@]}"; do
         OUTPUT=$(jq --arg store "$STORE" --arg settings "${STORES[$STORE]}" '.storeSettings[$store] = $settings' <<< "$OUTPUT")
     done
