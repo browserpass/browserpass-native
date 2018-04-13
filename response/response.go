@@ -1,4 +1,4 @@
-package main
+package response
 
 import (
 	"bytes"
@@ -6,12 +6,9 @@ import (
 	"encoding/json"
 	"os"
 
+	"github.com/browserpass/browserpass-native/errors"
+	"github.com/browserpass/browserpass-native/version"
 	log "github.com/sirupsen/logrus"
-)
-
-const (
-	errorCodeReadRequestLength = iota + 1
-	errorCodeReadRequest
 )
 
 type okResponse struct {
@@ -22,16 +19,17 @@ type okResponse struct {
 
 type errorResponse struct {
 	Status  string      `json:"status"`
-	Code    int         `json:"code"`
+	Code    errors.Code `json:"code"`
 	Version int         `json:"version"`
 	Params  interface{} `json:"params"`
 }
 
-func sendError(errorCode int, errorMsg string) {
+// SendError sends an error response to the browser extension in the predefined json format
+func SendError(errorCode errors.Code, errorMsg string) {
 	send(&errorResponse{
 		Status:  "error",
 		Code:    errorCode,
-		Version: versionCode,
+		Version: version.Code,
 		Params: map[string]string{
 			"message": errorMsg,
 		},

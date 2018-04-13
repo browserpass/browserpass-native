@@ -1,4 +1,4 @@
-package main
+package request
 
 import (
 	"encoding/binary"
@@ -6,6 +6,8 @@ import (
 	"io"
 	"os"
 
+	"github.com/browserpass/browserpass-native/errors"
+	"github.com/browserpass/browserpass-native/response"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -14,7 +16,7 @@ type request struct {
 	Settings interface{} `json:"settings"`
 }
 
-func process() {
+func Process() {
 	requestLength := parseRequestLength()
 	request := parseRequest(requestLength)
 
@@ -39,8 +41,8 @@ func parseRequestLength() uint32 {
 		// 	return
 		// }
 		log.Error("Unable to read the length of the browser request: ", err)
-		sendError(errorCodeReadRequestLength, "Unable to read the length of the browser request")
-		os.Exit(errorCodeReadRequestLength)
+		response.SendError(errors.CodeReadRequestLength, "Unable to read the length of the browser request")
+		errors.ExitWithCode(errors.CodeReadRequestLength)
 	}
 	return length
 }
@@ -51,8 +53,8 @@ func parseRequest(messageLength uint32) request {
 	reader := &io.LimitedReader{R: os.Stdin, N: int64(messageLength)}
 	if err := json.NewDecoder(reader).Decode(&parsed); err != nil {
 		log.Error("Unable to read the browser request: ", err)
-		sendError(errorCodeReadRequest, "Unable to read the browser request")
-		os.Exit(errorCodeReadRequest)
+		response.SendError(errors.CodeReadRequest, "Unable to read the browser request")
+		errors.ExitWithCode(errors.CodeReadRequest)
 	}
 	return parsed
 }

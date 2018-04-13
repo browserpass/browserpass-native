@@ -5,32 +5,34 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/maximbaz/browserpass-native/openbsd"
-	"github.com/maximbaz/browserpass-native/persistentlog"
+	"github.com/browserpass/browserpass-native/openbsd"
+	"github.com/browserpass/browserpass-native/persistentlog"
+	"github.com/browserpass/browserpass-native/request"
+	"github.com/browserpass/browserpass-native/version"
 	log "github.com/sirupsen/logrus"
 )
 
 func main() {
-	var verbose bool
-	var version bool
-	flag.BoolVar(&verbose, "v", false, "print verbose output")
-	flag.BoolVar(&version, "version", false, "print version and exit")
+	var isVerbose bool
+	var isVersion bool
+	flag.BoolVar(&isVerbose, "v", false, "print verbose output")
+	flag.BoolVar(&isVersion, "version", false, "print version and exit")
 	flag.Parse()
 
-	if version {
-		fmt.Println("Browserpass host app version:", versionString())
+	if isVersion {
+		fmt.Println("Browserpass host app version:", version.String())
 		os.Exit(0)
 	}
 
 	openbsd.Pledge("stdio rpath proc exec")
 
 	log.SetFormatter(&log.TextFormatter{FullTimestamp: true})
-	if verbose {
+	if isVerbose {
 		log.SetLevel(log.DebugLevel)
 	}
 
 	persistentlog.AddPersistentLogHook()
 
-	log.Debugf("Starting browserpass host app v%v", versionString())
-	process()
+	log.Debugf("Starting browserpass host app v%v", version.String())
+	request.Process()
 }
