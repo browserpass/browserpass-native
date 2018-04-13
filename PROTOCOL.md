@@ -14,9 +14,9 @@ The app version is an integer, calculated by `(MAJOR * 1000000) + (MINOR * 1000)
 
 ```
 {
-    "status": "ok",
-    "version": <int>,
-    "response": <any type>
+    "status": "ok",
+    "version": <int>,
+    "response": <any type>
 }
 ```
 
@@ -27,11 +27,11 @@ object that provides any parameters that should accompany the error.
 
 ```
 {
-    "status": "error",
-    "code": <int>,
-    "params": {
-       "<paramN>": <valueN>
-    }
+    "status": "error",
+    "code": <int>,
+    "params": {
+       "<paramN>": <valueN>
+    }
 }
 ```
 
@@ -88,8 +88,8 @@ is alive, determine the version at startup, and provide per-store defaults.
 
 ```
 {
-    "settings": <settings object>,
-    "action": "configure"
+    "settings": <settings object>,
+    "action": "configure"
 }
 ```
 
@@ -98,15 +98,15 @@ is alive, determine the version at startup, and provide per-store defaults.
 ```
 {
 
-    "status": "ok",
-    "version": <int>,
-    "response": {
+    "status": "ok",
+    "version": <int>,
+    "response": {
         "defaultPath": "/path/to/default/store",
         "defaultSettings": "<raw contents of $defaultPath/.browserpass.json>",
-        “storeSettings”: {
-            “storeName”: "<raw contents of storePath/.browserpass.json>"
-        }
-    }
+        “storeSettings”: {
+            “storeName”: "<raw contents of storePath/.browserpass.json>"
+        }
+    }
 }
 ```
 
@@ -119,8 +119,8 @@ is the name of a password store, the key in `"settings.stores"` object.
 
 ```
 {
-    "settings": <settings object>,
-    "action": "list"
+    "settings": <settings object>,
+    "action": "list"
 }
 ```
 
@@ -128,14 +128,14 @@ is the name of a password store, the key in `"settings.stores"` object.
 
 ```
 {
-    "status": "ok",
-    "version": <int>,
-    "response": {
-        "files": {
-            "storeN": ["<storeNPath/file1.gpg>", "<...>"],
-            "storeN+1": ["<storeN+1Path/file1.gpg>", "<...>"]
-        }
-    }
+    "status": "ok",
+    "version": <int>,
+    "response": {
+        "files": {
+            "storeN": ["<storeNPath/file1.gpg>", "<...>"],
+            "storeN+1": ["<storeN+1Path/file1.gpg>", "<...>"]
+        }
+    }
 }
 ```
 
@@ -147,10 +147,10 @@ Get the decrypted contents of a specific file.
 
 ```
 {
-    "settings": <settings object>,
-    "action": "fetch",
-    "store": "<storeName>",
-    "file": "relative/path/to/file.gpg"
+    "settings": <settings object>,
+    "action": "fetch",
+    "store": "<storeName>",
+    "file": "relative/path/to/file.gpg"
 }
 ```
 
@@ -158,10 +158,10 @@ Get the decrypted contents of a specific file.
 
 ```
 {
-    "status": "ok",
-    "version": <int>,
-    "response": {
-        "data": "<decrypted file contents>"
-    }
+    "status": "ok",
+    "version": <int>,
+    "response": {
+        "data": "<decrypted file contents>"
+    }
 }
 ```
