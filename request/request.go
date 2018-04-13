@@ -16,6 +16,7 @@ type request struct {
 	Settings interface{} `json:"settings"`
 }
 
+// Process handles browser request
 func Process() {
 	requestLength := parseRequestLength()
 	request := parseRequest(requestLength)
@@ -40,9 +41,9 @@ func parseRequestLength() uint32 {
 		// if err == io.EOF {
 		// 	return
 		// }
-		log.Error("Unable to read the length of the browser request: ", err)
-		response.SendError(errors.CodeReadRequestLength, "Unable to read the length of the browser request")
-		errors.ExitWithCode(errors.CodeReadRequestLength)
+		log.Error("Unable to parse the length of the browser request: ", err)
+		response.SendError(errors.CodeParseRequestLength, "Unable to parse the length of the browser request")
+		errors.ExitWithCode(errors.CodeParseRequestLength)
 	}
 	return length
 }
@@ -52,9 +53,9 @@ func parseRequest(messageLength uint32) request {
 	var parsed request
 	reader := &io.LimitedReader{R: os.Stdin, N: int64(messageLength)}
 	if err := json.NewDecoder(reader).Decode(&parsed); err != nil {
-		log.Error("Unable to read the browser request: ", err)
-		response.SendError(errors.CodeReadRequest, "Unable to read the browser request")
-		errors.ExitWithCode(errors.CodeReadRequest)
+		log.Error("Unable to parse the browser request: ", err)
+		response.SendError(errors.CodeParseRequest, "Unable to parse the browser request")
+		errors.ExitWithCode(errors.CodeParseRequest)
 	}
 	return parsed
 }

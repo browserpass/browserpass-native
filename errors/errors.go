@@ -1,14 +1,21 @@
 package errors
 
-import "os"
+import (
+	"os"
+)
 
+// Code exit code
 type Code int
 
 const (
-	CodeReadRequestLength Code = iota + 1
-	CodeReadRequest
+	// CodeParseRequestLength error parsing request length
+	CodeParseRequestLength Code = iota + 10
+
+	// CodeParseRequest error parsing request
+	CodeParseRequest
 )
 
+// ExitWithCode exit with error code
 func ExitWithCode(code Code) {
 	os.Exit(int(code))
 }
