@@ -73,6 +73,7 @@ Settings are applied using the following priority, highest first:
 
 | Setting      | Description                                          | Default |
 | ------------ | ---------------------------------------------------- | ------- |
+| name         | Store name (same as the store key)                   | <key>   |
 | path         | Path to the password store directory                 | `""`    |
 
 ## Actions
