@@ -63,16 +63,17 @@ Settings are applied using the following priority, highest first:
 
 ### Global Settings
 
-| Setting | Description                                          | Default |
-| ------- | ---------------------------------------------------- | ------- |
-| gpgPath | Optional path to gpg binary                          | `null`  |
-| stores  | List of password stores with store-specific settings | `null`  |
+| Setting      | Description                                          | Default |
+| ------------ | ---------------------------------------------------- | ------- |
+| gpgPath      | Optional path to gpg binary                          | `null`  |
+| defaultStore | Store-specific settings for default store            | `{}`    |
+| stores       | List of password stores with store-specific settings | `{}`    |
 
 ### Store-specific Settings
 
-| Setting | Description                                          | Default |
-| ------- | ---------------------------------------------------- | ------- |
-|         |                                                      |         |
+| Setting      | Description                                          | Default |
+| ------------ | ---------------------------------------------------- | ------- |
+| path         | Path to the password store directory                 | `""`    |
 
 ## Actions
 
@@ -99,6 +100,7 @@ is alive, determine the version at startup, and provide per-store defaults.
     “version”: <int>
     “response”: {
         "defaultPath": "/path/to/default/store",
+        "defaultSettings": <raw contents of $defaultPath/.browserpass.json>,
         “storeSettings”: {
             “storeName”: <raw contents of storePath/.browserpass.json>
         }
