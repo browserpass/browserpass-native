@@ -7,7 +7,7 @@ and the native host application.
 
 ### OK
 
-Consists solely of an `ok` status, an integer app version, and a `response` field. The response
+Consists solely of an `ok` status, an integer app version, and a `data` field which
 may be of any type.
 
 The app version is an integer, calculated by `(MAJOR * 1000000) + (MINOR * 1000) + PATCH`.
@@ -16,7 +16,7 @@ The app version is an integer, calculated by `(MAJOR * 1000000) + (MINOR * 1000)
 {
     "status": "ok",
     "version": <int>,
-    "response": <any type>
+    "data": <any type>
 }
 ```
 
@@ -101,7 +101,7 @@ is alive, determine the version at startup, and provide per-store defaults.
 
     "status": "ok",
     "version": <int>,
-    "response": {
+    "data": {
         "defaultStore": {
             "path": "/path/to/default/store",
             "defaultSettings": "<raw contents of $defaultPath/.browserpass.json>",
@@ -133,7 +133,7 @@ is the name of a password store, the key in `"settings.stores"` object.
 {
     "status": "ok",
     "version": <int>,
-    "response": {
+    "data": {
         "files": {
             "storeN": ["<storeNPath/file1.gpg>", "<...>"],
             "storeN+1": ["<storeN+1Path/file1.gpg>", "<...>"]
@@ -163,7 +163,7 @@ Get the decrypted contents of a specific file.
 {
     "status": "ok",
     "version": <int>,
-    "response": {
+    "data": {
         "data": "<decrypted file contents>"
     }
 }
