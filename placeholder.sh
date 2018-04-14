@@ -14,7 +14,7 @@ function writelen()
 function require()
 {
     if ! `command -v "$1" >/dev/null`; then
-        OUTPUT="{\n  \"status\": \"error\"\n  "version": $VERSION,\n  \"message\": \"Required dependency '$1' is missing\"\n  \"code\": 1\n}"
+        OUTPUT="{\n  \"status\": \"error\"\n  "version": $VERSION,\n  \"params\": {\n    \"message\": \"Required dependency '$1' is missing\"\n  },  \"code\": 1\n}"
         LANG=C LC_ALL=C LENGTH=${#OUTPUT}
         echo -n 
         exit 1
@@ -43,7 +43,7 @@ function error()
         ERROR=$(cat)
     fi
     [ -n "$2" ] && CODE="$2" || CODE=1
-    OUTPUT="$(jq -n '.status = "error"' | jq --arg message "$ERROR" --arg code "$CODE" '.message = $message | .code = ($code|tonumber)')"
+    OUTPUT="$(jq -n '.status = "error"' | jq --arg message "$ERROR" --arg code "$CODE" '.params.message = $message | .code = ($code|tonumber)')"
     perl -e "print pack('L', ${#OUTPUT})"
     echo -n "$OUTPUT"
 }
@@ -61,7 +61,7 @@ function wrap()
             error "$@" $EXIT
         fi
     else
-        OUTPUT="$(jq -n --arg version $VERSION --arg response "$STDOUT" '.status = "ok" | .version = $version | .response = ($response | if .[:1] == "{" then ( . | fromjson) else . end)')"
+        OUTPUT="$(jq -n --arg version $VERSION --arg response "$STDOUT" '.status = "ok" | .version = $version | .data = ($response | if .[:1] == "{" then ( . | fromjson) else . end)')"
         perl -e "print pack('L', ${#OUTPUT})"
         echo -n "$OUTPUT"
     fi
