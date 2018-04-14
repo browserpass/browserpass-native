@@ -25,14 +25,20 @@ type errorResponse struct {
 }
 
 // SendError sends an error response to the browser extension in the predefined json format
-func SendError(errorCode errors.Code, errorMsg string) {
+func SendError(errorCode errors.Code, errorMsg string, extraParams *map[string]string) {
+	params := map[string]string{
+		"message": errorMsg,
+	}
+	if extraParams != nil {
+		for key, value := range *extraParams {
+			params[key] = value
+		}
+	}
 	send(&errorResponse{
 		Status:  "error",
 		Code:    errorCode,
 		Version: version.Code,
-		Params: map[string]string{
-			"message": errorMsg,
-		},
+		Params:  params,
 	})
 }
 

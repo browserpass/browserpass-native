@@ -30,6 +30,8 @@ func Process() {
 		break
 	default:
 		log.Errorf("Received a browser request with an unknown action: %+v", request)
+		response.SendError(errors.CodeInvalidRequestAction, "Invalid request action", &map[string]string{"action": request.Action})
+		errors.ExitWithCode(errors.CodeInvalidRequestAction)
 	}
 }
 
@@ -42,7 +44,7 @@ func parseRequestLength() uint32 {
 		// 	return
 		// }
 		log.Error("Unable to parse the length of the browser request: ", err)
-		response.SendError(errors.CodeParseRequestLength, "Unable to parse the length of the browser request")
+		response.SendError(errors.CodeParseRequestLength, "Unable to parse the length of the browser request", nil)
 		errors.ExitWithCode(errors.CodeParseRequestLength)
 	}
 	return length
@@ -54,7 +56,7 @@ func parseRequest(messageLength uint32) request {
 	reader := &io.LimitedReader{R: os.Stdin, N: int64(messageLength)}
 	if err := json.NewDecoder(reader).Decode(&parsed); err != nil {
 		log.Error("Unable to parse the browser request: ", err)
-		response.SendError(errors.CodeParseRequest, "Unable to parse the browser request")
+		response.SendError(errors.CodeParseRequest, "Unable to parse the browser request", nil)
 		errors.ExitWithCode(errors.CodeParseRequest)
 	}
 	return parsed

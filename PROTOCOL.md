@@ -41,9 +41,11 @@ should be supplied as a `message` parameter.
 
 ## List of Error Codes
 
-| Code | Description | Parameters |
-| ---- | ----------- | ---------- |
-|      |             |            |
+| Code | Description                            | Parameters |
+| ---- | -------------------------------------- | ---------- |
+| 10   | Unable to parse browser request length |            |
+| 11   | Unable to parse browser request        |            |
+| 12   | Invalid request action                 | action     |
 
 ## Settings
 
