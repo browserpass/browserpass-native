@@ -61,7 +61,7 @@ function wrap()
             error "$@" $EXIT
         fi
     else
-        OUTPUT="$(jq -n --arg version $VERSION --arg response "$STDOUT" '.status = "ok" | .version = $version | .response = ($response | if .[:1] == "{" then ( . | fromjson) else . end)')"
+        OUTPUT="$(jq -n --arg version $VERSION --arg response "$STDOUT" '.status = "ok" | .version = $version | .data = ($response | if .[:1] == "{" then ( . | fromjson) else . end)')"
         perl -e "print pack('L', ${#OUTPUT})"
         echo -n "$OUTPUT"
     fi
