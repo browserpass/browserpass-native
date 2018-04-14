@@ -19,7 +19,7 @@ func AddPersistentLogHook() {
 	}
 	logFolderPath := filepath.Join(appDataPath, "browserpass")
 	if err := os.MkdirAll(logFolderPath, os.ModePerm); err != nil {
-		log.Warn("Unable to create browserpass folder in %%APPDATA%%, logs will NOT be persisted")
+		log.Warn("Unable to create browserpass folder in %%APPDATA%%, logs will NOT be persisted: ", err)
 		return
 	}
 	logFilePath := filepath.Join(logFolderPath, "browserpass.log")

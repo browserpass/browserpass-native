@@ -11,11 +11,9 @@ import (
 
 // AddPersistentLogHook configures persisting logs in syslog
 func AddPersistentLogHook() {
-	hook, err := logSyslog.NewSyslogHook("", "", syslog.LOG_INFO, "browserpass")
-
-	if err == nil {
-		log.AddHook(hook)
+	if hook, err := logSyslog.NewSyslogHook("", "", syslog.LOG_INFO, "browserpass"); err != nil {
+		log.Warn("Unable to connect to syslog, logs will NOT be persisted: ", err)
 	} else {
-		log.Warn("Unable to connect to syslog, logs will NOT be persisted")
+		log.AddHook(hook)
 	}
 }
