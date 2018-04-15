@@ -12,8 +12,14 @@ import (
 )
 
 type request struct {
-	Action   string      `json:"action"`
-	Settings interface{} `json:"settings"`
+	Action   string `json:"action"`
+	Settings struct {
+		GpgPath string `json:"gpgPath"`
+		Stores  map[string]struct {
+			Name string `json:"name"`
+			Path string `json:"path"`
+		}
+	} `json:"settings"`
 }
 
 // Process handles browser request
@@ -23,14 +29,17 @@ func Process() {
 
 	switch request.Action {
 	case "configure":
-		break
+		configure(request)
 	case "list":
 		break
 	case "fetch":
 		break
 	default:
 		log.Errorf("Received a browser request with an unknown action: %+v", request)
-		response.SendError(errors.CodeInvalidRequestAction, "Invalid request action", &map[string]string{"action": request.Action})
+		response.SendError(
+			errors.CodeInvalidRequestAction,
+			"Invalid request action",
+			&map[string]string{"action": request.Action})
 		errors.ExitWithCode(errors.CodeInvalidRequestAction)
 	}
 }
@@ -44,7 +53,10 @@ func parseRequestLength() uint32 {
 		// 	return
 		// }
 		log.Error("Unable to parse the length of the browser request: ", err)
-		response.SendError(errors.CodeParseRequestLength, "Unable to parse the length of the browser request", nil)
+		response.SendError(
+			errors.CodeParseRequestLength,
+			"Unable to parse the length of the browser request",
+			&map[string]string{"error": err.Error()})
 		errors.ExitWithCode(errors.CodeParseRequestLength)
 	}
 	return length
@@ -56,7 +68,10 @@ func parseRequest(messageLength uint32) request {
 	reader := &io.LimitedReader{R: os.Stdin, N: int64(messageLength)}
 	if err := json.NewDecoder(reader).Decode(&parsed); err != nil {
 		log.Error("Unable to parse the browser request: ", err)
-		response.SendError(errors.CodeParseRequest, "Unable to parse the browser request", nil)
+		response.SendError(
+			errors.CodeParseRequest,
+			"Unable to parse the browser request",
+			&map[string]string{"error": err.Error()})
 		errors.ExitWithCode(errors.CodeParseRequest)
 	}
 	return parsed
