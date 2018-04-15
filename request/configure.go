@@ -1,12 +1,10 @@
 package request
 
 import (
-	goerrors "errors"
 	"io/ioutil"
 	"os"
 	"os/user"
 	"path/filepath"
-	"strings"
 
 	"github.com/browserpass/browserpass-native/errors"
 	"github.com/browserpass/browserpass-native/response"
@@ -105,28 +103,6 @@ func getDefaultPasswordStorePath() (string, error) {
 
 	path = filepath.Join(usr.HomeDir, ".password-store")
 	return path, nil
-}
-
-func normalizePasswordStorePath(storePath string) (string, error) {
-	if strings.HasPrefix(storePath, "~/") {
-		storePath = filepath.Join("$HOME", storePath[2:])
-	}
-	storePath = os.ExpandEnv(storePath)
-
-	directStorePath, err := filepath.EvalSymlinks(storePath)
-	if err != nil {
-		return "", err
-	}
-	storePath = directStorePath
-
-	stat, err := os.Stat(storePath)
-	if err != nil {
-		return "", err
-	}
-	if !stat.IsDir() {
-		return "", goerrors.New("The specified path exists, but is not a directory")
-	}
-	return storePath, nil
 }
 
 func readDefaultSettings(storePath string) (string, error) {
