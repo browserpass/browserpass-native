@@ -41,16 +41,18 @@ should be supplied as a `message` parameter.
 
 ## List of Error Codes
 
-| Code | Description                                                             | Parameters        |
-| ---- | ----------------------------------------------------------------------- | ----------------- |
-| 10   | Unable to parse browser request length                                  | error             |
-| 11   | Unable to parse browser request                                         | error             |
-| 12   | Invalid request action                                                  | action            |
-| 13   | Inaccessible user-configured password store                             | error, name, path |
-| 14   | Inaccessible default password store                                     | error, path       |
-| 15   | Unable to determine the location of the default password store          | error             |
-| 16   | Unable to read the default settings of a user-configured password store | error, name, path |
-| 17   | Unable to read the default settings of the default password store       | error, path       |
+| Code | Description                                                             | Parameters              |
+| ---- | ----------------------------------------------------------------------- | ----------------------- |
+| 10   | Unable to parse browser request length                                  | error                   |
+| 11   | Unable to parse browser request                                         | error                   |
+| 12   | Invalid request action                                                  | action                  |
+| 13   | Inaccessible user-configured password store                             | error, name, path       |
+| 14   | Inaccessible default password store                                     | error, path             |
+| 15   | Unable to determine the location of the default password store          | error                   |
+| 16   | Unable to read the default settings of a user-configured password store | error, name, path       |
+| 17   | Unable to read the default settings of the default password store       | error, path             |
+| 18   | Unable to list files in a password store                                | error, name, path       |
+| 19   | Unable to determine a relative path for a file in a password store      | error, file, name, path |
 
 ## Settings
 
