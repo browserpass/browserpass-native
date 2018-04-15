@@ -31,7 +31,7 @@ func Process() {
 	case "configure":
 		configure(request)
 	case "list":
-		break
+		listFiles(request)
 	case "fetch":
 		break
 	default:
