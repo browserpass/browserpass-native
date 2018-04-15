@@ -20,8 +20,8 @@ func configure(request request) {
 		normalizedStorePath, err := normalizePasswordStorePath(store.Path)
 		if err != nil {
 			log.Errorf(
-				"Inaccessible path '%v' of the user-configured password store '%v': %+v",
-				store.Path, store.Name, err)
+				"The password store '%v' is not accessible at the location '%v': %+v",
+				store.Name, store.Path, err)
 			response.SendError(
 				errors.CodeInaccessiblePasswordStore,
 				"The password store is not accessible",
@@ -62,7 +62,7 @@ func configure(request request) {
 		if err != nil {
 			if len(request.Settings.Stores) == 0 {
 				log.Errorf(
-					"The path '%v' of the default password store is not accessible: %+v",
+					"The default password store is not accessible at the location '%v': %+v",
 					possibleDefaultStorePath, err)
 				response.SendError(
 					errors.CodeInaccessibleDefaultPasswordStore,
