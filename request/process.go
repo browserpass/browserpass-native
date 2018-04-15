@@ -39,7 +39,8 @@ func Process() {
 		response.SendError(
 			errors.CodeInvalidRequestAction,
 			"Invalid request action",
-			&map[string]string{"action": request.Action})
+			&map[string]string{"action": request.Action},
+		)
 		errors.ExitWithCode(errors.CodeInvalidRequestAction)
 	}
 }
@@ -56,7 +57,8 @@ func parseRequestLength() uint32 {
 		response.SendError(
 			errors.CodeParseRequestLength,
 			"Unable to parse the length of the browser request",
-			&map[string]string{"error": err.Error()})
+			&map[string]string{"error": err.Error()},
+		)
 		errors.ExitWithCode(errors.CodeParseRequestLength)
 	}
 	return length
@@ -71,7 +73,8 @@ func parseRequest(messageLength uint32) request {
 		response.SendError(
 			errors.CodeParseRequest,
 			"Unable to parse the browser request",
-			&map[string]string{"error": err.Error()})
+			&map[string]string{"error": err.Error()},
+		)
 		errors.ExitWithCode(errors.CodeParseRequest)
 	}
 	return parsed

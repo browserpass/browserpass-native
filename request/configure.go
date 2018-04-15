@@ -21,11 +21,13 @@ func configure(request request) {
 		if err != nil {
 			log.Errorf(
 				"The password store '%v' is not accessible at the location '%v': %+v",
-				store.Name, store.Path, err)
+				store.Name, store.Path, err,
+			)
 			response.SendError(
 				errors.CodeInaccessiblePasswordStore,
 				"The password store is not accessible",
-				&map[string]string{"error": err.Error(), "name": store.Name, "path": store.Path})
+				&map[string]string{"error": err.Error(), "name": store.Name, "path": store.Path},
+			)
 			errors.ExitWithCode(errors.CodeInaccessiblePasswordStore)
 		}
 
@@ -35,11 +37,13 @@ func configure(request request) {
 		if err != nil {
 			log.Errorf(
 				"Unable to read the default settings of the user-configured password store '%v' in '%v': %+v",
-				store.Name, store.Path, err)
+				store.Name, store.Path, err,
+			)
 			response.SendError(
 				errors.CodeUnreadablePasswordStoreDefaultSettings,
 				"Unable to read the default settings of the password store",
-				&map[string]string{"error": err.Error(), "name": store.Name, "path": store.Path})
+				&map[string]string{"error": err.Error(), "name": store.Name, "path": store.Path},
+			)
 			errors.ExitWithCode(errors.CodeUnreadablePasswordStoreDefaultSettings)
 		}
 	}
@@ -54,7 +58,8 @@ func configure(request request) {
 			response.SendError(
 				errors.CodeUnknownDefaultPasswordStoreLocation,
 				"Unable to determine the location of the default password store",
-				&map[string]string{"error": err.Error()})
+				&map[string]string{"error": err.Error()},
+			)
 			errors.ExitWithCode(errors.CodeUnknownDefaultPasswordStoreLocation)
 		}
 	} else {
@@ -63,11 +68,13 @@ func configure(request request) {
 			if len(request.Settings.Stores) == 0 {
 				log.Errorf(
 					"The default password store is not accessible at the location '%v': %+v",
-					possibleDefaultStorePath, err)
+					possibleDefaultStorePath, err,
+				)
 				response.SendError(
 					errors.CodeInaccessibleDefaultPasswordStore,
 					"The default password store is not accessible",
-					&map[string]string{"error": err.Error(), "path": possibleDefaultStorePath})
+					&map[string]string{"error": err.Error(), "path": possibleDefaultStorePath},
+				)
 				errors.ExitWithCode(errors.CodeInaccessibleDefaultPasswordStore)
 			}
 		}
@@ -78,11 +85,13 @@ func configure(request request) {
 		if err != nil {
 			log.Errorf(
 				"Unable to read the default settings of the default password store in '%v': %+v",
-				responseData.DefaultStore.Path, err)
+				responseData.DefaultStore.Path, err,
+			)
 			response.SendError(
 				errors.CodeUnreadableDefaultPasswordStoreDefaultSettings,
 				"Unable to read the default settings of the default password store",
-				&map[string]string{"error": err.Error(), "path": responseData.DefaultStore.Path})
+				&map[string]string{"error": err.Error(), "path": responseData.DefaultStore.Path},
+			)
 			errors.ExitWithCode(errors.CodeUnreadableDefaultPasswordStoreDefaultSettings)
 		}
 	}
