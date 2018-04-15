@@ -2,6 +2,15 @@
 
 
 [[projects]]
+  branch = "master"
+  name = "github.com/mattn/go-zglob"
+  packages = [
+    ".",
+    "fastwalk"
+  ]
+  revision = "4959821b481786922ac53e7ef25c61ae19fb7c36"
+
+[[projects]]
   name = "github.com/rifflock/lfshook"
   packages = ["."]
   revision = "bf539943797a1f34c1f502d07de419b5238ae6c6"
@@ -34,6 +43,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "f6199a143c790c5c1422bd35477ede08e5d2e3a0e5552d769e7c4de6ed8a14b1"
+  inputs-digest = "1f59ddaed2db7de2b34f8485550888fa1cb625342398af10acb68e5ee227f3f8"
   solver-name = "gps-cdcl"
   solver-version = 1

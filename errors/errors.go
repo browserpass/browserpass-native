@@ -33,6 +33,12 @@ const (
 
 	// CodeUnreadableDefaultPasswordStoreDefaultSettings error reading the default settings of the default password store
 	CodeUnreadableDefaultPasswordStoreDefaultSettings = 17
+
+	// CodeUnableToListFilesInPasswordStore error listing files in a password store
+	CodeUnableToListFilesInPasswordStore = 18
+
+	// CodeUnableToDetermineRelativeFilePathInPasswordStore error determining a relative path for a file in a password store
+	CodeUnableToDetermineRelativeFilePathInPasswordStore = 19
 )
 
 // ExitWithCode exit with error code

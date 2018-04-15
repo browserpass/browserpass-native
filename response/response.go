@@ -40,6 +40,18 @@ func MakeConfigureResponse() *ConfigureResponse {
 	}
 }
 
+// ListResponse a response format for the "list" request
+type ListResponse struct {
+	Files map[string][]string `json:"files"`
+}
+
+// MakeListResponse initializes an empty list response
+func MakeListResponse() *ListResponse {
+	return &ListResponse{
+		Files: make(map[string][]string),
+	}
+}
+
 // SendOk sends a success response to the browser extension in the predefined json format
 func SendOk(data interface{}) {
 	send(&okResponse{
