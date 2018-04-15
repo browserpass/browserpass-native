@@ -24,6 +24,31 @@ type errorResponse struct {
 	Params  interface{} `json:"params"`
 }
 
+// ConfigureResponse a response format for the "configure" request
+type ConfigureResponse struct {
+	DefaultStore struct {
+		Path     string `json:"path"`
+		Settings string `json:"settings"`
+	} `json:"defaultStore"`
+	StoreSettings map[string]string `json:"storeSettings"`
+}
+
+// MakeConfigureResponse initializes an empty configure response
+func MakeConfigureResponse() *ConfigureResponse {
+	return &ConfigureResponse{
+		StoreSettings: make(map[string]string),
+	}
+}
+
+// SendOk sends a success response to the browser extension in the predefined json format
+func SendOk(data interface{}) {
+	send(&okResponse{
+		Status:  "ok",
+		Version: version.Code,
+		Data:    data,
+	})
+}
+
 // SendError sends an error response to the browser extension in the predefined json format
 func SendError(errorCode errors.Code, errorMsg string, extraParams *map[string]string) {
 	params := map[string]string{
