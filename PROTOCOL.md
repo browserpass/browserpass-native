@@ -173,7 +173,7 @@ Get the decrypted contents of a specific file.
     "status": "ok",
     "version": <int>,
     "data": {
-        "data": "<decrypted file contents>"
+        "contents": "<decrypted file contents>"
     }
 }
 ```

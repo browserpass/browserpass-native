@@ -16,7 +16,7 @@ function require()
     if ! `command -v "$1" >/dev/null`; then
         OUTPUT="{\n  \"status\": \"error\"\n  "version": $VERSION,\n  \"params\": {\n    \"message\": \"Required dependency '$1' is missing\"\n  },  \"code\": 1\n}"
         LANG=C LC_ALL=C LENGTH=${#OUTPUT}
-        echo -n 
+        echo -n
         exit 1
     fi
 }
@@ -94,11 +94,11 @@ function configure()
     done
 
     [ -n "$PASSWORD_STORE_DIR" ] || PASSWORD_STORE_DIR="~/.password-store"
-    OUTPUT="$(jq -n --arg defaultPath "$PASSWORD_STORE_DIR" '.defaultPath = $defaultPath')"
+    OUTPUT="$(jq -n --arg defaultPath "$PASSWORD_STORE_DIR" '.defaultStore.path = $defaultPath')"
 
     STOREPATH=$(echo "$PASSWORD_STORE_DIR" | sed 's/^~/$HOME/' | envsubst)
     if [ -f "$STOREPATH/.browserpass.json" ]; then
-        OUTPUT=$(jq --arg settings "$(cat "$STOREPATH/.browserpass.json")" '.defaultSettings = $settings' <<< "$OUTPUT")
+        OUTPUT=$(jq --arg settings "$(cat "$STOREPATH/.browserpass.json")" '.defaultStore.settings = $settings' <<< "$OUTPUT")
     else
         OUTPUT=$(jq '.defaultSettings = ""' <<< "$OUTPUT")
     fi
@@ -153,9 +153,9 @@ function fetch()
     # get file contents
     [ -f "$FILEPATH" ] || fail "Requested file does not exist: $STORE:$FILE"
     DATA="$(gpg -q --decrypt "$FILEPATH")"
-    
+
     # build output
-    echo "$(jq -n --arg data "$DATA" '.data = $data')"
+    echo "$(jq -n --arg data "$DATA" '.contents = $data')"
 }
 
 function run()
