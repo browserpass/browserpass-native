@@ -72,16 +72,7 @@ func SendOk(data interface{}) {
 }
 
 // SendErrorAndExit sends an error response to the browser extension in the predefined json format and exits with the specified exit code
-func SendErrorAndExit(errorCode errors.Code, errorMsg string, extraParams *map[string]string) {
-	params := map[string]string{
-		"message": errorMsg,
-	}
-	if extraParams != nil {
-		for key, value := range *extraParams {
-			params[key] = value
-		}
-	}
-
+func SendErrorAndExit(errorCode errors.Code, params *map[errors.Field]string) {
 	send(&errorResponse{
 		Status:  "error",
 		Code:    errorCode,

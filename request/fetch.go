@@ -20,9 +20,12 @@ func fetchDecryptedContents(request request) {
 	if !strings.HasSuffix(request.File, ".gpg") {
 		log.Errorf("The requested password file '%v' does not have the expected '.gpg' extension", request.File)
 		response.SendErrorAndExit(
-			errors.CodeInvalidPasswordFile,
-			"The requested password file does not have the expected '.gpg' extension",
-			&map[string]string{"action": "fetch", "file": request.File},
+			errors.CodeInvalidPasswordFileExtension,
+			&map[errors.Field]string{
+				errors.FieldMessage: "The requested password file does not have the expected '.gpg' extension",
+				errors.FieldAction:  "fetch",
+				errors.FieldFile:    request.File,
+			},
 		)
 	}
 
@@ -34,8 +37,11 @@ func fetchDecryptedContents(request request) {
 		)
 		response.SendErrorAndExit(
 			errors.CodeInvalidPasswordStore,
-			"The password store is not present in the list of stores",
-			&map[string]string{"action": "fetch", "name": request.Store},
+			&map[errors.Field]string{
+				errors.FieldMessage:   "The password store is not present in the list of stores",
+				errors.FieldAction:    "fetch",
+				errors.FieldStoreName: request.Store,
+			},
 		)
 	}
 
@@ -47,8 +53,13 @@ func fetchDecryptedContents(request request) {
 		)
 		response.SendErrorAndExit(
 			errors.CodeInaccessiblePasswordStore,
-			"The password store is not accessible",
-			&map[string]string{"action": "fetch", "error": err.Error(), "name": store.Name, "path": store.Path},
+			&map[errors.Field]string{
+				errors.FieldMessage:   "The password store is not accessible",
+				errors.FieldAction:    "fetch",
+				errors.FieldError:     err.Error(),
+				errors.FieldStoreName: store.Name,
+				errors.FieldStorePath: store.Path,
+			},
 		)
 	}
 	store.Path = normalizedStorePath
@@ -63,8 +74,12 @@ func fetchDecryptedContents(request request) {
 			)
 			response.SendErrorAndExit(
 				errors.CodeInvalidGpgPath,
-				"The provided gpg binary path is invalid",
-				&map[string]string{"action": "fetch", "error": err.Error(), "gpgPath": gpgPath},
+				&map[errors.Field]string{
+					errors.FieldMessage: "The provided gpg binary path is invalid",
+					errors.FieldAction:  "fetch",
+					errors.FieldError:   err.Error(),
+					errors.FieldGpgPath: gpgPath,
+				},
 			)
 		}
 	} else {
@@ -73,8 +88,11 @@ func fetchDecryptedContents(request request) {
 			log.Error("Unable to detect the location of the gpg binary: ", err)
 			response.SendErrorAndExit(
 				errors.CodeUnableToDetectGpgPath,
-				"Unable to detect the location of the gpg binary",
-				&map[string]string{"action": "fetch", "error": err.Error()},
+				&map[errors.Field]string{
+					errors.FieldMessage: "Unable to detect the location of the gpg binary",
+					errors.FieldAction:  "fetch",
+					errors.FieldError:   err.Error(),
+				},
 			)
 		}
 	}
@@ -87,8 +105,14 @@ func fetchDecryptedContents(request request) {
 		)
 		response.SendErrorAndExit(
 			errors.CodeUnableToDecryptPasswordFile,
-			"Unable to decrypt the password file",
-			&map[string]string{"action": "fetch", "error": err.Error(), "file": request.File, "name": store.Name, "path": store.Path},
+			&map[errors.Field]string{
+				errors.FieldMessage:   "Unable to decrypt the password file",
+				errors.FieldAction:    "fetch",
+				errors.FieldError:     err.Error(),
+				errors.FieldFile:      request.File,
+				errors.FieldStoreName: store.Name,
+				errors.FieldStorePath: store.Path,
+			},
 		)
 	}
 

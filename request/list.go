@@ -22,8 +22,13 @@ func listFiles(request request) {
 			)
 			response.SendErrorAndExit(
 				errors.CodeInaccessiblePasswordStore,
-				"The password store is not accessible",
-				&map[string]string{"action": "list", "error": err.Error(), "name": store.Name, "path": store.Path},
+				&map[errors.Field]string{
+					errors.FieldMessage:   "The password store is not accessible",
+					errors.FieldAction:    "list",
+					errors.FieldError:     err.Error(),
+					errors.FieldStoreName: store.Name,
+					errors.FieldStorePath: store.Path,
+				},
 			)
 		}
 
@@ -37,8 +42,13 @@ func listFiles(request request) {
 			)
 			response.SendErrorAndExit(
 				errors.CodeUnableToListFilesInPasswordStore,
-				"Unable to list the files in the password store",
-				&map[string]string{"action": "list", "error": err.Error(), "name": store.Name, "path": store.Path},
+				&map[errors.Field]string{
+					errors.FieldMessage:   "Unable to list the files in the password store",
+					errors.FieldAction:    "list",
+					errors.FieldError:     err.Error(),
+					errors.FieldStoreName: store.Name,
+					errors.FieldStorePath: store.Path,
+				},
 			)
 		}
 
@@ -51,8 +61,14 @@ func listFiles(request request) {
 				)
 				response.SendErrorAndExit(
 					errors.CodeUnableToDetermineRelativeFilePathInPasswordStore,
-					"Unable to determine the relative path for a file in the password store",
-					&map[string]string{"action": "list", "error": err.Error(), "file": file, "name": store.Name, "path": store.Path},
+					&map[errors.Field]string{
+						errors.FieldMessage:   "Unable to determine the relative path for a file in the password store",
+						errors.FieldAction:    "list",
+						errors.FieldError:     err.Error(),
+						errors.FieldFile:      file,
+						errors.FieldStoreName: store.Name,
+						errors.FieldStorePath: store.Path,
+					},
 				)
 			}
 			files[i] = relativePath
