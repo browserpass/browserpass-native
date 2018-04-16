@@ -41,18 +41,23 @@ should be supplied as a `message` parameter.
 
 ## List of Error Codes
 
-| Code | Description                                                             | Parameters              |
-| ---- | ----------------------------------------------------------------------- | ----------------------- |
-| 10   | Unable to parse browser request length                                  | error                   |
-| 11   | Unable to parse browser request                                         | error                   |
-| 12   | Invalid request action                                                  | action                  |
-| 13   | Inaccessible user-configured password store                             | error, name, path       |
-| 14   | Inaccessible default password store                                     | error, path             |
-| 15   | Unable to determine the location of the default password store          | error                   |
-| 16   | Unable to read the default settings of a user-configured password store | error, name, path       |
-| 17   | Unable to read the default settings of the default password store       | error, path             |
-| 18   | Unable to list files in a password store                                | error, name, path       |
-| 19   | Unable to determine a relative path for a file in a password store      | error, file, name, path |
+| Code | Description                                                             | Parameters                      |
+| ---- | ----------------------------------------------------------------------- | ------------------------------- |
+| 10   | Unable to parse browser request length                                  | error                           |
+| 11   | Unable to parse browser request                                         | error                           |
+| 12   | Invalid request action                                                  | action                          |
+| 13   | Inaccessible user-configured password store                             | action, error, path, name       |
+| 14   | Inaccessible default password store                                     | action, error, path             |
+| 15   | Unable to determine the location of the default password store          | action, error                   |
+| 16   | Unable to read the default settings of a user-configured password store | action, error, path, name       |
+| 17   | Unable to read the default settings of the default password store       | action, error, path             |
+| 18   | Unable to list files in a password store                                | action, error, path, name       |
+| 19   | Unable to determine a relative path for a file in a password store      | action, error, path, name, file |
+| 20   | Invalid password store name                                             | action, name                    |
+| 21   | Invalid gpg path                                                        | action, error, gpgPath          |
+| 22   | Unable to detect the location of the gpg binary                         | action, error                   |
+| 23   | Invalid password file name                                              | action, file                    |
+| 24   | Unable to decrypt the password file                                     | action, error, path, name, file |
 
 ## Settings
 

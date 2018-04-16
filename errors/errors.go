@@ -39,6 +39,21 @@ const (
 
 	// CodeUnableToDetermineRelativeFilePathInPasswordStore error determining a relative path for a file in a password store
 	CodeUnableToDetermineRelativeFilePathInPasswordStore = 19
+
+	// CodeInvalidPasswordStore error looking for a password store with the given name
+	CodeInvalidPasswordStore = 20
+
+	// CodeInvalidGpgPath error looking for a gpg binary at the given path
+	CodeInvalidGpgPath = 21
+
+	// CodeUnableToDetectGpgPath error detecting the location of the gpg binary
+	CodeUnableToDetectGpgPath = 22
+
+	// CodeInvalidPasswordFile error unexpected password file extension
+	CodeInvalidPasswordFile = 23
+
+	// CodeUnableToDecryptPasswordFile error decrypting a password file
+	CodeUnableToDecryptPasswordFile = 24
 )
 
 // ExitWithCode exit with error code

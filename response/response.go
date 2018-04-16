@@ -52,6 +52,16 @@ func MakeListResponse() *ListResponse {
 	}
 }
 
+// FetchResponse a response format for the "fetch" request
+type FetchResponse struct {
+	Contents string `json:"contents"`
+}
+
+// MakeFetchResponse initializes an empty fetch response
+func MakeFetchResponse() *FetchResponse {
+	return &FetchResponse{}
+}
+
 // SendOk sends a success response to the browser extension in the predefined json format
 func SendOk(data interface{}) {
 	send(&okResponse{
@@ -61,8 +71,8 @@ func SendOk(data interface{}) {
 	})
 }
 
-// SendError sends an error response to the browser extension in the predefined json format
-func SendError(errorCode errors.Code, errorMsg string, extraParams *map[string]string) {
+// SendErrorAndExit sends an error response to the browser extension in the predefined json format and exits with the specified exit code
+func SendErrorAndExit(errorCode errors.Code, errorMsg string, extraParams *map[string]string) {
 	params := map[string]string{
 		"message": errorMsg,
 	}
@@ -71,12 +81,15 @@ func SendError(errorCode errors.Code, errorMsg string, extraParams *map[string]s
 			params[key] = value
 		}
 	}
+
 	send(&errorResponse{
 		Status:  "error",
 		Code:    errorCode,
 		Version: version.Code,
 		Params:  params,
 	})
+
+	errors.ExitWithCode(errorCode)
 }
 
 func send(data interface{}) {

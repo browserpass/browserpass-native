@@ -20,12 +20,11 @@ func listFiles(request request) {
 				"The password store '%v' is not accessible at the location '%v': %+v",
 				store.Name, store.Path, err,
 			)
-			response.SendError(
+			response.SendErrorAndExit(
 				errors.CodeInaccessiblePasswordStore,
 				"The password store is not accessible",
-				&map[string]string{"error": err.Error(), "name": store.Name, "path": store.Path},
+				&map[string]string{"action": "list", "error": err.Error(), "name": store.Name, "path": store.Path},
 			)
-			errors.ExitWithCode(errors.CodeInaccessiblePasswordStore)
 		}
 
 		store.Path = normalizedStorePath
@@ -36,12 +35,11 @@ func listFiles(request request) {
 				"Unable to list the files in the password store '%v' at the location '%v': %+v",
 				store.Name, store.Path, err,
 			)
-			response.SendError(
+			response.SendErrorAndExit(
 				errors.CodeUnableToListFilesInPasswordStore,
 				"Unable to list the files in the password store",
-				&map[string]string{"error": err.Error(), "name": store.Name, "path": store.Path},
+				&map[string]string{"action": "list", "error": err.Error(), "name": store.Name, "path": store.Path},
 			)
-			errors.ExitWithCode(errors.CodeUnableToListFilesInPasswordStore)
 		}
 
 		for i, file := range files {
@@ -51,12 +49,11 @@ func listFiles(request request) {
 					"Unable to determine the relative path for a file '%v' in the password store '%v' at the location '%v': %+v",
 					file, store.Name, store.Path, err,
 				)
-				response.SendError(
+				response.SendErrorAndExit(
 					errors.CodeUnableToDetermineRelativeFilePathInPasswordStore,
 					"Unable to determine the relative path for a file in the password store",
-					&map[string]string{"error": err.Error(), "file": file, "name": store.Name, "path": store.Path},
+					&map[string]string{"action": "list", "error": err.Error(), "file": file, "name": store.Name, "path": store.Path},
 				)
-				errors.ExitWithCode(errors.CodeUnableToDetermineRelativeFilePathInPasswordStore)
 			}
 			files[i] = relativePath
 		}
