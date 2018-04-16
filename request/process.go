@@ -11,15 +11,21 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+type store struct {
+	Name string `json:"name"`
+	Path string `json:"path"`
+}
+
+type settings struct {
+	GpgPath string           `json:"gpgPath"`
+	Stores  map[string]store `json:"stores"`
+}
+
 type request struct {
-	Action   string `json:"action"`
-	Settings struct {
-		GpgPath string `json:"gpgPath"`
-		Stores  map[string]struct {
-			Name string `json:"name"`
-			Path string `json:"path"`
-		}
-	} `json:"settings"`
+	Action   string   `json:"action"`
+	Settings settings `json:"settings"`
+	File     string   `json:"file"`
+	Store    string   `json:"store"`
 }
 
 // Process handles browser request
@@ -33,15 +39,16 @@ func Process() {
 	case "list":
 		listFiles(request)
 	case "fetch":
-		break
+		fetchDecryptedContents(request)
 	default:
 		log.Errorf("Received a browser request with an unknown action: %+v", request)
-		response.SendError(
+		response.SendErrorAndExit(
 			errors.CodeInvalidRequestAction,
-			"Invalid request action",
-			&map[string]string{"action": request.Action},
+			&map[errors.Field]string{
+				errors.FieldMessage: "Invalid request action",
+				errors.FieldAction:  request.Action,
+			},
 		)
-		errors.ExitWithCode(errors.CodeInvalidRequestAction)
 	}
 }
 
@@ -49,17 +56,14 @@ func Process() {
 func parseRequestLength() uint32 {
 	var length uint32
 	if err := binary.Read(os.Stdin, binary.LittleEndian, &length); err != nil {
-		// TODO: Original browserpass ignores EOF as if it is expected, is it true?
-		// if err == io.EOF {
-		// 	return
-		// }
 		log.Error("Unable to parse the length of the browser request: ", err)
-		response.SendError(
+		response.SendErrorAndExit(
 			errors.CodeParseRequestLength,
-			"Unable to parse the length of the browser request",
-			&map[string]string{"error": err.Error()},
+			&map[errors.Field]string{
+				errors.FieldMessage: "Unable to parse the length of the browser request",
+				errors.FieldError:   err.Error(),
+			},
 		)
-		errors.ExitWithCode(errors.CodeParseRequestLength)
 	}
 	return length
 }
@@ -70,12 +74,13 @@ func parseRequest(messageLength uint32) request {
 	reader := &io.LimitedReader{R: os.Stdin, N: int64(messageLength)}
 	if err := json.NewDecoder(reader).Decode(&parsed); err != nil {
 		log.Error("Unable to parse the browser request: ", err)
-		response.SendError(
+		response.SendErrorAndExit(
 			errors.CodeParseRequest,
-			"Unable to parse the browser request",
-			&map[string]string{"error": err.Error()},
+			&map[errors.Field]string{
+				errors.FieldMessage: "Unable to parse the browser request",
+				errors.FieldError:   err.Error(),
+			},
 		)
-		errors.ExitWithCode(errors.CodeParseRequest)
 	}
 	return parsed
 }

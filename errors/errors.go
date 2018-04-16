@@ -17,28 +17,69 @@ const (
 	CodeParseRequest Code = 11
 
 	// CodeInvalidRequestAction error parsing a request action
-	CodeInvalidRequestAction = 12
+	CodeInvalidRequestAction Code = 12
 
 	// CodeInaccessiblePasswordStore error accessing a user-configured password store
-	CodeInaccessiblePasswordStore = 13
+	CodeInaccessiblePasswordStore Code = 13
 
 	// CodeInaccessibleDefaultPasswordStore error accessing the default password store
-	CodeInaccessibleDefaultPasswordStore = 14
+	CodeInaccessibleDefaultPasswordStore Code = 14
 
 	// CodeUnknownDefaultPasswordStoreLocation error determining the location of the default password store
-	CodeUnknownDefaultPasswordStoreLocation = 15
+	CodeUnknownDefaultPasswordStoreLocation Code = 15
 
 	// CodeUnreadablePasswordStoreDefaultSettings error reading the default settings of a user-configured password store
-	CodeUnreadablePasswordStoreDefaultSettings = 16
+	CodeUnreadablePasswordStoreDefaultSettings Code = 16
 
 	// CodeUnreadableDefaultPasswordStoreDefaultSettings error reading the default settings of the default password store
-	CodeUnreadableDefaultPasswordStoreDefaultSettings = 17
+	CodeUnreadableDefaultPasswordStoreDefaultSettings Code = 17
 
 	// CodeUnableToListFilesInPasswordStore error listing files in a password store
-	CodeUnableToListFilesInPasswordStore = 18
+	CodeUnableToListFilesInPasswordStore Code = 18
 
 	// CodeUnableToDetermineRelativeFilePathInPasswordStore error determining a relative path for a file in a password store
-	CodeUnableToDetermineRelativeFilePathInPasswordStore = 19
+	CodeUnableToDetermineRelativeFilePathInPasswordStore Code = 19
+
+	// CodeInvalidPasswordStore error looking for a password store with the given name
+	CodeInvalidPasswordStore Code = 20
+
+	// CodeInvalidGpgPath error looking for a gpg binary at the given path
+	CodeInvalidGpgPath Code = 21
+
+	// CodeUnableToDetectGpgPath error detecting the location of the gpg binary
+	CodeUnableToDetectGpgPath Code = 22
+
+	// CodeInvalidPasswordFileExtension error unexpected password file extension
+	CodeInvalidPasswordFileExtension Code = 23
+
+	// CodeUnableToDecryptPasswordFile error decrypting a password file
+	CodeUnableToDecryptPasswordFile Code = 24
+)
+
+// Field extra field in the error response params
+type Field string
+
+const (
+	// FieldMessage a user-friendly error message, always present
+	FieldMessage Field = "message"
+
+	// FieldAction a browser request action that resulted in a failure
+	FieldAction Field = "action"
+
+	// FieldError an error message returned from an external system
+	FieldError Field = "error"
+
+	// FieldStoreName a password store name
+	FieldStoreName Field = "storeName"
+
+	// FieldStorePath a password store path
+	FieldStorePath Field = "storePath"
+
+	// FieldFile a password file
+	FieldFile Field = "file"
+
+	// FieldGpgPath a path to the gpg binary
+	FieldGpgPath Field = "gpgPath"
 )
 
 // ExitWithCode exit with error code
