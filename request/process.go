@@ -30,7 +30,18 @@ type request struct {
 
 // Process handles browser request
 func Process() {
-	requestLength := parseRequestLength()
+	requestLength, err := parseRequestLength(os.Stdin)
+	if err != nil {
+		log.Error("Unable to parse the length of the browser request: ", err)
+		response.SendErrorAndExit(
+			errors.CodeParseRequestLength,
+			&map[errors.Field]string{
+				errors.FieldMessage: "Unable to parse the length of the browser request",
+				errors.FieldError:   err.Error(),
+			},
+		)
+	}
+
 	request := parseRequest(requestLength)
 
 	switch request.Action {
@@ -53,19 +64,12 @@ func Process() {
 }
 
 // Request length is the first 4 bytes in LittleEndian encoding on stdin
-func parseRequestLength() uint32 {
+func parseRequestLength(input io.Reader) (uint32, error) {
 	var length uint32
-	if err := binary.Read(os.Stdin, binary.LittleEndian, &length); err != nil {
-		log.Error("Unable to parse the length of the browser request: ", err)
-		response.SendErrorAndExit(
-			errors.CodeParseRequestLength,
-			&map[errors.Field]string{
-				errors.FieldMessage: "Unable to parse the length of the browser request",
-				errors.FieldError:   err.Error(),
-			},
-		)
+	if err := binary.Read(input, binary.LittleEndian, &length); err != nil {
+		return 0, err
 	}
-	return length
+	return length, nil
 }
 
 // Request is a json with a predefined structure
