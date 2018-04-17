@@ -14,7 +14,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func fetchDecryptedContents(request request) {
+func fetchDecryptedContents(request *request) {
 	responseData := response.MakeFetchResponse()
 
 	if !strings.HasSuffix(request.File, ".gpg") {
@@ -97,7 +97,7 @@ func fetchDecryptedContents(request request) {
 		}
 	}
 
-	responseData.Contents, err = decryptFile(store, request.File, gpgPath)
+	responseData.Contents, err = decryptFile(&store, request.File, gpgPath)
 	if err != nil {
 		log.Errorf(
 			"Unable to decrypt the password file '%v' in the password store '%v' located in '%v': %+v",
@@ -141,7 +141,7 @@ func validateGpgBinary(gpgPath string) error {
 	return exec.Command(gpgPath, "--version").Run()
 }
 
-func decryptFile(store store, file string, gpgPath string) (string, error) {
+func decryptFile(store *store, file string, gpgPath string) (string, error) {
 	passwordFilePath := filepath.Join(store.Path, file)
 	passwordFile, err := os.Open(passwordFilePath)
 	if err != nil {

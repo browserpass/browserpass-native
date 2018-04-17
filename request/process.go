@@ -42,7 +42,17 @@ func Process() {
 		)
 	}
 
-	request := parseRequest(requestLength)
+	request, err := parseRequest(requestLength, os.Stdin)
+	if err != nil {
+		log.Error("Unable to parse the browser request: ", err)
+		response.SendErrorAndExit(
+			errors.CodeParseRequest,
+			&map[errors.Field]string{
+				errors.FieldMessage: "Unable to parse the browser request",
+				errors.FieldError:   err.Error(),
+			},
+		)
+	}
 
 	switch request.Action {
 	case "configure":
@@ -63,7 +73,7 @@ func Process() {
 	}
 }
 
-// Request length is the first 4 bytes in LittleEndian encoding on stdin
+// Request length is the first 4 bytes in LittleEndian encoding
 func parseRequestLength(input io.Reader) (uint32, error) {
 	var length uint32
 	if err := binary.Read(input, binary.LittleEndian, &length); err != nil {
@@ -73,18 +83,11 @@ func parseRequestLength(input io.Reader) (uint32, error) {
 }
 
 // Request is a json with a predefined structure
-func parseRequest(messageLength uint32) request {
+func parseRequest(messageLength uint32, input io.Reader) (*request, error) {
 	var parsed request
-	reader := &io.LimitedReader{R: os.Stdin, N: int64(messageLength)}
+	reader := &io.LimitedReader{R: input, N: int64(messageLength)}
 	if err := json.NewDecoder(reader).Decode(&parsed); err != nil {
-		log.Error("Unable to parse the browser request: ", err)
-		response.SendErrorAndExit(
-			errors.CodeParseRequest,
-			&map[errors.Field]string{
-				errors.FieldMessage: "Unable to parse the browser request",
-				errors.FieldError:   err.Error(),
-			},
-		)
+		return nil, err
 	}
-	return parsed
+	return &parsed, nil
 }
