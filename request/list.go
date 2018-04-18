@@ -10,7 +10,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func listFiles(request request) {
+func listFiles(request *request) {
 	responseData := response.MakeListResponse()
 
 	for _, store := range request.Settings.Stores {

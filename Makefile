@@ -25,4 +25,4 @@ browserpass-freebsd64: *.go **/*.go
 
 .PHONY: test
 test:
-	go test
+	go test ./...

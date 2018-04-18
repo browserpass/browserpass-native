@@ -11,7 +11,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func configure(request request) {
+func configure(request *request) {
 	responseData := response.MakeConfigureResponse()
 
 	// Check that each and every store in the settings exists and is accessible.
