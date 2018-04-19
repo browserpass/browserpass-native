@@ -22,10 +22,11 @@ type settings struct {
 }
 
 type request struct {
-	Action   string   `json:"action"`
-	Settings settings `json:"settings"`
-	File     string   `json:"file"`
-	Store    string   `json:"store"`
+	Action       string      `json:"action"`
+	Settings     settings    `json:"settings"`
+	File         string      `json:"file"`
+	Store        string      `json:"store"`
+	EchoResponse interface{} `json:"echoResponse"`
 }
 
 // Process handles browser request
@@ -61,6 +62,8 @@ func Process() {
 		listFiles(request)
 	case "fetch":
 		fetchDecryptedContents(request)
+	case "echo":
+		response.SendRaw(request.EchoResponse)
 	default:
 		log.Errorf("Received a browser request with an unknown action: %+v", request)
 		response.SendErrorAndExit(

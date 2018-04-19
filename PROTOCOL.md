@@ -182,3 +182,22 @@ Get the decrypted contents of a specific file.
     }
 }
 ```
+
+### Echo
+
+Send the `echoResponse` in the request as a response.
+
+#### Request
+
+```
+{
+    "action": "echo",
+    "echoResponse": <anything>
+}
+```
+
+#### Response
+
+```
+<echoResponse>
+```
