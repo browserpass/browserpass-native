@@ -64,7 +64,7 @@ func MakeFetchResponse() *FetchResponse {
 
 // SendOk sends a success response to the browser extension in the predefined json format
 func SendOk(data interface{}) {
-	send(&okResponse{
+	SendRaw(&okResponse{
 		Status:  "ok",
 		Version: version.Code,
 		Data:    data,
@@ -73,7 +73,7 @@ func SendOk(data interface{}) {
 
 // SendErrorAndExit sends an error response to the browser extension in the predefined json format and exits with the specified exit code
 func SendErrorAndExit(errorCode errors.Code, params *map[errors.Field]string) {
-	send(&errorResponse{
+	SendRaw(&errorResponse{
 		Status:  "error",
 		Code:    errorCode,
 		Version: version.Code,
@@ -83,24 +83,17 @@ func SendErrorAndExit(errorCode errors.Code, params *map[errors.Field]string) {
 	errors.ExitWithCode(errorCode)
 }
 
-func send(data interface{}) {
-	switch data.(type) {
-	case *okResponse:
-	case *errorResponse:
-		break
-	default:
-		log.Fatalf("Only data of type OkResponse and ErrorResponse is allowed to be sent to the browser extension, attempted to send: %+v", data)
-	}
-
+// SendRaw sends a raw data to the browser extension
+func SendRaw(response interface{}) {
 	var bytesBuffer bytes.Buffer
-	if err := json.NewEncoder(&bytesBuffer).Encode(data); err != nil {
-		log.Fatal("Unable to encode data for sending: ", err)
+	if err := json.NewEncoder(&bytesBuffer).Encode(response); err != nil {
+		log.Fatal("Unable to encode response for sending: ", err)
 	}
 
 	if err := binary.Write(os.Stdout, binary.LittleEndian, uint32(bytesBuffer.Len())); err != nil {
-		log.Fatal("Unable to send the length of the response data: ", err)
+		log.Fatal("Unable to send the length of the response: ", err)
 	}
 	if _, err := bytesBuffer.WriteTo(os.Stdout); err != nil {
-		log.Fatal("Unable to send the response data: ", err)
+		log.Fatal("Unable to send the response: ", err)
 	}
 }
