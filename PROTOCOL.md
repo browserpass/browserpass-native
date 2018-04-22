@@ -58,6 +58,9 @@ should be supplied as a `message` parameter.
 | 22   | Unable to detect the location of the gpg binary                         | message, action, error                                      |
 | 23   | Invalid password file extension                                         | message, action, file                                       |
 | 24   | Unable to decrypt the password file                                     | message, action, error, storeId, storePath, storeName, file |
+| 25   | Inaccessible user-configured password stores container                  | message, action, error, storeId, storePath, storeName       |
+| 26   | Unable to list files in a password stores container                     | message, action, error, storeId, storePath, storeName       |
+| 27   | Unable to determine a relative path for a file in a password store      | message, action, error, storeId, storePath, storeName, file |
 
 ## Settings
 

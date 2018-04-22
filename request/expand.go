@@ -13,65 +13,65 @@ import (
 func expand(request *request) {
 	responseData := response.MakeExpandResponse()
 
-	for _, store := range request.Settings.Stores {
-		normalizedStorePath, err := normalizePasswordStorePath(store.Path)
+	for _, container := range request.Settings.Stores {
+		normalizedStorePath, err := normalizePasswordStorePath(container.Path)
 		if err != nil {
 			log.Errorf(
-				"The password store '%+v' is not accessible at its location: %+v",
-				store, err,
+				"The password stores container '%+v' is not accessible at its location: %+v",
+				container, err,
 			)
 			response.SendErrorAndExit(
-				errors.CodeInaccessiblePasswordStore,
+				errors.CodeInaccessiblePasswordStoresContainer,
 				&map[errors.Field]string{
-					errors.FieldMessage:   "The password store is not accessible",
-					errors.FieldAction:    "list",
+					errors.FieldMessage:   "The password stores container is not accessible",
+					errors.FieldAction:    "expand",
 					errors.FieldError:     err.Error(),
-					errors.FieldStoreID:   store.ID,
-					errors.FieldStoreName: store.Name,
-					errors.FieldStorePath: store.Path,
+					errors.FieldStoreID:   container.ID,
+					errors.FieldStoreName: container.Name,
+					errors.FieldStorePath: container.Path,
 				},
 			)
 		}
 
-		store.Path = normalizedStorePath
+		container.Path = normalizedStorePath
 
-		files, err := zglob.GlobFollowSymlinks(filepath.Join(store.Path, "/**/*.gpg"))
+		files, err := zglob.GlobFollowSymlinks(filepath.Join(container.Path, "/**/*.gpg"))
 		if err != nil {
 			log.Errorf(
-				"Unable to list the files in the password store '%+v' at its location: %+v",
-				store, err,
+				"Unable to list the files in the password stores container '%+v' at its location: %+v",
+				container, err,
 			)
 			response.SendErrorAndExit(
-				errors.CodeUnableToListFilesInPasswordStore,
+				errors.CodeUnableToListFilesInPasswordStoresContainer,
 				&map[errors.Field]string{
-					errors.FieldMessage:   "Unable to list the files in the password store",
-					errors.FieldAction:    "list",
+					errors.FieldMessage:   "Unable to list the files in the password stores container",
+					errors.FieldAction:    "expand",
 					errors.FieldError:     err.Error(),
-					errors.FieldStoreID:   store.ID,
-					errors.FieldStoreName: store.Name,
-					errors.FieldStorePath: store.Path,
+					errors.FieldStoreID:   container.ID,
+					errors.FieldStoreName: container.Name,
+					errors.FieldStorePath: container.Path,
 				},
 			)
 		}
 
 		stores := make(map[string]string)
 		for _, file := range files {
-			relativePath, err := filepath.Rel(store.Path, file)
+			relativePath, err := filepath.Rel(container.Path, file)
 			if err != nil {
 				log.Errorf(
-					"Unable to determine the relative path for a file '%v' in the password store '%+v': %+v",
-					file, store, err,
+					"Unable to determine the relative path for a file '%v' in the password stores container '%+v': %+v",
+					file, container, err,
 				)
 				response.SendErrorAndExit(
-					errors.CodeUnableToDetermineRelativeFilePathInPasswordStore,
+					errors.CodeUnableToDetermineRelativeFilePathInPasswordStoresContainer,
 					&map[errors.Field]string{
-						errors.FieldMessage:   "Unable to determine the relative path for a file in the password store",
-						errors.FieldAction:    "list",
+						errors.FieldMessage:   "Unable to determine the relative path for a file in the password stores container",
+						errors.FieldAction:    "expand",
 						errors.FieldError:     err.Error(),
 						errors.FieldFile:      file,
-						errors.FieldStoreID:   store.ID,
-						errors.FieldStoreName: store.Name,
-						errors.FieldStorePath: store.Path,
+						errors.FieldStoreID:   container.ID,
+						errors.FieldStoreName: container.Name,
+						errors.FieldStorePath: container.Path,
 					},
 				)
 			}
@@ -79,7 +79,7 @@ func expand(request *request) {
 			if len(parts) > 1 {
 				storeName := parts[0]
 				if stores[storeName] == "" {
-					stores[storeName] = filepath.Join(store.Path, storeName)
+					stores[storeName] = filepath.Join(container.Path, storeName)
 				}
 			}
 		}
@@ -90,7 +90,7 @@ func expand(request *request) {
 			storesList[i] = response.MakeExpandedStore(storeName, storePath)
 			i++
 		}
-		responseData.Stores[store.ID] = storesList
+		responseData.Stores[container.ID] = storesList
 	}
 
 	response.SendOk(responseData)
