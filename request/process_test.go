@@ -49,7 +49,8 @@ func Test_ParseRequest_CanParse(t *testing.T) {
 		Action: "list",
 		Settings: settings{
 			Stores: map[string]store{
-				"default": store{
+				"id1": store{
+					ID:   "id1",
 					Name: "default",
 					Path: "~/.password-store",
 				},

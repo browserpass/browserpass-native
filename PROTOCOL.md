@@ -41,23 +41,23 @@ should be supplied as a `message` parameter.
 
 ## List of Error Codes
 
-| Code | Description                                                             | Parameters                                         |
-| ---- | ----------------------------------------------------------------------- | -------------------------------------------------- |
-| 10   | Unable to parse browser request length                                  | message, error                                     |
-| 11   | Unable to parse browser request                                         | message, error                                     |
-| 12   | Invalid request action                                                  | message, action                                    |
-| 13   | Inaccessible user-configured password store                             | message, action, error, storePath, storeName       |
-| 14   | Inaccessible default password store                                     | message, action, error, storePath                  |
-| 15   | Unable to determine the location of the default password store          | message, action, error                             |
-| 16   | Unable to read the default settings of a user-configured password store | message, action, error, storePath, storeName       |
-| 17   | Unable to read the default settings of the default password store       | message, action, error, storePath                  |
-| 18   | Unable to list files in a password store                                | message, action, error, storePath, storeName       |
-| 19   | Unable to determine a relative path for a file in a password store      | message, action, error, storePath, storeName, file |
-| 20   | Invalid password store name                                             | message, action, storeName                         |
-| 21   | Invalid gpg path                                                        | message, action, error, gpgPath                    |
-| 22   | Unable to detect the location of the gpg binary                         | message, action, error                             |
-| 23   | Invalid password file extension                                         | message, action, file                              |
-| 24   | Unable to decrypt the password file                                     | message, action, error, storePath, storeName, file |
+| Code | Description                                                             | Parameters                                                  |
+| ---- | ----------------------------------------------------------------------- | ----------------------------------------------------------- |
+| 10   | Unable to parse browser request length                                  | message, error                                              |
+| 11   | Unable to parse browser request                                         | message, error                                              |
+| 12   | Invalid request action                                                  | message, action                                             |
+| 13   | Inaccessible user-configured password store                             | message, action, error, storeId, storePath, storeName       |
+| 14   | Inaccessible default password store                                     | message, action, error, storePath                           |
+| 15   | Unable to determine the location of the default password store          | message, action, error                                      |
+| 16   | Unable to read the default settings of a user-configured password store | message, action, error, storeId, storePath, storeName       |
+| 17   | Unable to read the default settings of the default password store       | message, action, error, storePath                           |
+| 18   | Unable to list files in a password store                                | message, action, error, storeId, storePath, storeName       |
+| 19   | Unable to determine a relative path for a file in a password store      | message, action, error, storeId, storePath, storeName, file |
+| 20   | Invalid password store ID                                               | message, action, storeId                                    |
+| 21   | Invalid gpg path                                                        | message, action, error, gpgPath                             |
+| 22   | Unable to detect the location of the gpg binary                         | message, action, error                                      |
+| 23   | Invalid password file extension                                         | message, action, file                                       |
+| 24   | Unable to decrypt the password file                                     | message, action, error, storeId, storePath, storeName, file |
 
 ## Settings
 
@@ -86,10 +86,11 @@ Settings are applied using the following priority, highest first:
 
 ### Store-specific Settings
 
-| Setting | Description                          | Default |
-| ------- | ------------------------------------ | ------- |
-| name    | Store name (same as the store key)   | <key>   |
-| path    | Path to the password store directory | `""`    |
+| Setting | Description                             | Default |
+| ------- | --------------------------------------- | ------- |
+| id      | Unique store id (same as the store key) | `<key>` |
+| name    | Store name (same as the store key)      | `""`    |
+| path    | Path to the password store directory    | `""`    |
 
 ## Actions
 
@@ -121,7 +122,7 @@ is alive, determine the version at startup, and provide per-store defaults.
             "settings": "<raw contents of $defaultPath/.browserpass.json>",
         },
         “storeSettings”: {
-            “storeName”: "<raw contents of storePath/.browserpass.json>"
+            “storeId”: "<raw contents of storePath/.browserpass.json>"
         }
     }
 }
@@ -130,7 +131,7 @@ is alive, determine the version at startup, and provide per-store defaults.
 ### List
 
 Get a list of all `*.gpg` files for each of a provided array of directory paths. The `storeN`
-is the name of a password store, the key in `"settings.stores"` object.
+is the ID of a password store, the key in `"settings.stores"` object.
 
 #### Request
 
@@ -166,7 +167,7 @@ Get the decrypted contents of a specific file.
 {
     "settings": <settings object>,
     "action": "fetch",
-    "store": "<storeName>",
+    "storeId": "<storeId>",
     "file": "relative/path/to/file.gpg"
 }
 ```

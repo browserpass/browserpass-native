@@ -20,8 +20,8 @@ func configure(request *request) {
 		normalizedStorePath, err := normalizePasswordStorePath(store.Path)
 		if err != nil {
 			log.Errorf(
-				"The password store '%v' is not accessible at the location '%v': %+v",
-				store.Name, store.Path, err,
+				"The password store '%+v' is not accessible at its location: %+v",
+				store, err,
 			)
 			response.SendErrorAndExit(
 				errors.CodeInaccessiblePasswordStore,
@@ -29,6 +29,7 @@ func configure(request *request) {
 					errors.FieldMessage:   "The password store is not accessible",
 					errors.FieldAction:    "configure",
 					errors.FieldError:     err.Error(),
+					errors.FieldStoreID:   store.ID,
 					errors.FieldStoreName: store.Name,
 					errors.FieldStorePath: store.Path,
 				},
@@ -37,11 +38,11 @@ func configure(request *request) {
 
 		store.Path = normalizedStorePath
 
-		responseData.StoreSettings[store.Name], err = readDefaultSettings(store.Path)
+		responseData.StoreSettings[store.ID], err = readDefaultSettings(store.Path)
 		if err != nil {
 			log.Errorf(
-				"Unable to read the default settings of the user-configured password store '%v' in '%v': %+v",
-				store.Name, store.Path, err,
+				"Unable to read the default settings of the user-configured password store '%+v' in its location: %+v",
+				store, err,
 			)
 			response.SendErrorAndExit(
 				errors.CodeUnreadablePasswordStoreDefaultSettings,
@@ -49,6 +50,7 @@ func configure(request *request) {
 					errors.FieldMessage:   "Unable to read the default settings of the password store",
 					errors.FieldAction:    "configure",
 					errors.FieldError:     err.Error(),
+					errors.FieldStoreID:   store.ID,
 					errors.FieldStoreName: store.Name,
 					errors.FieldStorePath: store.Path,
 				},

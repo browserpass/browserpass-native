@@ -40,7 +40,7 @@ const (
 	// CodeUnableToDetermineRelativeFilePathInPasswordStore error determining a relative path for a file in a password store
 	CodeUnableToDetermineRelativeFilePathInPasswordStore Code = 19
 
-	// CodeInvalidPasswordStore error looking for a password store with the given name
+	// CodeInvalidPasswordStore error looking for a password store with the given ID
 	CodeInvalidPasswordStore Code = 20
 
 	// CodeInvalidGpgPath error looking for a gpg binary at the given path
@@ -68,6 +68,9 @@ const (
 
 	// FieldError an error message returned from an external system
 	FieldError Field = "error"
+
+	// FieldStoreID a password store id
+	FieldStoreID Field = "storeId"
 
 	// FieldStoreName a password store name
 	FieldStoreName Field = "storeName"
