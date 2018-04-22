@@ -94,6 +94,38 @@ Settings are applied using the following priority, highest first:
 
 ## Actions
 
+### Expand
+
+Treat every store in request settings as a container of password stores,
+and return the list of direct subfolders that have `*.gpg` files.
+
+#### Request
+
+```
+{
+    "settings": <settings object>,
+    "action": "expand"
+}
+```
+
+#### Response
+
+```
+{
+
+    "status": "ok",
+    "version": <int>,
+    "data": {
+        "stores": {
+            "<containerStoreId>": [{
+                "name": "<storeName>",
+                "path": "<storePath>"
+            }],
+        }
+    }
+}
+```
+
 ### Configure
 
 Returns a response containing the per-store config. Used to check that the host app
