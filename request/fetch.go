@@ -29,18 +29,18 @@ func fetchDecryptedContents(request *request) {
 		)
 	}
 
-	store, ok := request.Settings.Stores[request.Store]
+	store, ok := request.Settings.Stores[request.StoreID]
 	if !ok {
 		log.Errorf(
-			"The password store '%v' is not present in the list of stores '%v'",
-			request.Store, request.Settings.Stores,
+			"The password store with ID '%v' is not present in the list of stores '%+v'",
+			request.StoreID, request.Settings.Stores,
 		)
 		response.SendErrorAndExit(
 			errors.CodeInvalidPasswordStore,
 			&map[errors.Field]string{
-				errors.FieldMessage:   "The password store is not present in the list of stores",
-				errors.FieldAction:    "fetch",
-				errors.FieldStoreName: request.Store,
+				errors.FieldMessage: "The password store is not present in the list of stores",
+				errors.FieldAction:  "fetch",
+				errors.FieldStoreID: request.StoreID,
 			},
 		)
 	}
@@ -48,8 +48,8 @@ func fetchDecryptedContents(request *request) {
 	normalizedStorePath, err := normalizePasswordStorePath(store.Path)
 	if err != nil {
 		log.Errorf(
-			"The password store '%v' is not accessible at the location '%v': %+v",
-			store.Name, store.Path, err,
+			"The password store '%+v' is not accessible at its location: %+v",
+			store, err,
 		)
 		response.SendErrorAndExit(
 			errors.CodeInaccessiblePasswordStore,
@@ -57,6 +57,7 @@ func fetchDecryptedContents(request *request) {
 				errors.FieldMessage:   "The password store is not accessible",
 				errors.FieldAction:    "fetch",
 				errors.FieldError:     err.Error(),
+				errors.FieldStoreID:   store.ID,
 				errors.FieldStoreName: store.Name,
 				errors.FieldStorePath: store.Path,
 			},
@@ -100,8 +101,8 @@ func fetchDecryptedContents(request *request) {
 	responseData.Contents, err = decryptFile(&store, request.File, gpgPath)
 	if err != nil {
 		log.Errorf(
-			"Unable to decrypt the password file '%v' in the password store '%v' located in '%v': %+v",
-			request.File, store.Name, store.Path, err,
+			"Unable to decrypt the password file '%v' in the password store '%+v': %+v",
+			request.File, store, err,
 		)
 		response.SendErrorAndExit(
 			errors.CodeUnableToDecryptPasswordFile,
@@ -110,6 +111,7 @@ func fetchDecryptedContents(request *request) {
 				errors.FieldAction:    "fetch",
 				errors.FieldError:     err.Error(),
 				errors.FieldFile:      request.File,
+				errors.FieldStoreID:   store.ID,
 				errors.FieldStoreName: store.Name,
 				errors.FieldStorePath: store.Path,
 			},

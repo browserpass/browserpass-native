@@ -12,6 +12,7 @@ import (
 )
 
 type store struct {
+	ID   string `json:"id"`
 	Name string `json:"name"`
 	Path string `json:"path"`
 }
@@ -25,7 +26,7 @@ type request struct {
 	Action       string      `json:"action"`
 	Settings     settings    `json:"settings"`
 	File         string      `json:"file"`
-	Store        string      `json:"store"`
+	StoreID      string      `json:"storeId"`
 	EchoResponse interface{} `json:"echoResponse"`
 }
 

@@ -17,8 +17,8 @@ func listFiles(request *request) {
 		normalizedStorePath, err := normalizePasswordStorePath(store.Path)
 		if err != nil {
 			log.Errorf(
-				"The password store '%v' is not accessible at the location '%v': %+v",
-				store.Name, store.Path, err,
+				"The password store '%+v' is not accessible at its location: %+v",
+				store, err,
 			)
 			response.SendErrorAndExit(
 				errors.CodeInaccessiblePasswordStore,
@@ -26,6 +26,7 @@ func listFiles(request *request) {
 					errors.FieldMessage:   "The password store is not accessible",
 					errors.FieldAction:    "list",
 					errors.FieldError:     err.Error(),
+					errors.FieldStoreID:   store.ID,
 					errors.FieldStoreName: store.Name,
 					errors.FieldStorePath: store.Path,
 				},
@@ -37,8 +38,8 @@ func listFiles(request *request) {
 		files, err := zglob.GlobFollowSymlinks(filepath.Join(store.Path, "/**/*.gpg"))
 		if err != nil {
 			log.Errorf(
-				"Unable to list the files in the password store '%v' at the location '%v': %+v",
-				store.Name, store.Path, err,
+				"Unable to list the files in the password store '%+v' at its location: %+v",
+				store, err,
 			)
 			response.SendErrorAndExit(
 				errors.CodeUnableToListFilesInPasswordStore,
@@ -46,6 +47,7 @@ func listFiles(request *request) {
 					errors.FieldMessage:   "Unable to list the files in the password store",
 					errors.FieldAction:    "list",
 					errors.FieldError:     err.Error(),
+					errors.FieldStoreID:   store.ID,
 					errors.FieldStoreName: store.Name,
 					errors.FieldStorePath: store.Path,
 				},
@@ -56,8 +58,8 @@ func listFiles(request *request) {
 			relativePath, err := filepath.Rel(store.Path, file)
 			if err != nil {
 				log.Errorf(
-					"Unable to determine the relative path for a file '%v' in the password store '%v' at the location '%v': %+v",
-					file, store.Name, store.Path, err,
+					"Unable to determine the relative path for a file '%v' in the password store '%+v': %+v",
+					file, store, err,
 				)
 				response.SendErrorAndExit(
 					errors.CodeUnableToDetermineRelativeFilePathInPasswordStore,
@@ -66,6 +68,7 @@ func listFiles(request *request) {
 						errors.FieldAction:    "list",
 						errors.FieldError:     err.Error(),
 						errors.FieldFile:      file,
+						errors.FieldStoreID:   store.ID,
 						errors.FieldStoreName: store.Name,
 						errors.FieldStorePath: store.Path,
 					},
@@ -75,7 +78,7 @@ func listFiles(request *request) {
 		}
 
 		sort.Strings(files)
-		responseData.Files[store.Name] = files
+		responseData.Files[store.ID] = files
 	}
 
 	response.SendOk(responseData)
