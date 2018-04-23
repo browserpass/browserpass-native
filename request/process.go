@@ -57,6 +57,8 @@ func Process() {
 	}
 
 	switch request.Action {
+	case "expand":
+		expand(request)
 	case "configure":
 		configure(request)
 	case "list":

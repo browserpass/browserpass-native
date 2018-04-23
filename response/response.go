@@ -24,6 +24,32 @@ type errorResponse struct {
 	Params  interface{} `json:"params"`
 }
 
+// ExpandedStore a definition of an expanded store
+type ExpandedStore struct {
+	Name string `json:"name"`
+	Path string `json:"path"`
+}
+
+// MakeExpandedStore initializes an expanded store with given information
+func MakeExpandedStore(name string, path string) *ExpandedStore {
+	return &ExpandedStore{
+		Name: name,
+		Path: path,
+	}
+}
+
+// ExpandResponse a response format for the "expand" request
+type ExpandResponse struct {
+	Stores map[string][]*ExpandedStore `json:"stores"`
+}
+
+// MakeExpandResponse initializes an empty expand response
+func MakeExpandResponse() *ExpandResponse {
+	return &ExpandResponse{
+		Stores: make(map[string][]*ExpandedStore),
+	}
+}
+
 // ConfigureResponse a response format for the "configure" request
 type ConfigureResponse struct {
 	DefaultStore struct {

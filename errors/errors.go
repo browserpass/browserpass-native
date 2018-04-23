@@ -54,6 +54,15 @@ const (
 
 	// CodeUnableToDecryptPasswordFile error decrypting a password file
 	CodeUnableToDecryptPasswordFile Code = 24
+
+	// CodeInaccessiblePasswordStoresContainer error accessing a user-configured password stores container
+	CodeInaccessiblePasswordStoresContainer Code = 25
+
+	// CodeUnableToListFilesInPasswordStoresContainer error listing files in a password stores container
+	CodeUnableToListFilesInPasswordStoresContainer Code = 26
+
+	// CodeUnableToDetermineRelativeFilePathInPasswordStoresContainer error determining a relative path for a file in a password stores container
+	CodeUnableToDetermineRelativeFilePathInPasswordStoresContainer Code = 27
 )
 
 // Field extra field in the error response params
