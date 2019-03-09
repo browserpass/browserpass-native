@@ -89,7 +89,7 @@ Settings are applied using the following priority, highest first:
 | Setting | Description                             | Default |
 | ------- | --------------------------------------- | ------- |
 | id      | Unique store id (same as the store key) | `<key>` |
-| name    | Store name (same as the store key)      | `""`    |
+| name    | Store name                              | `""`    |
 | path    | Path to the password store directory    | `""`    |
 
 ## Actions
