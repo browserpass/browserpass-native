@@ -24,7 +24,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	openbsd.Pledge("stdio rpath proc exec")
+	openbsd.Pledge("stdio rpath proc exec getpw")
 
 	log.SetFormatter(&log.TextFormatter{FullTimestamp: true})
 	if isVerbose {

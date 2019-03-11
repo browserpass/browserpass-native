@@ -138,7 +138,7 @@ func readDefaultSettings(storePath string) (string, error) {
 		return string(content), nil
 	}
 	if os.IsNotExist(err) {
-		return "", nil
+		return "{}", nil
 	}
 	return "", err
 }
