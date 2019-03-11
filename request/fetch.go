@@ -2,7 +2,6 @@ package request
 
 import (
 	"bytes"
-	goerrors "errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -135,8 +134,7 @@ func detectGpgBinary() (string, error) {
 			return binary, nil
 		}
 	}
-
-	return "", goerrors.New("Unable to detect the location of the gpg binary to use")
+	return "", fmt.Errorf("Unable to detect the location of the gpg binary to use")
 }
 
 func validateGpgBinary(gpgPath string) error {
@@ -159,7 +157,7 @@ func decryptFile(store *store, file string, gpgPath string) (string, error) {
 	cmd.Stderr = &stderr
 
 	if err := cmd.Run(); err != nil {
-		return "", goerrors.New(fmt.Sprintf("Error: %s, Stderr: %s", err.Error(), stderr.String()))
+		return "", fmt.Errorf("Error: %s, Stderr: %s", err.Error(), stderr.String())
 	}
 
 	return stdout.String(), nil

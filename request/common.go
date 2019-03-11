@@ -8,6 +8,10 @@ import (
 )
 
 func normalizePasswordStorePath(storePath string) (string, error) {
+	if storePath == "" {
+		return "", errors.New("The store path cannot be empty")
+	}
+
 	if strings.HasPrefix(storePath, "~/") {
 		storePath = filepath.Join("$HOME", storePath[2:])
 	}
