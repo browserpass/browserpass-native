@@ -3,7 +3,7 @@ all: deps browserpass test
 
 .PHONY: deps
 deps:
-	dep ensure
+	dep ensure -vendor-only
 
 browserpass: *.go **/*.go
 	go build -o $@
