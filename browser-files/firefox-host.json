@@ -1,0 +1,7 @@
+{
+    "name": "com.github.browserpass.native",
+    "description": "Browserpass native component for the Firefox extension",
+    "path": "%%replace%%",
+    "type": "stdio",
+    "allowed_extensions": ["browserpass@maximbaz.com"]
+}
