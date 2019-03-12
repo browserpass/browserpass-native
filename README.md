@@ -1,8 +1,70 @@
 # Browserpass - native host
 
+## Installation
+
+### Install via package manager
+
+The following operating systems provide a browserpass package that can be installed using a package manager:
+
+-   TODO
+-   TODO
+
+Once the package is installed, refer to the section [Configure browsers](#configure-browsers).
+
+If your OS is not listed above, proceed with the manual installation steps below.
+
+### Install manually
+
+Download [the latest Github release](https://github.com/browserpass/browserpass-native/releases), choose either the source code archive (if you want to compile the app yourself) or an archive for your operating system (it contains a pre-built binary).
+
+All release files are signed with [this PGP key](https://keybase.io/maximbaz). To verify the signature of a given file, use `$ gpg --verify <file>.sig`.
+
+It should report:
+
+```
+gpg: Signature made ...
+gpg:                using RSA key 8053EB88879A68CB4873D32B011FDC52DA839335
+gpg: Good signature from "Maxim Baz <...>"
+gpg:                 aka ...
+Primary key fingerprint: EB4F 9E5A 60D3 2232 BB52  150C 12C8 7A28 FEAC 6B20
+     Subkey fingerprint: 8053 EB88 879A 68CB 4873  D32B 011F DC52 DA83 9335
+```
+
+Unpack the archive. If you decided to compile the application yourself, refer to the [Building the app](#building-the-app) section on how to do so. Once complete, continue with the steps below.
+
+Finally execute `make BIN=browserpass-XXXX install` to install the app (where `XXXX` is OS name like `linux-64`, refer to the available `make` targets in the [Build locally](#build-locally) section).
+
+### Configure browsers
+
+The Makefile (which is also available in /usr/lib/browserpass/, if you installed via package manager) contains the following `make` goals to configure the browsers you use:
+
+| Command                    | Description                                                                |
+| -------------------------- | -------------------------------------------------------------------------- |
+| `make hosts-chromium`      | Configure browserpass for Chromium browser, system-wide                    |
+| `make hosts-chromium-user` | Configure browserpass for Chromium browser, for the current user only      |
+| `make hosts-chrome`        | Configure browserpass for Google Chrome browser, system-wide               |
+| `make hosts-chrome-user`   | Configure browserpass for Google Chrome browser, for the current user only |
+| `make hosts-vivaldi`       | Configure browserpass for Vivaldi browser, system-wide                     |
+| `make hosts-vivaldi-user`  | Configure browserpass for Vivaldi browser, for the current user only       |
+| `make hosts-firefox`       | Configure browserpass for Firefox browser, system-wide                     |
+| `make hosts-firefox-user`  | Configure browserpass for Firefox browser, for the current user only       |
+
+In addition, Chromium-based browsers support the following `make` goals:
+
+| Command                       | Description                                                                                  |
+| ----------------------------- | -------------------------------------------------------------------------------------------- |
+| `make policies-chromium`      | Automatically install browser extension for Chromium browser, system-wide                    |
+| `make policies-chromium-user` | Automatically install browser extension for Chromium browser, for the current user only      |
+| `make policies-chrome`        | Automatically install browser extension for Google Chrome browser, system-wide               |
+| `make policies-chrome-user`   | Automatically install browser extension for Google Chrome browser, for the current user only |
+| `make policies-vivaldi`       | Automatically install browser extension for Vivaldi browser, system-wide                     |
+| `make policies-vivaldi-user`  | Automatically install browser extension for Vivaldi browser, for the current user only       |
+
+### Building the app
+
 ## Build locally
 
-Make sure you have Golang installed.
+Make sure you have the latest stable Go installed.
 
 The following `make` goals are available:
 
