@@ -7,11 +7,7 @@ OS = $(shell uname -s)
 # For local development
 
 .PHONY: all
-all: deps browserpass test
-
-.PHONY: deps
-deps:
-	dep ensure -vendor-only
+all: browserpass test
 
 browserpass: *.go **/*.go
 	go build -o $@
@@ -41,23 +37,10 @@ test:
 .PHONY: clean
 clean:
 	rm -f browserpass browserpass-*
-	rm -rf dist vendor
-
-.PHONY: tarball
-tarball: clean deps
-	$(eval TMPDIR := $(shell mktemp -d))
-	mkdir -p $(TMPDIR)/browserpass-native
-	cp -r * $(TMPDIR)/browserpass-native
-
-	rm -rf $(TMPDIR)/browserpass-native/.git
-	(cd $(TMPDIR) && tar -czf $(TMPDIR)/browserpass-native-src.tar.gz browserpass-native)
-
-	mkdir -p dist
-	cp $(TMPDIR)/browserpass-native-src.tar.gz dist/
-	rm -rf $(TMPDIR)
+	rm -rf dist
 
 .PHONY: dist
-dist: clean deps tarball browserpass-linux64 browserpass-darwinx64 browserpass-openbsd64 browserpass-freebsd64 browserpass-windows64
+dist: clean browserpass-linux64 browserpass-darwinx64 browserpass-openbsd64 browserpass-freebsd64 browserpass-windows64
 	mkdir -p dist
 	zip -FS dist/browserpass-linux64   browserpass-linux64       browser-files/* Makefile README.md LICENSE
 	zip -FS dist/browserpass-darwinx64 browserpass-darwinx64     browser-files/* Makefile README.md LICENSE
