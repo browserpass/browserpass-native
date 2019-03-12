@@ -3,6 +3,9 @@ PKG_NAME ?= browserpass
 APP_ID = com.github.browserpass.native
 OS = $(shell uname -s)
 
+#######################
+# For local development
+
 .PHONY: all
 all: deps browserpass test
 
@@ -16,9 +19,6 @@ browserpass: *.go **/*.go
 browserpass-linux64: *.go **/*.go
 	env GOOS=linux GOARCH=amd64 go build -o $@
 
-browserpass-windows64: *.go **/*.go
-	env GOOS=windows GOARCH=amd64 go build -o $@.exe
-
 browserpass-darwinx64: *.go **/*.go
 	env GOOS=darwin GOARCH=amd64 go build -o $@
 
@@ -28,15 +28,56 @@ browserpass-openbsd64: *.go **/*.go
 browserpass-freebsd64: *.go **/*.go
 	env GOOS=freebsd GOARCH=amd64 go build -o $@
 
+browserpass-windows64: *.go **/*.go
+	env GOOS=windows GOARCH=amd64 go build -o $@.exe
+
 .PHONY: test
 test:
 	go test ./...
 
+#######################
+# For official releases
+
+.PHONY: clean
+clean:
+	rm -f browserpass browserpass-*
+	rm -rf dist vendor
+
+.PHONY: tarball
+tarball: clean deps
+	$(eval TMPDIR := $(shell mktemp -d))
+	mkdir -p $(TMPDIR)/browserpass-native
+	cp -r * $(TMPDIR)/browserpass-native
+
+	rm -rf $(TMPDIR)/browserpass-native/.git
+	(cd $(TMPDIR) && tar -czf $(TMPDIR)/browserpass-native-src.tar.gz browserpass-native)
+
+	mkdir -p dist
+	cp $(TMPDIR)/browserpass-native-src.tar.gz dist/
+	rm -rf $(TMPDIR)
+
+.PHONY: dist
+dist: clean deps tarball browserpass-linux64 browserpass-darwinx64 browserpass-openbsd64 browserpass-freebsd64 browserpass-windows64
+	mkdir -p dist
+	zip -FS dist/browserpass-linux64   browserpass-linux64       browser-files/* Makefile README.md LICENSE
+	zip -FS dist/browserpass-darwinx64 browserpass-darwinx64     browser-files/* Makefile README.md LICENSE
+	zip -FS dist/browserpass-openbsd64 browserpass-openbsd64     browser-files/* Makefile README.md LICENSE
+	zip -FS dist/browserpass-freebsd64 browserpass-freebsd64     browser-files/* Makefile README.md LICENSE
+	zip -FS dist/browserpass-windows64 browserpass-windows64.exe browser-files/* Makefile README.md LICENSE
+
+	for file in dist/*; do \
+        gpg --detach-sign "$$file"; \
+    done
+
+#######################
+# For user installation
+
 .PHONY: install
 install:
 	install -Dm755 -t "$(DESTDIR)/usr/bin/" $(PKG_NAME)
-	install -Dm644 -t "$(DESTDIR)/usr/share/licenses/browserpass/" LICENSE
 	install -Dm644 -t "$(DESTDIR)/usr/lib/browserpass/" Makefile
+	install -Dm644 -t "$(DESTDIR)/usr/share/licenses/browserpass/" LICENSE
+	install -Dm644 -t "$(DESTDIR)/usr/share/doc/browserpass/" README.md
 
 	install -Dm644 browser-files/chromium-host.json   "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json"
 	install -Dm644 browser-files/chromium-policy.json "$(DESTDIR)/usr/lib/browserpass/policies/chromium/$(APP_ID).json"
