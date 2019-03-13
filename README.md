@@ -60,9 +60,9 @@ In addition, Chromium-based browsers support the following `make` goals:
 | `make policies-vivaldi`       | Automatically install browser extension for Vivaldi browser, system-wide                     |
 | `make policies-vivaldi-user`  | Automatically install browser extension for Vivaldi browser, for the current user only       |
 
-### Building the app
+## Building the app
 
-## Build locally
+### Build locally
 
 Make sure you have the latest stable Go installed.
 
@@ -79,7 +79,7 @@ The following `make` goals are available:
 | `make browserpass-freebsd64` | Compile the app for FreeBSD 64-bit  |
 | `make test`                  | Run tests                           |
 
-## Build using Docker
+### Build using Docker
 
 First build the docker image using the following command in the project root:
 
@@ -100,3 +100,9 @@ docker run --rm -v "$(pwd)":/src browserpass-native test
 ```
 
 Refer to the list of available `make` goals above.
+
+## Updates
+
+If you installed the app using a package manager for your OS, you will likely update it in the same way.
+
+If you installed manually, repeat the steps in the [Install manually](#install-manually) section.
