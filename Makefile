@@ -119,6 +119,22 @@ hosts-vivaldi-user:
 	*)                     echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
+.PHONY: hosts-brave
+hosts-brave:
+	@case $(OS) in \
+	Linux)  			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/etc/opt/brave/native-messaging-hosts/" ;; \
+	Darwin) 			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/BraveSoftware/Brave-Browser/NativeMessagingHosts/" ;; \
+	*)      			   echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
+
+.PHONY: hosts-brave-user
+hosts-brave-user:
+	@case $(OS) in \
+	Linux|OpenBSD|FreeBSD) ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/BraveSoftware/Brave-Browser/NativeMessagingHosts/" ;; \
+	Darwin)                ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/BraveSoftware/Brave-Browser/NativeMessagingHosts/" ;; \
+	*)                     echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
+
 .PHONY: hosts-firefox
 hosts-firefox:
 	@case $(OS) in \
@@ -182,5 +198,21 @@ policies-vivaldi-user:
 	@case $(OS) in \
 	Linux|OpenBSD|FreeBSD) ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/vivaldi/policies/managed/" ;; \
 	Darwin)                ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Vivaldi/policies/managed/" ;; \
+	*)                     echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
+
+.PHONY: policies-brave
+policies-brave:
+	@case $(OS) in \
+	Linux)  			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/etc/opt/brave/policies/managed/" ;; \
+	Darwin) 			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/BraveSoftware/Brave-Browser/policies/managed/" ;; \
+	*)      			   echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
+
+.PHONY: policies-brave-user
+policies-brave-user:
+	@case $(OS) in \
+	Linux|OpenBSD|FreeBSD) ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/BraveSoftware/Brave-Browser/policies/managed/" ;; \
+	Darwin)                ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/BraveSoftware/Brave-Browser/policies/managed/" ;; \
 	*)                     echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac

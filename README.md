@@ -48,6 +48,8 @@ The Makefile (which is also available in `/usr/lib/browserpass/`, if you install
 | `make hosts-chrome-user`   | Configure browserpass for Google Chrome browser, for the current user only |
 | `make hosts-vivaldi`       | Configure browserpass for Vivaldi browser, system-wide                     |
 | `make hosts-vivaldi-user`  | Configure browserpass for Vivaldi browser, for the current user only       |
+| `make hosts-brave`         | Configure browserpass for Brave browser, system-wide                       |
+| `make hosts-brave-user`    | Configure browserpass for Brave browser, for the current user only         |
 | `make hosts-firefox`       | Configure browserpass for Firefox browser, system-wide                     |
 | `make hosts-firefox-user`  | Configure browserpass for Firefox browser, for the current user only       |
 
@@ -59,8 +61,8 @@ In addition, Chromium-based browsers support the following `make` goals:
 | `make policies-chromium-user` | Automatically install browser extension for Chromium browser, for the current user only      |
 | `make policies-chrome`        | Automatically install browser extension for Google Chrome browser, system-wide               |
 | `make policies-chrome-user`   | Automatically install browser extension for Google Chrome browser, for the current user only |
-| `make policies-vivaldi`       | Automatically install browser extension for Vivaldi browser, system-wide                     |
-| `make policies-vivaldi-user`  | Automatically install browser extension for Vivaldi browser, for the current user only       |
+| `make policies-brave`         | Automatically install browser extension for Brave browser, system-wide                       |
+| `make policies-brave-user`    | Automatically install browser extension for Brave browser, for the current user only         |
 
 ## Building the app
 
