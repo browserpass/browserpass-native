@@ -1,4 +1,4 @@
-PKG_NAME ?= browserpass
+BIN ?= browserpass
 
 APP_ID = com.github.browserpass.native
 OS = $(shell uname -s)
@@ -57,7 +57,7 @@ dist: clean browserpass-linux64 browserpass-darwinx64 browserpass-openbsd64 brow
 
 .PHONY: install
 install:
-	install -Dm755 -t "$(DESTDIR)/usr/bin/" $(PKG_NAME)
+	install -Dm755 -t "$(DESTDIR)/usr/bin/" $(BIN)
 	install -Dm644 -t "$(DESTDIR)/usr/lib/browserpass/" Makefile
 	install -Dm644 -t "$(DESTDIR)/usr/share/licenses/browserpass/" LICENSE
 	install -Dm644 -t "$(DESTDIR)/usr/share/doc/browserpass/" README.md
@@ -66,8 +66,8 @@ install:
 	install -Dm644 browser-files/chromium-policy.json "$(DESTDIR)/usr/lib/browserpass/policies/chromium/$(APP_ID).json"
 	install -Dm644 browser-files/firefox-host.json    "$(DESTDIR)/usr/lib/browserpass/hosts/firefox/$(APP_ID).json"
 
-	sed -i "s|%%replace%%|$(DESTDIR)/usr/bin/$(PKG_NAME)|" "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json"
-	sed -i "s|%%replace%%|$(DESTDIR)/usr/bin/$(PKG_NAME)|" "$(DESTDIR)/usr/lib/browserpass/hosts/firefox/$(APP_ID).json"
+	sed -i "s|%%replace%%|$(DESTDIR)/usr/bin/$(BIN)|" "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json"
+	sed -i "s|%%replace%%|$(DESTDIR)/usr/bin/$(BIN)|" "$(DESTDIR)/usr/lib/browserpass/hosts/firefox/$(APP_ID).json"
 
 # Browser-specific hosts targets
 
