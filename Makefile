@@ -15,7 +15,7 @@ OS := $(shell uname -s)
 all: browserpass test
 
 browserpass: *.go **/*.go
-	go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS)	-o $@
+	go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@
 
 browserpass-linux64: *.go **/*.go
 	env GOOS=linux GOARCH=amd64 go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@
@@ -57,8 +57,8 @@ dist: clean browserpass-linux64 browserpass-darwinx64 browserpass-openbsd64 brow
 	zip -FS dist/browserpass-windows64 browserpass-windows64.exe browser-files/* Makefile README.md LICENSE
 
 	for file in dist/*; do \
-        gpg --detach-sign "$$file"; \
-    done
+	    gpg --detach-sign "$$file"; \
+	done
 
 	rm -f dist/$(VERSION).tar.gz
 
@@ -76,89 +76,129 @@ install:
 	install -Dm644 browser-files/chromium-policy.json "$(DESTDIR)/usr/lib/browserpass/policies/chromium/$(APP_ID).json"
 	install -Dm644 browser-files/firefox-host.json    "$(DESTDIR)/usr/lib/browserpass/hosts/firefox/$(APP_ID).json"
 
-	sed -i "s|%%replace%%|$(DESTDIR)/usr/bin/$(BIN)|" "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json"
-	sed -i "s|%%replace%%|$(DESTDIR)/usr/bin/$(BIN)|" "$(DESTDIR)/usr/lib/browserpass/hosts/firefox/$(APP_ID).json"
+	sed -i "s|%%replace%%|/usr/bin/$(BIN)|" "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json"
+	sed -i "s|%%replace%%|/usr/bin/$(BIN)|" "$(DESTDIR)/usr/lib/browserpass/hosts/firefox/$(APP_ID).json"
 
 # Browser-specific hosts targets
 
 .PHONY: hosts-chromium
 hosts-chromium:
 	@case $(OS) in \
-	Linux)  			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/etc/chromium/native-messaging-hosts/" ;; \
-	Darwin) 			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/Chromium/NativeMessagingHosts/" ;; \
-	*)      			   echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	Linux)      mkdir -p "/etc/chromium/native-messaging-hosts/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/etc/chromium/native-messaging-hosts/" \
+	            ;; \
+	Darwin)     mkdir -p "/Library/Application Support/Chromium/NativeMessagingHosts/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/Chromium/NativeMessagingHosts/" \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
 .PHONY: hosts-chromium-user
 hosts-chromium-user:
 	@case $(OS) in \
-	Linux|OpenBSD|FreeBSD) ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/chromium/NativeMessagingHosts/" ;; \
-	Darwin)                ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Chromium/NativeMessagingHosts/" ;; \
-	*)                     echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	Linux|*BSD) mkdir -p "${HOME}/.config/chromium/NativeMessagingHosts/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/chromium/NativeMessagingHosts/" \
+	            ;; \
+	Darwin)     mkdir -p "${HOME}/Library/Application Support/Chromium/NativeMessagingHosts/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Chromium/NativeMessagingHosts/" \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
 .PHONY: hosts-chrome
 hosts-chrome:
 	@case $(OS) in \
-	Linux)  			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/etc/opt/chrome/native-messaging-hosts/" ;; \
-	Darwin) 			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Google/Chrome/NativeMessagingHosts/" ;; \
-	*)      			   echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	Linux)      mkdir -p "/etc/opt/chrome/native-messaging-hosts/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/etc/opt/chrome/native-messaging-hosts/" \
+	            ;; \
+	Darwin)     mkdir -p "/Library/Google/Chrome/NativeMessagingHosts/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Google/Chrome/NativeMessagingHosts/" \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
 .PHONY: hosts-chrome-user
 hosts-chrome-user:
 	@case $(OS) in \
-	Linux|OpenBSD|FreeBSD) ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/google-chrome/NativeMessagingHosts/" ;; \
-	Darwin)                ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Google/Chrome/NativeMessagingHosts/" ;; \
-	*)                     echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	Linux|*BSD) mkdir -p "${HOME}/.config/google-chrome/NativeMessagingHosts/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/google-chrome/NativeMessagingHosts/" \
+	            ;; \
+	Darwin)     mkdir -p "${HOME}/Library/Application Support/Google/Chrome/NativeMessagingHosts/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Google/Chrome/NativeMessagingHosts/" \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
 .PHONY: hosts-vivaldi
 hosts-vivaldi:
 	@case $(OS) in \
-	Linux)  			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/etc/opt/vivaldi/native-messaging-hosts/" ;; \
-	Darwin) 			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/Vivaldi/NativeMessagingHosts/" ;; \
-	*)      			   echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	Linux)      mkdir -p "/etc/opt/vivaldi/native-messaging-hosts/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/etc/opt/vivaldi/native-messaging-hosts/" \
+	            ;; \
+	Darwin)     mkdir -p "/Library/Application Support/Vivaldi/NativeMessagingHosts/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/Vivaldi/NativeMessagingHosts/" \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
 .PHONY: hosts-vivaldi-user
 hosts-vivaldi-user:
 	@case $(OS) in \
-	Linux|OpenBSD|FreeBSD) ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/vivaldi/NativeMessagingHosts/" ;; \
-	Darwin)                ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Vivaldi/NativeMessagingHosts/" ;; \
-	*)                     echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	Linux|*BSD) mkdir -p "${HOME}/.config/vivaldi/NativeMessagingHosts/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/vivaldi/NativeMessagingHosts/" \
+	            ;; \
+	Darwin)     mkdir -p "${HOME}/Library/Application Support/Vivaldi/NativeMessagingHosts/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Vivaldi/NativeMessagingHosts/" \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
 .PHONY: hosts-brave
 hosts-brave:
 	@case $(OS) in \
-	Linux)  			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/etc/opt/brave/native-messaging-hosts/" ;; \
-	Darwin) 			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/BraveSoftware/Brave-Browser/NativeMessagingHosts/" ;; \
-	*)      			   echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	Linux)      mkdir -p "/etc/opt/brave/native-messaging-hosts/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/etc/opt/brave/native-messaging-hosts/" \
+	            ;; \
+	Darwin)     mkdir -p "/Library/Application Support/BraveSoftware/Brave-Browser/NativeMessagingHosts/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/BraveSoftware/Brave-Browser/NativeMessagingHosts/" \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
 .PHONY: hosts-brave-user
 hosts-brave-user:
 	@case $(OS) in \
-	Linux|OpenBSD|FreeBSD) ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/BraveSoftware/Brave-Browser/NativeMessagingHosts/" ;; \
-	Darwin)                ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/BraveSoftware/Brave-Browser/NativeMessagingHosts/" ;; \
-	*)                     echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	Linux|*BSD) mkdir -p "${HOME}/.config/BraveSoftware/Brave-Browser/NativeMessagingHosts/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/BraveSoftware/Brave-Browser/NativeMessagingHosts/" \
+	            ;; \
+	Darwin)     mkdir -p "${HOME}/Library/Application Support/BraveSoftware/Brave-Browser/NativeMessagingHosts/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/BraveSoftware/Brave-Browser/NativeMessagingHosts/" \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
 .PHONY: hosts-firefox
 hosts-firefox:
 	@case $(OS) in \
-	Linux)  			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/firefox/$(APP_ID).json" "/usr/lib/mozilla/native-messaging-hosts/" ;; \
-	Darwin) 			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/firefox/$(APP_ID).json" "/Library/Application Support/Mozilla/NativeMessagingHosts/" ;; \
-	*)      			   echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	Linux)      mkdir -p "/usr/lib/mozilla/native-messaging-hosts/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/firefox/$(APP_ID).json" "/usr/lib/mozilla/native-messaging-hosts/" \
+	            ;; \
+	Darwin)     mkdir -p "/Library/Application Support/Mozilla/NativeMessagingHosts/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/firefox/$(APP_ID).json" "/Library/Application Support/Mozilla/NativeMessagingHosts/" \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
 .PHONY: hosts-firefox-user
 hosts-firefox-user:
 	@case $(OS) in \
-	Linux|OpenBSD|FreeBSD) ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/firefox/$(APP_ID).json" "${HOME}/.mozilla/native-messaging-hosts/" ;; \
-	Darwin)                ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/firefox/$(APP_ID).json" "${HOME}/Library/Application Support/Mozilla/NativeMessagingHosts/" ;; \
-	*)                     echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	Linux|*BSD) mkdir -p "${HOME}/.mozilla/native-messaging-hosts/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/firefox/$(APP_ID).json" "${HOME}/.mozilla/native-messaging-hosts/" \
+	            ;; \
+	Darwin)     mkdir -p "${HOME}/Library/Application Support/Mozilla/NativeMessagingHosts/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/firefox/$(APP_ID).json" "${HOME}/Library/Application Support/Mozilla/NativeMessagingHosts/" \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
 # Browser-specific policies targets
@@ -166,63 +206,95 @@ hosts-firefox-user:
 .PHONY: policies-chromium
 policies-chromium:
 	@case $(OS) in \
-	Linux)  			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/etc/chromium/policies/managed/" ;; \
-	Darwin) 			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/Chromium/policies/managed/" ;; \
-	*)      			   echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	Linux)      mkdir -p "/etc/chromium/policies/managed/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/etc/chromium/policies/managed/" \
+	            ;; \
+	Darwin)     mkdir -p "/Library/Application Support/Chromium/policies/managed/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/Chromium/policies/managed/" \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
 .PHONY: policies-chromium-user
 policies-chromium-user:
 	@case $(OS) in \
-	Linux|OpenBSD|FreeBSD) ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/chromium/policies/managed/" ;; \
-	Darwin)                ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Chromium/policies/managed/" ;; \
-	*)                     echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	Linux|*BSD) mkdir -p "${HOME}/.config/chromium/policies/managed/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/chromium/policies/managed/" \
+	            ;; \
+	Darwin)     mkdir -p "${HOME}/Library/Application Support/Chromium/policies/managed/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Chromium/policies/managed/" \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
 .PHONY: policies-chrome
 policies-chrome:
 	@case $(OS) in \
-	Linux)  			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/etc/opt/chrome/policies/managed/" ;; \
-	Darwin) 			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Google/Chrome/policies/managed/" ;; \
-	*)      			   echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	Linux)      mkdir -p "/etc/opt/chrome/policies/managed/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/etc/opt/chrome/policies/managed/" \
+	            ;; \
+	Darwin)     mkdir -p "/Library/Google/Chrome/policies/managed/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Google/Chrome/policies/managed/" \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
 .PHONY: policies-chrome-user
 policies-chrome-user:
 	@case $(OS) in \
-	Linux|OpenBSD|FreeBSD) ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/google-chrome/policies/managed/" ;; \
-	Darwin)                ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Google/Chrome/policies/managed/" ;; \
-	*)                     echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	Linux|*BSD) mkdir -p "${HOME}/.config/google-chrome/policies/managed/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/google-chrome/policies/managed/" \
+	            ;; \
+	Darwin)     mkdir -p "${HOME}/Library/Application Support/Google/Chrome/policies/managed/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Google/Chrome/policies/managed/" \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
 .PHONY: policies-vivaldi
 policies-vivaldi:
 	@case $(OS) in \
-	Linux)  			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/etc/opt/vivaldi/policies/managed/" ;; \
-	Darwin) 			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/Vivaldi/policies/managed/" ;; \
-	*)      			   echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	Linux)      mkdir -p "/etc/opt/vivaldi/policies/managed/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/etc/opt/vivaldi/policies/managed/" \
+	            ;; \
+	Darwin)     mkdir -p "/Library/Application Support/Vivaldi/policies/managed/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/Vivaldi/policies/managed/" \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
 .PHONY: policies-vivaldi-user
 policies-vivaldi-user:
 	@case $(OS) in \
-	Linux|OpenBSD|FreeBSD) ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/vivaldi/policies/managed/" ;; \
-	Darwin)                ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Vivaldi/policies/managed/" ;; \
-	*)                     echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	Linux|*BSD) mkdir -p "${HOME}/.config/vivaldi/policies/managed/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/vivaldi/policies/managed/" \
+	            ;; \
+	Darwin)     mkdir -p "${HOME}/Library/Application Support/Vivaldi/policies/managed/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Vivaldi/policies/managed/" \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
 .PHONY: policies-brave
 policies-brave:
 	@case $(OS) in \
-	Linux)  			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/etc/opt/brave/policies/managed/" ;; \
-	Darwin) 			   ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/BraveSoftware/Brave-Browser/policies/managed/" ;; \
-	*)      			   echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	Linux)      mkdir -p "/etc/opt/brave/policies/managed/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/etc/opt/brave/policies/managed/" \
+	            ;; \
+	Darwin)     mkdir -p "/Library/Application Support/BraveSoftware/Brave-Browser/policies/managed/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/BraveSoftware/Brave-Browser/policies/managed/" \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
 .PHONY: policies-brave-user
 policies-brave-user:
 	@case $(OS) in \
-	Linux|OpenBSD|FreeBSD) ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/BraveSoftware/Brave-Browser/policies/managed/" ;; \
-	Darwin)                ln -sf "$(DESTDIR)/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/BraveSoftware/Brave-Browser/policies/managed/" ;; \
-	*)                     echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	Linux|*BSD) mkdir -p "${HOME}/.config/BraveSoftware/Brave-Browser/policies/managed/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/BraveSoftware/Brave-Browser/policies/managed/" \
+	            ;; \
+	Darwin)     mkdir -p "${HOME}/Library/Application Support/BraveSoftware/Brave-Browser/policies/managed/"; \
+	            ln -sf "/usr/lib/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/BraveSoftware/Brave-Browser/policies/managed/" \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
