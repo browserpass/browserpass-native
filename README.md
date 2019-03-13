@@ -32,7 +32,7 @@ Primary key fingerprint: EB4F 9E5A 60D3 2232 BB52  150C 12C8 7A28 FEAC 6B20
 
 Unpack the archive. If you decided to compile the application yourself, refer to the [Building the app](#building-the-app) section on how to do so. Once complete, continue with the steps below.
 
-Finally execute `make BIN=browserpass-XXXX install` to install the app (where `XXXX` is OS name like `linux-64`, refer to the available `make` targets in the [Build locally](#build-locally) section).
+Finally install the app using `make install` (if you compiled it using `make browserpass`) or `make BIN=browserpass-XXXX install` (if you downloaded a release with pre-built binary).
 
 ### Configure browsers
 
