@@ -1,4 +1,6 @@
-# Browserpass - native host
+# Browserpass - native messaging host
+
+This is a host application for [browserpass](https://github.com/browserpass/browserpass-extension) browser extension providing it access to your password store. The communication is handled through [Native Messaging API](https://developer.chrome.com/extensions/nativeMessaging).
 
 ## Installation
 
