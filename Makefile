@@ -1,8 +1,12 @@
 BIN ?= browserpass
 VERSION ?= undefined
 
-APP_ID = com.github.browserpass.native
-OS = $(shell uname -s)
+GO_GCFLAGS := "all=-trimpath=${PWD}"
+GO_ASMFLAGS := "all=-trimpath=${PWD}"
+GO_LDFLAGS := "-extldflags ${LDFLAGS}"
+
+APP_ID := com.github.browserpass.native
+OS := $(shell uname -s)
 
 #######################
 # For local development
@@ -11,22 +15,22 @@ OS = $(shell uname -s)
 all: browserpass test
 
 browserpass: *.go **/*.go
-	go build -o $@
+	go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS)	-o $@
 
 browserpass-linux64: *.go **/*.go
-	env GOOS=linux GOARCH=amd64 go build -o $@
+	env GOOS=linux GOARCH=amd64 go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@
 
 browserpass-darwinx64: *.go **/*.go
-	env GOOS=darwin GOARCH=amd64 go build -o $@
+	env GOOS=darwin GOARCH=amd64 go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@
 
 browserpass-openbsd64: *.go **/*.go
-	env GOOS=openbsd GOARCH=amd64 go build -o $@
+	env GOOS=openbsd GOARCH=amd64 go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@
 
 browserpass-freebsd64: *.go **/*.go
-	env GOOS=freebsd GOARCH=amd64 go build -o $@
+	env GOOS=freebsd GOARCH=amd64 go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@
 
 browserpass-windows64: *.go **/*.go
-	env GOOS=windows GOARCH=amd64 go build -o $@.exe
+	env GOOS=windows GOARCH=amd64 go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@.exe
 
 .PHONY: test
 test:
