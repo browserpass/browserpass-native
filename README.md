@@ -36,7 +36,7 @@ Finally install the app using `make install` (if you compiled it using `make bro
 
 ### Configure browsers
 
-The Makefile (which is also available in /usr/lib/browserpass/, if you installed via package manager) contains the following `make` goals to configure the browsers you use:
+The Makefile (which is also available in `/usr/lib/browserpass/`, if you installed via package manager) contains the following `make` goals to configure the browsers you use:
 
 | Command                    | Description                                                                |
 | -------------------------- | -------------------------------------------------------------------------- |
