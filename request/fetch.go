@@ -64,8 +64,13 @@ func fetchDecryptedContents(request *request) {
 	}
 	store.Path = normalizedStorePath
 
-	gpgPath := request.Settings.GpgPath
-	if gpgPath != "" {
+	var gpgPath string
+	if store.Settings.GpgPath != "" || request.Settings.GpgPath != "" {
+		if store.Settings.GpgPath != "" {
+			gpgPath = store.Settings.GpgPath
+		} else {
+			gpgPath = request.Settings.GpgPath
+		}
 		err = validateGpgBinary(gpgPath)
 		if err != nil {
 			log.Errorf(
