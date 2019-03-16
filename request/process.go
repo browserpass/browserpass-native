@@ -11,10 +11,15 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+type storeSettings struct {
+	GpgPath string `json:"gpgPath"`
+}
+
 type store struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
-	Path string `json:"path"`
+	ID       string        `json:"id"`
+	Name     string        `json:"name"`
+	Path     string        `json:"path"`
+	Settings storeSettings `json:"settings"`
 }
 
 type settings struct {
