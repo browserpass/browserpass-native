@@ -1,6 +1,7 @@
 package request
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"os"
 	"os/user"
@@ -13,6 +14,26 @@ import (
 
 func configure(request *request) {
 	responseData := response.MakeConfigureResponse()
+
+	// User configured gpgPath in the browser, check if it is a valid binary to use
+	if request.Settings.GpgPath != "" {
+		err := validateGpgBinary(request.Settings.GpgPath)
+		if err != nil {
+			log.Errorf(
+				"The provided gpg binary path '%v' is invalid: %+v",
+				request.Settings.GpgPath, err,
+			)
+			response.SendErrorAndExit(
+				errors.CodeInvalidGpgPath,
+				&map[errors.Field]string{
+					errors.FieldMessage: "The provided gpg binary path is invalid",
+					errors.FieldAction:  "configure",
+					errors.FieldError:   err.Error(),
+					errors.FieldGpgPath: request.Settings.GpgPath,
+				},
+			)
+		}
+	}
 
 	// Check that each and every store in the settings exists and is accessible.
 	// Then read the default configuration for these stores (if available).
@@ -39,15 +60,19 @@ func configure(request *request) {
 		store.Path = normalizedStorePath
 
 		responseData.StoreSettings[store.ID], err = readDefaultSettings(store.Path)
+		if err == nil {
+			var storeSettings StoreSettings
+			err = json.Unmarshal([]byte(responseData.StoreSettings[store.ID]), &storeSettings)
+		}
 		if err != nil {
 			log.Errorf(
-				"Unable to read the default settings of the user-configured password store '%+v' in its location: %+v",
+				"Unable to read .browserpass.json of the user-configured password store '%+v': %+v",
 				store, err,
 			)
 			response.SendErrorAndExit(
 				errors.CodeUnreadablePasswordStoreDefaultSettings,
 				&map[errors.Field]string{
-					errors.FieldMessage:   "Unable to read the default settings of the password store",
+					errors.FieldMessage:   "Unable to read .browserpass.json of the password store",
 					errors.FieldAction:    "configure",
 					errors.FieldError:     err.Error(),
 					errors.FieldStoreID:   store.ID,
@@ -59,11 +84,11 @@ func configure(request *request) {
 	}
 
 	// Check whether a store in the default location exists and is accessible.
-	// If there is at least one store in the settings, it is expected that there might be no store in the default location => do not return errors.
+	// If there is at least one store in the settings, user will not use the default store => skip its validation.
 	// However, if there are no stores in the settings, user expects to use the default password store => return an error if it is not accessible.
-	possibleDefaultStorePath, err := getDefaultPasswordStorePath()
-	if err != nil {
-		if len(request.Settings.Stores) == 0 {
+	if len(request.Settings.Stores) == 0 {
+		possibleDefaultStorePath, err := getDefaultPasswordStorePath()
+		if err != nil {
 			log.Error("Unable to determine the location of the default password store: ", err)
 			response.SendErrorAndExit(
 				errors.CodeUnknownDefaultPasswordStoreLocation,
@@ -73,11 +98,9 @@ func configure(request *request) {
 					errors.FieldError:   err.Error(),
 				},
 			)
-		}
-	} else {
-		responseData.DefaultStore.Path, err = normalizePasswordStorePath(possibleDefaultStorePath)
-		if err != nil {
-			if len(request.Settings.Stores) == 0 {
+		} else {
+			responseData.DefaultStore.Path, err = normalizePasswordStorePath(possibleDefaultStorePath)
+			if err != nil {
 				log.Errorf(
 					"The default password store is not accessible at the location '%v': %+v",
 					possibleDefaultStorePath, err,
@@ -93,19 +116,21 @@ func configure(request *request) {
 				)
 			}
 		}
-	}
 
-	if responseData.DefaultStore.Path != "" {
 		responseData.DefaultStore.Settings, err = readDefaultSettings(responseData.DefaultStore.Path)
+		if err == nil {
+			var storeSettings StoreSettings
+			err = json.Unmarshal([]byte(responseData.DefaultStore.Settings), &storeSettings)
+		}
 		if err != nil {
 			log.Errorf(
-				"Unable to read the default settings of the default password store in '%v': %+v",
+				"Unable to read .browserpass.json of the default password store in '%v': %+v",
 				responseData.DefaultStore.Path, err,
 			)
 			response.SendErrorAndExit(
 				errors.CodeUnreadableDefaultPasswordStoreDefaultSettings,
 				&map[errors.Field]string{
-					errors.FieldMessage:   "Unable to read the default settings of the default password store",
+					errors.FieldMessage:   "Unable to read .browserpas.json of the default password store",
 					errors.FieldAction:    "configure",
 					errors.FieldError:     err.Error(),
 					errors.FieldStorePath: responseData.DefaultStore.Path,
