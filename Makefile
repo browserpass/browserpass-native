@@ -1,5 +1,5 @@
 BIN ?= browserpass
-VERSION ?= undefined
+VERSION ?= $(shell cat .version)
 
 GO_GCFLAGS := "all=-trimpath=${PWD}"
 GO_ASMFLAGS := "all=-trimpath=${PWD}"
