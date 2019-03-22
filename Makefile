@@ -50,11 +50,11 @@ dist: clean browserpass-linux64 browserpass-darwinx64 browserpass-openbsd64 brow
 
 	git archive -o dist/$(VERSION).tar.gz --format tar.gz --prefix=browserpass-native-$(VERSION)/ $(VERSION)
 
-	zip -FS dist/browserpass-linux64   browserpass-linux64       browser-files/* Makefile README.md LICENSE
-	zip -FS dist/browserpass-darwinx64 browserpass-darwinx64     browser-files/* Makefile README.md LICENSE
-	zip -FS dist/browserpass-openbsd64 browserpass-openbsd64     browser-files/* Makefile README.md LICENSE
-	zip -FS dist/browserpass-freebsd64 browserpass-freebsd64     browser-files/* Makefile README.md LICENSE
-	zip -FS dist/browserpass-windows64 browserpass-windows64.exe browser-files/* Makefile README.md LICENSE
+	zip -FSr dist/browserpass-linux64   browserpass-linux64       browser-files/* Makefile README.md LICENSE
+	zip -FSr dist/browserpass-darwinx64 browserpass-darwinx64     browser-files/* Makefile README.md LICENSE
+	zip -FSr dist/browserpass-openbsd64 browserpass-openbsd64     browser-files/* Makefile README.md LICENSE
+	zip -FSr dist/browserpass-freebsd64 browserpass-freebsd64     browser-files/* Makefile README.md LICENSE
+	zip -FSr dist/browserpass-windows64 browserpass-windows64.exe browser-files/* Makefile README.md LICENSE
 
 	for file in dist/*; do \
 	    gpg --detach-sign "$$file"; \
