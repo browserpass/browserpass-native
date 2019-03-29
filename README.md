@@ -92,6 +92,21 @@ Then edit the hosts json files (in our example `C:\Program Files\Browserpass\bro
 
 Finally proceed to the [Configure browsers on Windows](#configure-browsers-on-windows) section.
 
+#### Install on Windows through WSL
+
+If you want to use WSL instead, follow Linux installation steps, then create `%localappdata%\Browserpass\browserpass-wsl.bat` with the following contents:
+
+```
+@echo off
+bash -c /usr/bin/browserpass-linux64
+```
+
+Then edit the hosts json files (in our example `C:\Program Files\Browserpass\browser-files\*-host.json`) and replace `%%replace%%` with a full path to `browserpass-wsl.bat` you've just created.
+
+Finally proceed to the [Configure browsers on Windows](#configure-browsers-on-windows) section.
+
+Remember to check [Hints for configuring gpg](#hints-for-configuring-gpg) on how to configure pinentry to unlock your PGP key.
+
 ### Configure browsers
 
 The Makefile (which is also available in `/usr/lib/browserpass/`, if you installed via package manager) contains the following `make` goals to configure the browsers you use:
@@ -199,7 +214,10 @@ If you installed manually, repeat the steps in the [Install manually](#install-m
 
 ### Hints for configuring gpg
 
-First make sure `gpg` and some `pinentry` are installed (on macOS in particular many people succeeded with `gnupg` and `pinentry-mac`).
+First make sure `gpg` and some `pinentry` are installed.
+
+-   on macOS many people succeeded with `pinentry-mac`
+-   on Windows WSL people succeded with [pinentry-wsl-ps1](https://github.com/diablodale/pinentry-wsl-ps1)
 
 Make sure your pinentry program is configured in `~/.gnupg/gpg-agent.conf`:
 
