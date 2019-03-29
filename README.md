@@ -9,6 +9,7 @@ This is a host application for [browserpass](https://github.com/browserpass/brow
     -   [Install manually](#install-manually)
         -   [Install on Nix / NixOS](#install-on-nix--nixos)
         -   [Install on Windows](#install-on-windows)
+        -   [Install on Windows through WSL](#install-on-windows-through-wsl)
     -   [Configure browsers](#configure-browsers)
         -   [Configure browsers on Windows](#configure-browsers-on-windows)
 -   [Building the app](#building-the-app)
