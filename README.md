@@ -89,7 +89,7 @@ The Makefile currently does not support Windows, so instead of `sudo make instal
 
 First, copy the contents of the extracted `browserpass-windows64` folder to a permanent location where you want Browserpass to be installed, for the sake of example let's suppose it is `C:\Program Files\Browserpass\`.
 
-Then edit the hosts json files (in our example `C:\Program Files\Browserpass\browser-files\*-host.json`) and replace `%%replace%%` with a full path to `browserpass-windows64.exe` (in our example `C:\Program Files\Browserpass\browserpass-windows64.exe`).
+Then edit the hosts json files (in our example `C:\Program Files\Browserpass\browser-files\*-host.json`) and replace `%%replace%%` with a full path to `browserpass-windows64.exe` (in our example `C:\\Program Files\\Browserpass\\browserpass-windows64.exe`).
 
 Finally proceed to the [Configure browsers on Windows](#configure-browsers-on-windows) section.
 

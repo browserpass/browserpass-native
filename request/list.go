@@ -3,6 +3,7 @@ package request
 import (
 	"path/filepath"
 	"sort"
+	"strings"
 
 	"github.com/browserpass/browserpass-native/errors"
 	"github.com/browserpass/browserpass-native/response"
@@ -74,7 +75,7 @@ func listFiles(request *request) {
 					},
 				)
 			}
-			files[i] = relativePath
+			files[i] = strings.Replace(relativePath, "\\", "/", -1) // normalize Windows paths
 		}
 
 		sort.Strings(files)
