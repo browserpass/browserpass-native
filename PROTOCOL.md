@@ -73,9 +73,9 @@ and via parameters in individual `*.gpg` files.
 Settings are applied using the following priority, highest first:
 
 1.  Configured by the user in specific `*.gpg` files (e.g. autosubmit: true)
-2.  Configured by the user via the extension options
-3.  Configured by the user in each store’s `.browserpass.json` file
-4.  Defaults shipped with the browser extension
+1.  Configured by the user in `.browserpass.json` file in specific password stores
+1.  Configured by the user via the extension options
+1.  Defaults shipped with the browser extension
 
 ### Global Settings
 
