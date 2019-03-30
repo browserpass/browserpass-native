@@ -70,6 +70,11 @@ dist: clean browserpass-linux64 browserpass-darwinx64 browserpass-openbsd64 brow
 #######################
 # For user installation
 
+.PHONY: configure
+configure:
+	sed -i "s|%%replace%%|$(BIN_DIR)/$(BIN)|" browser-files/chromium-host.json
+	sed -i "s|%%replace%%|$(BIN_DIR)/$(BIN)|" browser-files/firefox-host.json
+
 .PHONY: install
 install:
 	install -Dm755 -t "$(BIN_DIR)/" $(BIN)
@@ -80,9 +85,6 @@ install:
 	install -Dm644 browser-files/chromium-host.json   "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json"
 	install -Dm644 browser-files/chromium-policy.json "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json"
 	install -Dm644 browser-files/firefox-host.json    "$(LIB_DIR)/browserpass/hosts/firefox/$(APP_ID).json"
-
-	sed -i "s|%%replace%%|/usr/bin/$(BIN)|" "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json"
-	sed -i "s|%%replace%%|/usr/bin/$(BIN)|" "$(LIB_DIR)/browserpass/hosts/firefox/$(APP_ID).json"
 
 # Browser-specific hosts targets
 
