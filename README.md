@@ -58,30 +58,26 @@ Finally proceed to the [Configure browsers](#configure-browsers) section.
 
 #### Install on Nix / NixOS
 
-If you wish to have a stateless setup, make sure you have this in your `/etc/nixos/configuration.nix` and rebuild your system:
+For a declarative NixOS installation, update your channel with `sudo nix-channel --update`, use the following to your `/etc/nixos/configuration.nix` and rebuild your system:
 
 ```nix
 { pkgs, ... }: {
   programs.browserpass.enable = true;
   environment.systemPackages = with pkgs; [
-    # All of these browsers will work with it
-    chromium
-    firefox
-    google-chrome
-    vivaldi
+    # All of these browsers will work
+    chromium firefox google-chrome vivaldi
+    # firefox*-bin versions do *not* work with this. If you require such Firefox versions, use the stateful setup described below.
   ];
 }
 ```
 
-Note: `firefox*-bin` versions do _not_ work statelessly. If you require such firefox versions, use the stateful setup as described below.
+For a stateful Nix setup, update your channel, install Browserpass and link the necessary files with the Makefile (see [Configure browsers](#configure-browsers) section), but pass `DESTDIR=~/.nix-profile`:
 
-For a stateful setup, install Browserpass with:
-
+```bash
+$ nix-channel --update
+$ nix-env -iA nixpkgs.browserpass # Or nix-env -iA nixos.browserpass on NixOS
+$ DESTDIR=~/.nix-profile make -f ~/.nix-profile/lib/browserpass/Makefile <desired make goal>
 ```
-nix-env -iA nixpkgs.browserpass
-```
-
-Then link the necessary files (see [Configure browsers](#configure-browsers) section and refer to Makefile in particular), but use the `~/.nix-profile` folder as the source of json files (for example, instead of `/usr/lib/browserpass/hosts/chromium/com.github.browserpass.native.json` as in `hosts-chromium-user` make goal you would use `~/.nix-profile/usr/lib/browserpass/hosts/chromium/com.github.browserpass.native.json`.
 
 #### Install on Windows
 
