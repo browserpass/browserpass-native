@@ -52,7 +52,7 @@ Primary key fingerprint: EB4F 9E5A 60D3 2232 BB52  150C 12C8 7A28 FEAC 6B20
 
 Unpack the archive. If you decided to compile the application yourself, refer to the [Building the app](#building-the-app) section on how to do so. Once complete, continue with the steps below.
 
-Install the app using `sudo make install` (if you compiled it using `make browserpass`) or `sudo make BIN=browserpass-XXXX install` (if you downloaded a release with pre-built binary).
+Configure the hosts json files using `make configure` and then install the app using `sudo make install` (if you compiled it using `make browserpass`) or `sudo make BIN=browserpass-XXXX install` (if you downloaded a release with pre-built binary). Both `configure` and `install` targets respect `PREFIX` and `DESTDIR` parameters if you want to customize the install location (e.g. to avoid `sudo`).
 
 Finally proceed to the [Configure browsers](#configure-browsers) section.
 
