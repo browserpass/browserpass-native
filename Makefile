@@ -61,7 +61,7 @@ dist: clean browserpass-linux64 browserpass-darwin64 browserpass-openbsd64 brows
 	    mkdir $(TMP)/browserpass-"$$os"-$(VERSION); \
 	    cp -a browserpass-"$$os"* browser-files Makefile README.md LICENSE $(TMP)/browserpass-"$$os"-$(VERSION); \
 	    if [ "$$os" = "windows64" ]; then \
-	        (cd $(TMP) && zip -FSr ${CURDIR}/dist/browserpass-windows64-$(VERSION).zip browserpass-windows64-$(VERSION)); \
+	        (cd $(TMP) && zip -FSr ${CURDIR}/dist/browserpass-"$$os"-$(VERSION).zip browserpass-"$$os"-$(VERSION)); \
 	    else \
 	        (cd $(TMP) && tar -cvf ${CURDIR}/dist/browserpass-"$$os"-$(VERSION).tar.xz --use-compress-program=xz browserpass-"$$os"-$(VERSION)); \
 	    fi \
