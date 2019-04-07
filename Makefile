@@ -53,7 +53,7 @@ clean:
 dist: clean browserpass-linux64 browserpass-darwin64 browserpass-openbsd64 browserpass-freebsd64 browserpass-windows64
 	mkdir -p dist
 
-	git archive -o dist/$(VERSION).tar.gz --format tar.gz --prefix=browserpass-native-$(VERSION)/ $(VERSION)
+	git archive -o dist/browserpass-native-$(VERSION).tar.gz --format tar.gz --prefix=browserpass-native-$(VERSION)/ $(VERSION)
 
 	$(eval TMP := $(shell mktemp -d))
 
@@ -73,7 +73,7 @@ dist: clean browserpass-linux64 browserpass-darwin64 browserpass-openbsd64 brows
 	    gpg --detach-sign "$$file"; \
 	done
 
-	rm -f dist/$(VERSION).tar.gz
+	rm -f dist/browserpass-native-$(VERSION).tar.gz
 
 #######################
 # For user installation
