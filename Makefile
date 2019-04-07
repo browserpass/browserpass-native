@@ -25,7 +25,7 @@ browserpass: *.go **/*.go
 browserpass-linux64: *.go **/*.go
 	env GOOS=linux GOARCH=amd64 go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@
 
-browserpass-darwinx64: *.go **/*.go
+browserpass-darwin64: *.go **/*.go
 	env GOOS=darwin GOARCH=amd64 go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@
 
 browserpass-openbsd64: *.go **/*.go
@@ -50,16 +50,24 @@ clean:
 	rm -rf dist
 
 .PHONY: dist
-dist: clean browserpass-linux64 browserpass-darwinx64 browserpass-openbsd64 browserpass-freebsd64 browserpass-windows64
+dist: clean browserpass-linux64 browserpass-darwin64 browserpass-openbsd64 browserpass-freebsd64 browserpass-windows64
 	mkdir -p dist
 
 	git archive -o dist/$(VERSION).tar.gz --format tar.gz --prefix=browserpass-native-$(VERSION)/ $(VERSION)
 
-	zip -FSr dist/browserpass-linux64-$(VERSION).zip   browserpass-linux64       browser-files/* Makefile README.md LICENSE
-	zip -FSr dist/browserpass-darwinx64-$(VERSION).zip browserpass-darwinx64     browser-files/* Makefile README.md LICENSE
-	zip -FSr dist/browserpass-openbsd64-$(VERSION).zip browserpass-openbsd64     browser-files/* Makefile README.md LICENSE
-	zip -FSr dist/browserpass-freebsd64-$(VERSION).zip browserpass-freebsd64     browser-files/* Makefile README.md LICENSE
-	zip -FSr dist/browserpass-windows64-$(VERSION).zip browserpass-windows64.exe browser-files/* Makefile README.md LICENSE
+	$(eval TMP := $(shell mktemp -d))
+
+	for os in linux64 darwin64 openbsd64 freebsd64 windows64; do \
+	    mkdir $(TMP)/browserpass-"$$os"-$(VERSION); \
+	    cp -a browserpass-"$$os"* browser-files Makefile README.md LICENSE $(TMP)/browserpass-"$$os"-$(VERSION); \
+	    if [ "$$os" = "windows64" ]; then \
+	        (cd $(TMP) && zip -r ${CURDIR}/dist/browserpass-"$$os"-$(VERSION).zip browserpass-"$$os"-$(VERSION)); \
+	    else \
+	        (cd $(TMP) && tar -cvzf ${CURDIR}/dist/browserpass-"$$os"-$(VERSION).tar.gz browserpass-"$$os"-$(VERSION)); \
+	    fi \
+	done
+
+	rm -rf $(TMP)
 
 	for file in dist/*; do \
 	    gpg --detach-sign "$$file"; \
