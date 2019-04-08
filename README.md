@@ -55,8 +55,9 @@ Unpack the archive. If you decided to compile the application yourself, refer to
 If you downloaded a release archive with pre-compiled binary, follow these steps to install the app:
 
 ```
-make BIN=browserpass-XXXX configure      # Configure the hosts json files, XXXX refers to archive name, e.g. "linux64"
-sudo make BIN=browserpass-XXXX install   # Install the app, XXXX refers to archive name, e.g. "linux64"
+# IMPORTANT: replace XXXX with OS name depending on the archive you downloaded, e.g. "linux64"
+make BIN=browserpass-XXXX configure      # Configure the hosts json files
+sudo make BIN=browserpass-XXXX install   # Install the app
 ```
 
 If you compiled the app yourself, you can omit `BIN` parameter:
