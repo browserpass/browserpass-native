@@ -28,8 +28,8 @@ This is a host application for [browserpass](https://github.com/browserpass/brow
 
 The following operating systems provide a browserpass package that can be installed using a package manager:
 
--   [Arch Linux](https://aur.archlinux.org/packages/browserpass/)
--   [NixOS](https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/security/browserpass/default.nix) - also read [Install on Nix / NixOS](#install-on-nix--nixos)
+-   Arch Linux: [browserpass](https://www.archlinux.org/packages/community/x86_64/browserpass/)
+-   NixOS: [browserpass](https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/security/browserpass/default.nix) - also read [Install on Nix / NixOS](#install-on-nix--nixos)
 
 Once the package is installed, **refer to the section [Configure browsers](#configure-browsers)**.
 
@@ -123,6 +123,14 @@ Remember to check [Hints for configuring gpg](#hints-for-configuring-gpg) on how
 
 ### Configure browsers
 
+The following operating systems provide packages for certain browsers that can be installed using a package manager:
+
+-   Arch Linux: [browserpass-chromium](https://www.archlinux.org/packages/community/any/browserpass-chromium/) and [browserpass-firefox](https://www.archlinux.org/packages/community/any/browserpass-firefox/)
+
+If you installed a distro package above, you are done!
+
+If something went wrong, or if there's no package for your OS and/or a browser of your choice, proceed with the steps below.
+
 The Makefile (which is also available in `/usr/lib/browserpass/`, if you installed via package manager) contains the following `make` goals to configure the browsers you use:
 
 | Command                    | Description                                                                |
@@ -140,14 +148,14 @@ The Makefile (which is also available in `/usr/lib/browserpass/`, if you install
 
 In addition, Chromium-based browsers support the following `make` goals:
 
-| Command                       | Description                                                                                  |
-| ----------------------------- | -------------------------------------------------------------------------------------------- |
-| `sudo make policies-chromium` | Automatically install browser extension for Chromium browser, system-wide                    |
-| `make policies-chromium-user` | Automatically install browser extension for Chromium browser, for the current user only      |
-| `sudo make policies-chrome`   | Automatically install browser extension for Google Chrome browser, system-wide               |
-| `make policies-chrome-user`   | Automatically install browser extension for Google Chrome browser, for the current user only |
-| `sudo make policies-brave`    | Automatically install browser extension for Brave browser, system-wide                       |
-| `make policies-brave-user`    | Automatically install browser extension for Brave browser, for the current user only         |
+| Command                       | Description                                                                                                 |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `sudo make policies-chromium` | Automatically install browser extension from Web Store for Chromium browser, system-wide                    |
+| `make policies-chromium-user` | Automatically install browser extension from Web Store for Chromium browser, for the current user only      |
+| `sudo make policies-chrome`   | Automatically install browser extension from Web Store for Google Chrome browser, system-wide               |
+| `make policies-chrome-user`   | Automatically install browser extension from Web Store for Google Chrome browser, for the current user only |
+| `sudo make policies-brave`    | Automatically install browser extension from Web Store for Brave browser, system-wide                       |
+| `make policies-brave-user`    | Automatically install browser extension from Web Store for Brave browser, for the current user only         |
 
 #### Configure browsers on Windows
 
