@@ -13,6 +13,10 @@ GO_LDFLAGS := "-extldflags ${LDFLAGS}"
 APP_ID := com.github.browserpass.native
 OS := $(shell uname -s)
 
+# GNU tools
+SED := $(shell which gsed 2>/dev/null || which sed 2>/dev/null)
+INSTALL := $(shell which ginstall 2>/dev/null || which install 2>/dev/null)
+
 #######################
 # For local development
 
@@ -80,19 +84,19 @@ dist: clean browserpass-linux64 browserpass-darwin64 browserpass-openbsd64 brows
 
 .PHONY: configure
 configure:
-	sed -i "s|%%replace%%|$(BIN_DIR)/$(BIN)|" browser-files/chromium-host.json
-	sed -i "s|%%replace%%|$(BIN_DIR)/$(BIN)|" browser-files/firefox-host.json
+	$(SED) -i 's|"path": ".*"|"path": "'"$(BIN_DIR)/$(BIN)"'"|' browser-files/chromium-host.json
+	$(SED) -i 's|"path": ".*"|"path": "'"$(BIN_DIR)/$(BIN)"'"|' browser-files/firefox-host.json
 
 .PHONY: install
 install:
-	install -Dm755 -t "$(BIN_DIR)/" $(BIN)
-	install -Dm644 -t "$(LIB_DIR)/browserpass/" Makefile
-	install -Dm644 -t "$(SHARE_DIR)/licenses/browserpass/" LICENSE
-	install -Dm644 -t "$(SHARE_DIR)/doc/browserpass/" README.md
+	$(INSTALL) -Dm755 -t "$(BIN_DIR)/" $(BIN)
+	$(INSTALL) -Dm644 -t "$(LIB_DIR)/browserpass/" Makefile
+	$(INSTALL) -Dm644 -t "$(SHARE_DIR)/licenses/browserpass/" LICENSE
+	$(INSTALL) -Dm644 -t "$(SHARE_DIR)/doc/browserpass/" README.md
 
-	install -Dm644 browser-files/chromium-host.json   "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json"
-	install -Dm644 browser-files/chromium-policy.json "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json"
-	install -Dm644 browser-files/firefox-host.json    "$(LIB_DIR)/browserpass/hosts/firefox/$(APP_ID).json"
+	$(INSTALL) -Dm644 browser-files/chromium-host.json   "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json"
+	$(INSTALL) -Dm644 browser-files/chromium-policy.json "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json"
+	$(INSTALL) -Dm644 browser-files/firefox-host.json    "$(LIB_DIR)/browserpass/hosts/firefox/$(APP_ID).json"
 
 # Browser-specific hosts targets
 
