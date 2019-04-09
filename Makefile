@@ -70,7 +70,7 @@ dist: clean browserpass-linux64 browserpass-darwin64 browserpass-openbsd64 brows
 	rm -rf $(TMP)
 
 	for file in dist/*; do \
-	    gpg --detach-sign "$$file"; \
+	    gpg --detach-sign --armor "$$file"; \
 	done
 
 	rm -f dist/browserpass-native-$(VERSION).tar.gz
