@@ -4,7 +4,7 @@ import "fmt"
 
 const major = 3
 const minor = 0
-const patch = 4
+const patch = 5
 
 // Code version as integer
 const Code = major*1000000 + minor*1000 + patch
