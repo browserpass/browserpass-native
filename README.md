@@ -39,7 +39,15 @@ If your OS is not listed above, proceed with the manual installation steps below
 
 Download [the latest Github release](https://github.com/browserpass/browserpass-native/releases), choose either the source code archive (if you want to compile the app yourself) or an archive for your operating system (it contains a pre-built binary).
 
-All release files are signed with [this PGP key](https://keybase.io/maximbaz). To verify the signature of a given file, use `$ gpg --verify <file>.sig`.
+All release files are signed with a PGP key that is available on [maximbaz.com](https://maximbaz.com/), [keybase.io](https://keybase.io/maximbaz) and various OpenPGP key servers. First, import the public key using any of these commands:
+
+```
+$ curl https://maximbaz.com/pgp_keys.asc | gpg --import
+$ curl https://keybase.io/maximbaz/pgp_keys.asc | gpg --import
+$ gpg --recv-keys EB4F9E5A60D32232BB52150C12C87A28FEAC6B20
+```
+
+To verify the signature of a given file, use `$ gpg --verify <file>.asc`.
 
 It should report:
 
