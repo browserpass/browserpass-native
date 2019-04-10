@@ -187,13 +187,13 @@ hosts-vivaldi-user:
 .PHONY: hosts-brave
 hosts-brave:
 	@case $(OS) in \
-	Linux)      mkdir -p "/etc/opt/brave/native-messaging-hosts/"; \
-	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "/etc/opt/brave/native-messaging-hosts/$(APP_ID).json"; \
-	            [ -e "/etc/opt/brave/native-messaging-hosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	Linux)      mkdir -p "/etc/opt/chrome/native-messaging-hosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "/etc/opt/chrome/native-messaging-hosts/$(APP_ID).json"; \
+	            [ -e "/etc/opt/chrome/native-messaging-hosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
-	Darwin)     mkdir -p "/Library/Application Support/BraveSoftware/Brave-Browser/NativeMessagingHosts/"; \
-	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/BraveSoftware/Brave-Browser/NativeMessagingHosts/$(APP_ID).json"; \
-	            [ -e "/Library/Application Support/BraveSoftware/Brave-Browser/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	Darwin)     mkdir -p "/Library/Application Support/Chromium/NativeMessagingHosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/Chromium/NativeMessagingHosts/$(APP_ID).json"; \
+	            [ -e "/Library/Application Support/Chromium/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
 	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
@@ -205,9 +205,9 @@ hosts-brave-user:
 	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/BraveSoftware/Brave-Browser/NativeMessagingHosts/$(APP_ID).json"; \
 	            [ -e "${HOME}/.config/BraveSoftware/Brave-Browser/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
-	Darwin)     mkdir -p "${HOME}/Library/Application Support/BraveSoftware/Brave-Browser/NativeMessagingHosts/"; \
-	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/BraveSoftware/Brave-Browser/NativeMessagingHosts/$(APP_ID).json"; \
-	            [ -e "${HOME}/Library/Application Support/BraveSoftware/Brave-Browser/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	Darwin)     mkdir -p "${HOME}/Library/Application Support/Google/Chrome/NativeMessagingHosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Google/Chrome/NativeMessagingHosts/$(APP_ID).json"; \
+	            [ -e "${HOME}/Library/Application Support/Google/Chrome/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
 	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
@@ -329,13 +329,13 @@ policies-vivaldi-user:
 .PHONY: policies-brave
 policies-brave:
 	@case $(OS) in \
-	Linux)      mkdir -p "/etc/opt/brave/policies/managed/"; \
-	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "/etc/opt/brave/policies/managed/$(APP_ID).json"; \
-	            [ -e "/etc/opt/brave/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	Linux)      mkdir -p "/etc/opt/chrome/policies/managed/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "/etc/opt/chrome/policies/managed/$(APP_ID).json"; \
+	            [ -e "/etc/opt/chrome/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
-	Darwin)     mkdir -p "/Library/Application Support/BraveSoftware/Brave-Browser/policies/managed/"; \
-	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "/Library/Application Support/BraveSoftware/Brave-Browser/policies/managed/$(APP_ID).json"; \
-	            [ -e "/Library/Application Support/BraveSoftware/Brave-Browser/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	Darwin)     mkdir -p "/Library/Application Support/Chromium/policies/managed/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "/Library/Application Support/Chromium/policies/managed/$(APP_ID).json"; \
+	            [ -e "/Library/Application Support/Chromium/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
 	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
@@ -347,9 +347,9 @@ policies-brave-user:
 	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/.config/BraveSoftware/Brave-Browser/policies/managed/$(APP_ID).json"; \
 	            [ -e "${HOME}/.config/BraveSoftware/Brave-Browser/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
-	Darwin)     mkdir -p "${HOME}/Library/Application Support/BraveSoftware/Brave-Browser/policies/managed/"; \
-	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/BraveSoftware/Brave-Browser/policies/managed/$(APP_ID).json"; \
-	            [ -e "${HOME}/Library/Application Support/BraveSoftware/Brave-Browser/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	Darwin)     mkdir -p "${HOME}/Library/Application Support/Google/Chrome/policies/managed/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Google/Chrome/policies/managed/$(APP_ID).json"; \
+	            [ -e "${HOME}/Library/Application Support/Google/Chrome/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
 	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
