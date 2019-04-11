@@ -30,6 +30,7 @@ The following operating systems provide a browserpass package that can be instal
 
 -   Arch Linux: [browserpass](https://www.archlinux.org/packages/community/x86_64/browserpass/)
 -   NixOS: [browserpass](https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/security/browserpass/default.nix) - also read [Install on Nix / NixOS](#install-on-nix--nixos)
+-   macOS: [browserpass](https://github.com/Amar1729/homebrew-formulae/blob/master/browserpass.rb) in a user-contributed tap [amar1729/formulae](https://github.com/amar1729/homebrew-formulae)
 
 Once the package is installed, **refer to the section [Configure browsers](#configure-browsers)**.
 
