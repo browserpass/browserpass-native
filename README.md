@@ -143,7 +143,7 @@ Remember to check [Hints for configuring gpg](#hints-for-configuring-gpg) on how
 
 The following operating systems provide packages for certain browsers that can be installed using a package manager:
 
--   Available since Saturday, 13 April: ~Arch Linux: [browserpass-chromium](https://www.archlinux.org/packages/community/any/browserpass-chromium/) and [browserpass-firefox](https://www.archlinux.org/packages/community/any/browserpass-firefox/)~
+-   Arch Linux: [browserpass-chromium](https://www.archlinux.org/packages/community/any/browserpass-chromium/) and [browserpass-firefox](https://www.archlinux.org/packages/community/any/browserpass-firefox/)
 
 If you installed a distro package above, you are done!
 
