@@ -1,4 +1,4 @@
-To test whether the native host is working corrctly, run:
+To test whether the native host is working correctly, run:
 `/path/to/browserpass < /path/to/request-configure.hex.txt`
 
 Note that this is *not* a plain text file; it includes a binary header
