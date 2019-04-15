@@ -135,7 +135,7 @@ If you want to use WSL instead, follow Linux installation steps, then create `%l
 
 ```
 @echo off
-bash -c /usr/bin/browserpass-linux64
+bash -c "/usr/bin/browserpass-linux64 2>/dev/null"
 ```
 
 Then edit the hosts json files (in our example `C:\Program Files\Browserpass\browser-files\*-host.json`) and replace `%%replace%%` with a full path to `browserpass-wsl.bat` you've just created.
