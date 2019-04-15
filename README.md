@@ -65,6 +65,8 @@ Unpack the archive. If you decided to compile the application yourself, refer to
 
 If you are on macOS, first install the necessary tools: `brew install coreutils gnu-sed`.
 
+If you are on FreeBSD, first install the GNU tools: `pkg install coreutils gmake gsed'.` Use `gmake` in place of `make` below.
+
 If you downloaded a release archive with pre-compiled binary, follow these steps to install the app:
 
 ```
@@ -75,7 +77,7 @@ sudo make BIN=browserpass-XXXX install   # Install the app
 
 In addition, both `configure` and `install` targets respect `PREFIX`, `DESTDIR` parameters if you want to customize the install location (e.g. to install to a `$HOME` dir to avoid using `sudo`).
 
-For example, if you are on macOS, you probably want to install Browserpass in `/usr/local/bin`, therefore you need to run:
+For example, if you are on macOS or FreeBSD, you probably want to install Browserpass in `/usr/local/bin`, therefore you need to run:
 
 ```
 make BIN=browserpass-darwin64 PREFIX=/usr/local configure      # Configure the hosts json files
@@ -154,7 +156,7 @@ If something went wrong, or if there's no package for your OS and/or a browser o
 
 First, enter the directory with installed Browserpass, by default it is `/usr/lib/browserpass/`, but if you used `PREFIX` or `DESTDIR` when running `make install`, it might be different for you. For example, on macOS the directory is likely to be `/usr/local/lib/browserpass/`.
 
-See below the list of available `make` goals to configure various browsers.
+See below the list of available `make` goals to configure various browsers. Use `gmake` on FreeBSD in place of `make`.
 
 If you provided `PREFIX` and/or `DESTDIR` while running `make install`, remember that you must provide the same parameters, for example `sudo make PREFIX=/usr/local hosts-chromium`:
 
