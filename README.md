@@ -269,7 +269,9 @@ First make sure `gpg` and some `pinentry` are installed.
 -   on macOS many people succeeded with `pinentry-mac`
 -   on Windows WSL people succeded with [pinentry-wsl-ps1](https://github.com/diablodale/pinentry-wsl-ps1)
 
-Make sure your pinentry program is configured in `~/.gnupg/gpg-agent.conf`:
+Then ensure that `gpg-agent` process is actually running, if not you need to investigate how to enable it.
+
+Finally configure a GUI pinentry program in `~/.gnupg/gpg-agent.conf`:
 
 ```
 pinentry-program /full/path/to/pinentry
