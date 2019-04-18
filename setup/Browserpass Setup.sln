@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Browserpass Setup", "Browserpass Setup\Browserpass Setup.vdproj", "{4B9E32AF-B585-42CB-A3FA-1622302EB661}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomActions", "CustomActions\CustomActions.csproj", "{3FF3CD50-A41C-46ED-B37F-C95A1CF6C4A3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4B9E32AF-B585-42CB-A3FA-1622302EB661}.Debug|Any CPU.ActiveCfg = Debug
+		{4B9E32AF-B585-42CB-A3FA-1622302EB661}.Debug|Any CPU.Build.0 = Debug
+		{4B9E32AF-B585-42CB-A3FA-1622302EB661}.Release|Any CPU.ActiveCfg = Release
+		{4B9E32AF-B585-42CB-A3FA-1622302EB661}.Release|Any CPU.Build.0 = Release
+		{3FF3CD50-A41C-46ED-B37F-C95A1CF6C4A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FF3CD50-A41C-46ED-B37F-C95A1CF6C4A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FF3CD50-A41C-46ED-B37F-C95A1CF6C4A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FF3CD50-A41C-46ED-B37F-C95A1CF6C4A3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EE3E91AC-ECD5-49C6-ABF1-F5FC53736D3A}
+	EndGlobalSection
+EndGlobal
