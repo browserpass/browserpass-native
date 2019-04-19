@@ -153,7 +153,7 @@ The following operating systems provide packages for certain browsers that can b
 
 If you installed a distro package above, you are done!
 
-If something went wrong, or if there's no package for your OS and/or a browser of your choice, proceed with the steps below.
+If something went wrong, if there's no package for your OS and/or a browser of your choice, or for whatever reason you just don't want to use them, proceed with the steps below.
 
 First, enter the directory with installed Browserpass, by default it is `/usr/lib/browserpass/`, but if you used `PREFIX` or `DESTDIR` when running `make install`, it might be different for you. For example, on macOS the directory is likely to be `/usr/local/lib/browserpass/`.
 
