@@ -159,31 +159,35 @@ First, enter the directory with installed Browserpass, by default it is `/usr/li
 
 See below the list of available `make` goals to configure various browsers. Use `gmake` on FreeBSD in place of `make`.
 
-If you provided `PREFIX` and/or `DESTDIR` while running `make install`, remember that you must provide the same parameters, for example `sudo make PREFIX=/usr/local hosts-chromium`:
+**It is recommended to use `*-user` make goals**, as more people had luck with them. But if they don't work as expected, try other available goals.
+
+If you provided `PREFIX` and/or `DESTDIR` while running `make install`, remember that you must provide the same parameters, for example `make PREFIX=/usr/local hosts-chromium-user`:
 
 | Command                    | Description                                                                |
 | -------------------------- | -------------------------------------------------------------------------- |
-| `sudo make hosts-chromium` | Configure browserpass for Chromium browser, system-wide                    |
 | `make hosts-chromium-user` | Configure browserpass for Chromium browser, for the current user only      |
-| `sudo make hosts-chrome`   | Configure browserpass for Google Chrome browser, system-wide               |
-| `make hosts-chrome-user`   | Configure browserpass for Google Chrome browser, for the current user only |
-| `sudo make hosts-vivaldi`  | Configure browserpass for Vivaldi browser, system-wide                     |
-| `make hosts-vivaldi-user`  | Configure browserpass for Vivaldi browser, for the current user only       |
-| `sudo make hosts-brave`    | Configure browserpass for Brave browser, system-wide                       |
-| `make hosts-brave-user`    | Configure browserpass for Brave browser, for the current user only         |
-| `sudo make hosts-firefox`  | Configure browserpass for Firefox browser, system-wide                     |
 | `make hosts-firefox-user`  | Configure browserpass for Firefox browser, for the current user only       |
+| `make hosts-chrome-user`   | Configure browserpass for Google Chrome browser, for the current user only |
+| `make hosts-brave-user`    | Configure browserpass for Brave browser, for the current user only         |
+| `make hosts-vivaldi-user`  | Configure browserpass for Vivaldi browser, for the current user only       |
+| `sudo make hosts-chromium` | Configure browserpass for Chromium browser, system-wide                    |
+| `sudo make hosts-firefox`  | Configure browserpass for Firefox browser, system-wide                     |
+| `sudo make hosts-chrome`   | Configure browserpass for Google Chrome browser, system-wide               |
+| `sudo make hosts-brave`    | Configure browserpass for Brave browser, system-wide                       |
+| `sudo make hosts-vivaldi`  | Configure browserpass for Vivaldi browser, system-wide                     |
 
 In addition, Chromium-based browsers support the following `make` goals:
 
 | Command                       | Description                                                                                                 |
 | ----------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `sudo make policies-chromium` | Automatically install browser extension from Web Store for Chromium browser, system-wide                    |
 | `make policies-chromium-user` | Automatically install browser extension from Web Store for Chromium browser, for the current user only      |
-| `sudo make policies-chrome`   | Automatically install browser extension from Web Store for Google Chrome browser, system-wide               |
 | `make policies-chrome-user`   | Automatically install browser extension from Web Store for Google Chrome browser, for the current user only |
+| `make policies-brave-user`    | Automatically install browser extension from Web Store for Vivaldi browser, for the current user only       |
+| `make policies-vivaldi-user`  | Automatically install browser extension from Web Store for Brave browser, for the current user only         |
+| `sudo make policies-chromium` | Automatically install browser extension from Web Store for Chromium browser, system-wide                    |
+| `sudo make policies-chrome`   | Automatically install browser extension from Web Store for Google Chrome browser, system-wide               |
 | `sudo make policies-brave`    | Automatically install browser extension from Web Store for Brave browser, system-wide                       |
-| `make policies-brave-user`    | Automatically install browser extension from Web Store for Brave browser, for the current user only         |
+| `sudo make policies-vivaldi`  | Automatically install browser extension from Web Store for Vivaldi browser, system-wide                     |
 
 #### Configure browsers on Windows
 
