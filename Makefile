@@ -6,7 +6,8 @@ BIN_DIR = $(DESTDIR)$(PREFIX)/bin
 LIB_DIR = $(DESTDIR)$(PREFIX)/lib
 SHARE_DIR = $(DESTDIR)$(PREFIX)/share
 
-WINDOWS_BIN = C:\\\\\\\\Program Files\\\\\\\\Browserpass\\\\\\\\browserpass-windows64.exe
+BIN_PATH = $(BIN_DIR)/$(BIN)
+BIN_PATH_WINDOWS = C:\\\\\\\\Program Files\\\\\\\\Browserpass\\\\\\\\browserpass-windows64.exe
 
 GO_GCFLAGS := "all=-trimpath=${PWD}"
 GO_ASMFLAGS := "all=-trimpath=${PWD}"
@@ -86,12 +87,8 @@ dist: clean browserpass-linux64 browserpass-darwin64 browserpass-openbsd64 brows
 
 .PHONY: configure
 configure:
-	$(SED) -i 's|"path": ".*"|"path": "'"$(BIN_DIR)/$(BIN)"'"|' browser-files/chromium-host.json
-	$(SED) -i 's|"path": ".*"|"path": "'"$(BIN_DIR)/$(BIN)"'"|' browser-files/firefox-host.json
-
-configure-windows:
-	$(SED) -i 's|"path": ".*"|"path": "'"$(WINDOWS_BIN)"'"|' browser-files/chromium-host.json
-	$(SED) -i 's|"path": ".*"|"path": "'"$(WINDOWS_BIN)"'"|' browser-files/firefox-host.json
+	$(SED) -i 's|"path": ".*"|"path": "'"$(BIN_PATH)"'"|' browser-files/chromium-host.json
+	$(SED) -i 's|"path": ".*"|"path": "'"$(BIN_PATH)"'"|' browser-files/firefox-host.json
 
 .PHONY: install
 install:
