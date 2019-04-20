@@ -62,19 +62,22 @@ dist: clean browserpass-linux64 browserpass-darwin64 browserpass-openbsd64 brows
 
 	git archive -o dist/browserpass-native-$(VERSION).tar.gz --format tar.gz --prefix=browserpass-native-$(VERSION)/ $(VERSION)
 
-	# Unix installers
 	$(eval TMP := $(shell mktemp -d))
+
+	# Unix installers
 	for os in linux64 darwin64 openbsd64 freebsd64; do \
 	    mkdir $(TMP)/browserpass-"$$os"-$(VERSION); \
 	    cp -a browserpass-"$$os"* browser-files Makefile README.md LICENSE $(TMP)/browserpass-"$$os"-$(VERSION); \
         (cd $(TMP) && tar -cvzf ${CURDIR}/dist/browserpass-"$$os"-$(VERSION).tar.gz browserpass-"$$os"-$(VERSION)); \
 	done
-	rm -rf $(TMP)
 
 	# Windows installer
-	$(eval TMP := $(shell mktemp -d))
-	cp -a browserpass-windows64.exe browser-files Makefile README.md LICENSE setup.wxs $(TMP)
-	(cd $(TMP) && make BIN_PATH="$(BIN_PATH_WINDOWS)" configure && wixl -v --arch x64 setup.wxs && mv setup.msi ${CURDIR}/dist/browserpass-windows64-$(VERSION).msi)
+	mkdir $(TMP)/browserpass-windows64-$(VERSION)
+	cp -a browserpass-windows64.exe browser-files Makefile README.md LICENSE windows-setup.wxs $(TMP)/browserpass-windows64-$(VERSION)
+	(cd $(TMP)/browserpass-windows64-$(VERSION); \
+	make BIN_PATH="$(BIN_PATH_WINDOWS)" configure; \
+	wixl --verbose --arch x64 windows-setup.wxs --output ${CURDIR}/dist/browserpass-windows64-$(VERSION).msi)
+
 	rm -rf $(TMP)
 
 	for file in dist/*; do \
