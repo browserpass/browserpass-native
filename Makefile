@@ -6,6 +6,8 @@ BIN_DIR = $(DESTDIR)$(PREFIX)/bin
 LIB_DIR = $(DESTDIR)$(PREFIX)/lib
 SHARE_DIR = $(DESTDIR)$(PREFIX)/share
 
+WINDOWS_BIN = C:\\\\\\\\Program Files (x86)\\\\\\\\Browserpass\\\\\\\\browserpass-windows64.exe
+
 GO_GCFLAGS := "all=-trimpath=${PWD}"
 GO_ASMFLAGS := "all=-trimpath=${PWD}"
 GO_LDFLAGS := "-extldflags ${LDFLAGS}"
@@ -86,6 +88,10 @@ dist: clean browserpass-linux64 browserpass-darwin64 browserpass-openbsd64 brows
 configure:
 	$(SED) -i 's|"path": ".*"|"path": "'"$(BIN_DIR)/$(BIN)"'"|' browser-files/chromium-host.json
 	$(SED) -i 's|"path": ".*"|"path": "'"$(BIN_DIR)/$(BIN)"'"|' browser-files/firefox-host.json
+
+configure-windows:
+	$(SED) -i 's|"path": ".*"|"path": "'"$(WINDOWS_BIN)"'"|' browser-files/chromium-host.json
+	$(SED) -i 's|"path": ".*"|"path": "'"$(WINDOWS_BIN)"'"|' browser-files/firefox-host.json
 
 .PHONY: install
 install:
@@ -353,3 +359,6 @@ policies-brave-user:
 	            ;; \
 	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
+
+setup.msi:
+	wixl setup.wxs
