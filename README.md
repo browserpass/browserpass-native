@@ -10,10 +10,8 @@ This is a host application for [browserpass](https://github.com/browserpass/brow
     -   [Install via package manager](#install-via-package-manager)
     -   [Install manually](#install-manually)
         -   [Install on Nix / NixOS](#install-on-nix--nixos)
-        -   [Install on Windows](#install-on-windows)
         -   [Install on Windows through WSL](#install-on-windows-through-wsl)
     -   [Configure browsers](#configure-browsers)
-        -   [Configure browsers on Windows](#configure-browsers-on-windows)
 -   [Building the app](#building-the-app)
     -   [Build locally](#build-locally)
     -   [Build using Docker](#build-using-docker)
@@ -61,6 +59,8 @@ gpg:                 aka ...
 Primary key fingerprint: EB4F 9E5A 60D3 2232 BB52  150C 12C8 7A28 FEAC 6B20
      Subkey fingerprint: 8053 EB88 879A 68CB 4873  D32B 011F DC52 DA83 9335
 ```
+
+If you are on Windows, just run the installer, it will install all the necessary files in `C:\Program Files\Browserpass` and it will also [configure browsers](#configure-browsers). You are done!
 
 Unpack the archive. If you decided to compile the application yourself, refer to the [Building the app](#building-the-app) section on how to do so. Once complete, continue with the steps below.
 
@@ -117,18 +117,6 @@ $ nix-env -iA nixpkgs.browserpass # Or nix-env -iA nixos.browserpass on NixOS
 $ DESTDIR=~/.nix-profile make -f ~/.nix-profile/lib/browserpass/Makefile <desired make goal>
 ```
 
-#### Install on Windows
-
-The Makefile currently does not support Windows, so instead of `sudo make install` you'd have to do a bit of a manual work.
-
-First, copy the contents of the extracted `browserpass-windows64` folder to a permanent location where you want Browserpass to be installed, for the sake of example let's suppose it is `C:\Program Files\Browserpass\`.
-
-Then edit the hosts json files (in our example `C:\Program Files\Browserpass\browser-files\*-host.json`) and replace `%%replace%%` with a full path to `browserpass-windows64.exe` (in our example `C:\\Program Files\\Browserpass\\browserpass-windows64.exe`, **remember to use double backslashes!**).
-
-If you don't have permissions to save the json files, try opening notepad as Administrator first, then open the files.
-
-Finally proceed to the [Configure browsers on Windows](#configure-browsers-on-windows) section.
-
 #### Install on Windows through WSL
 
 If you want to use WSL instead, follow Linux installation steps, then create `%localappdata%\Browserpass\browserpass-wsl.bat` with the following contents:
@@ -182,40 +170,12 @@ In addition, Chromium-based browsers support the following `make` goals:
 | ----------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | `make policies-chromium-user` | Automatically install browser extension from Web Store for Chromium browser, for the current user only      |
 | `make policies-chrome-user`   | Automatically install browser extension from Web Store for Google Chrome browser, for the current user only |
-| `make policies-brave-user`    | Automatically install browser extension from Web Store for Brave browser, for the current user only       |
-| `make policies-vivaldi-user`  | Automatically install browser extension from Web Store for Vivaldi browser, for the current user only         |
+| `make policies-brave-user`    | Automatically install browser extension from Web Store for Brave browser, for the current user only         |
+| `make policies-vivaldi-user`  | Automatically install browser extension from Web Store for Vivaldi browser, for the current user only       |
 | `sudo make policies-chromium` | Automatically install browser extension from Web Store for Chromium browser, system-wide                    |
 | `sudo make policies-chrome`   | Automatically install browser extension from Web Store for Google Chrome browser, system-wide               |
 | `sudo make policies-brave`    | Automatically install browser extension from Web Store for Brave browser, system-wide                       |
 | `sudo make policies-vivaldi`  | Automatically install browser extension from Web Store for Vivaldi browser, system-wide                     |
-
-#### Configure browsers on Windows
-
-The Makefile currently does not support Windows, so instead of the make goals shown above you'd have to do a bit of a manual work.
-
-Open `regedit` and create a browser-specific subkey, it can be under `HKEY_CURRENT_USER` (`hkcu`) or `HKEY_LOCAL_MACHINE` (`hklm`) depending if you want to configure Browserpass only for your user or for all users respectively:
-
-1. Google Chrome: `hkcu:\Software\Google\Chrome\NativeMessagingHosts\com.github.browserpass.native`
-1. Firefox: `hkcu:\Software\Mozilla\NativeMessagingHosts\com.github.browserpass.native`
-
-Inside this subkey create a new property called `(Default)` with the value of the full path to the browser-specific hosts json file, for example:
-
-1. Google Chrome: `C:\Program Files\Browserpass\browser-files\chromium-host.json`
-1. Firefox: `C:\Program Files\Browserpass\browser-files\firefox-host.json`
-
-You can automate all of these steps by running the following commands in PowerShell:
-
-```powershell
-# Google Chrome
-New-Item -Path "hkcu:\Software\Google\Chrome\NativeMessagingHosts\com.github.browserpass.native" -force
-New-ItemProperty -Path "hkcu:\Software\Google\Chrome\NativeMessagingHosts\com.github.browserpass.native" -Name "(Default)" -Value "C:\Program Files\Browserpass\browser-files\chromium-host.json"
-
-# Firefox
-New-Item -Path "hkcu:\Software\Mozilla\NativeMessagingHosts\com.github.browserpass.native" -force
-New-ItemProperty -Path "hkcu:\Software\Mozilla\NativeMessagingHosts\com.github.browserpass.native" -Name "(Default)" -Value "C:\Program Files\Browserpass\browser-files\firefox-host.json"
-```
-
-For other browsers, please explore the registry to find the correct location, and peek into Makefile for inspiration.
 
 ## Building the app
 
