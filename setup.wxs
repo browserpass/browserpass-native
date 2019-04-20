@@ -13,12 +13,6 @@
             <File Id='ChromiumHostJSON' Name='chromium-host.json' Source='browser-files/chromium-host.json' />
             <File Id='ChromiumPolicyJSON' Name='chromium-policy.json' Source='browser-files/chromium-policy.json' />
             <File Id='FirefoxHostJSON' Name='firefox-host.json' Source='browser-files/firefox-host.json' />
-            <RegistryKey Id='ChromeNativeMessaging' Root='HKCU' Key='Software\Google\Chrome\NativeMessagingHosts\com.github.browserpass.native' >
-              <RegistryValue Type='string' Name='' Value='C:\Program Files\Browserpass\chromium-host.json'/>
-            </RegistryKey>
-            <RegistryKey Id='FirefoxNativeMessaging' Root='HKCU' Key='Software\Mozilla\NativeMessagingHosts\com.github.browserpass.native' >
-              <RegistryValue Type='string' Name='' Value='C:\Program Files\Browserpass\firefox-host.json'/>
-            </RegistryKey>
             <RegistryKey Id='ChromeNativeMessaging' Root='HKLM' Key='Software\Google\Chrome\NativeMessagingHosts\com.github.browserpass.native' >
               <RegistryValue Type='string' Name='' Value='C:\Program Files\Browserpass\chromium-host.json'/>
             </RegistryKey>
