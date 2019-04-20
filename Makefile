@@ -1,23 +1,24 @@
-BIN ?= browserpass
-VERSION ?= $(shell cat .version)
+BIN = browserpass
+VERSION = $(shell cat .version)
 
 PREFIX ?= /usr
 BIN_DIR = $(DESTDIR)$(PREFIX)/bin
 LIB_DIR = $(DESTDIR)$(PREFIX)/lib
 SHARE_DIR = $(DESTDIR)$(PREFIX)/share
 
-WINDOWS_BIN = C:\\\\\\\\Program Files\\\\\\\\Browserpass\\\\\\\\browserpass-windows64.exe
+BIN_PATH = $(BIN_DIR)/$(BIN)
+BIN_PATH_WINDOWS = C:\\\\\\\\\\\\\\\\Program Files\\\\\\\\\\\\\\\\Browserpass\\\\\\\\\\\\\\\\browserpass-windows64.exe
 
 GO_GCFLAGS := "all=-trimpath=${PWD}"
 GO_ASMFLAGS := "all=-trimpath=${PWD}"
 GO_LDFLAGS := "-extldflags ${LDFLAGS}"
 
-APP_ID := com.github.browserpass.native
-OS := $(shell uname -s)
+APP_ID = com.github.browserpass.native
+OS = $(shell uname -s)
 
 # GNU tools
-SED := $(shell which gsed 2>/dev/null || which sed 2>/dev/null)
-INSTALL := $(shell which ginstall 2>/dev/null || which install 2>/dev/null)
+SED = $(shell which gsed 2>/dev/null || which sed 2>/dev/null)
+INSTALL = $(shell which ginstall 2>/dev/null || which install 2>/dev/null)
 
 #######################
 # For local development
@@ -63,15 +64,19 @@ dist: clean browserpass-linux64 browserpass-darwin64 browserpass-openbsd64 brows
 
 	$(eval TMP := $(shell mktemp -d))
 
-	for os in linux64 darwin64 openbsd64 freebsd64 windows64; do \
+	# Unix installers
+	for os in linux64 darwin64 openbsd64 freebsd64; do \
 	    mkdir $(TMP)/browserpass-"$$os"-$(VERSION); \
 	    cp -a browserpass-"$$os"* browser-files Makefile README.md LICENSE $(TMP)/browserpass-"$$os"-$(VERSION); \
-	    if [ "$$os" = "windows64" ]; then \
-	        (cd $(TMP) && zip -r ${CURDIR}/dist/browserpass-"$$os"-$(VERSION).zip browserpass-"$$os"-$(VERSION)); \
-	    else \
-	        (cd $(TMP) && tar -cvzf ${CURDIR}/dist/browserpass-"$$os"-$(VERSION).tar.gz browserpass-"$$os"-$(VERSION)); \
-	    fi \
+        (cd $(TMP) && tar -cvzf ${CURDIR}/dist/browserpass-"$$os"-$(VERSION).tar.gz browserpass-"$$os"-$(VERSION)); \
 	done
+
+	# Windows installer
+	mkdir $(TMP)/browserpass-windows64-$(VERSION)
+	cp -a browserpass-windows64.exe browser-files Makefile README.md LICENSE windows-setup.wxs $(TMP)/browserpass-windows64-$(VERSION)
+	(cd $(TMP)/browserpass-windows64-$(VERSION); \
+	make BIN_PATH="$(BIN_PATH_WINDOWS)" configure; \
+	wixl --verbose --arch x64 windows-setup.wxs --output ${CURDIR}/dist/browserpass-windows64-$(VERSION).msi)
 
 	rm -rf $(TMP)
 
@@ -86,12 +91,8 @@ dist: clean browserpass-linux64 browserpass-darwin64 browserpass-openbsd64 brows
 
 .PHONY: configure
 configure:
-	$(SED) -i 's|"path": ".*"|"path": "'"$(BIN_DIR)/$(BIN)"'"|' browser-files/chromium-host.json
-	$(SED) -i 's|"path": ".*"|"path": "'"$(BIN_DIR)/$(BIN)"'"|' browser-files/firefox-host.json
-
-configure-windows:
-	$(SED) -i 's|"path": ".*"|"path": "'"$(WINDOWS_BIN)"'"|' browser-files/chromium-host.json
-	$(SED) -i 's|"path": ".*"|"path": "'"$(WINDOWS_BIN)"'"|' browser-files/firefox-host.json
+	$(SED) -i 's|"path": ".*"|"path": "'"$(BIN_PATH)"'"|' browser-files/chromium-host.json
+	$(SED) -i 's|"path": ".*"|"path": "'"$(BIN_PATH)"'"|' browser-files/firefox-host.json
 
 .PHONY: install
 install:
@@ -359,6 +360,3 @@ policies-brave-user:
 	            ;; \
 	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
-
-setup.msi:
-	wixl --arch x64 setup.wxs
