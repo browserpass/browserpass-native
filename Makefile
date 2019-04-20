@@ -1,5 +1,5 @@
-BIN ?= browserpass
-VERSION ?= $(shell cat .version)
+BIN = browserpass
+VERSION = $(shell cat .version)
 
 PREFIX ?= /usr
 BIN_DIR = $(DESTDIR)$(PREFIX)/bin
@@ -12,12 +12,12 @@ GO_GCFLAGS := "all=-trimpath=${PWD}"
 GO_ASMFLAGS := "all=-trimpath=${PWD}"
 GO_LDFLAGS := "-extldflags ${LDFLAGS}"
 
-APP_ID := com.github.browserpass.native
-OS := $(shell uname -s)
+APP_ID = com.github.browserpass.native
+OS = $(shell uname -s)
 
 # GNU tools
-SED := $(shell which gsed 2>/dev/null || which sed 2>/dev/null)
-INSTALL := $(shell which ginstall 2>/dev/null || which install 2>/dev/null)
+SED = $(shell which gsed 2>/dev/null || which sed 2>/dev/null)
+INSTALL = $(shell which ginstall 2>/dev/null || which install 2>/dev/null)
 
 #######################
 # For local development
