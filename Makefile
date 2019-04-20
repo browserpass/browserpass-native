@@ -7,7 +7,7 @@ LIB_DIR = $(DESTDIR)$(PREFIX)/lib
 SHARE_DIR = $(DESTDIR)$(PREFIX)/share
 
 BIN_PATH = $(BIN_DIR)/$(BIN)
-BIN_PATH_WINDOWS = C:\\\\\\\\Program Files\\\\\\\\Browserpass\\\\\\\\browserpass-windows64.exe
+BIN_PATH_WINDOWS = C:\\\\\\\\\\\\\\\\Program Files\\\\\\\\\\\\\\\\Browserpass\\\\\\\\\\\\\\\\browserpass-windows64.exe
 
 GO_GCFLAGS := "all=-trimpath=${PWD}"
 GO_ASMFLAGS := "all=-trimpath=${PWD}"
