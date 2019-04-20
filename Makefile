@@ -6,7 +6,7 @@ BIN_DIR = $(DESTDIR)$(PREFIX)/bin
 LIB_DIR = $(DESTDIR)$(PREFIX)/lib
 SHARE_DIR = $(DESTDIR)$(PREFIX)/share
 
-WINDOWS_BIN = C:\\\\\\\\Program Files (x86)\\\\\\\\Browserpass\\\\\\\\browserpass-windows64.exe
+WINDOWS_BIN = C:\\\\\\\\Program Files\\\\\\\\Browserpass\\\\\\\\browserpass-windows64.exe
 
 GO_GCFLAGS := "all=-trimpath=${PWD}"
 GO_ASMFLAGS := "all=-trimpath=${PWD}"
@@ -361,4 +361,4 @@ policies-brave-user:
 	esac
 
 setup.msi:
-	wixl setup.wxs
+	wixl --arch x64 setup.wxs
