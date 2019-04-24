@@ -130,7 +130,7 @@ func configure(request *request) {
 			response.SendErrorAndExit(
 				errors.CodeUnreadableDefaultPasswordStoreDefaultSettings,
 				&map[errors.Field]string{
-					errors.FieldMessage:   "Unable to read .browserpas.json of the default password store",
+					errors.FieldMessage:   "Unable to read .browserpass.json of the default password store",
 					errors.FieldAction:    "configure",
 					errors.FieldError:     err.Error(),
 					errors.FieldStorePath: responseData.DefaultStore.Path,
