@@ -107,6 +107,34 @@ install:
 
 # Browser-specific hosts targets
 
+.PHONY: hosts-iridium
+hosts-iridium:
+	@case $(OS) in \
+	Linux)      mkdir -p "/etc/iridium-browser/native-messaging-hosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "/etc/iridium-browser/native-messaging-hosts/$(APP_ID).json"; \
+	            [ -e "/etc/iridium-browser/native-messaging-hosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	Darwin)     mkdir -p "/Library/Application Support/Chromium/NativeMessagingHosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/Chromium/NativeMessagingHosts/$(APP_ID).json"; \
+	            [ -e "/Library/Application Support/Chromium/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
+
+.PHONY: hosts-iridium-user
+hosts-iridium-user:
+	@case $(OS) in \
+	Linux|*BSD) mkdir -p "${HOME}/.config/iridium/NativeMessagingHosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/iridium/NativeMessagingHosts/$(APP_ID).json"; \
+	            [ -e "${HOME}/.config/iridium/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	Darwin)     mkdir -p "${HOME}/Library/Application Support/Chromium/NativeMessagingHosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Chromium/NativeMessagingHosts/$(APP_ID).json"; \
+	            [ -e "${HOME}/Library/Application Support/Chromium/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
+
 .PHONY: hosts-chromium
 hosts-chromium:
 	@case $(OS) in \
