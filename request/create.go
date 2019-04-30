@@ -59,6 +59,20 @@ func createFile(request *request) {
 		)
 	}
 
+	err = gitAddAndCommit(storePath, request.File)
+	if err != nil {
+		response.SendErrorAndExit(
+			errors.CodeUnableToGitCommit,
+			&map[errors.Field]string{
+				errors.FieldMessage: "Could not commit file to git repository",
+				errors.FieldAction:  "create",
+				errors.FieldError:   err.Error(),
+				errors.FieldStoreID: request.StoreID,
+				errors.FieldFile:    request.File,
+			},
+		)
+	}
+
 	response.SendOk(nil)
 }
 
@@ -81,6 +95,28 @@ func encryptContent(storePath, file, content, gpgPath string) error {
 	contentReader := strings.NewReader(content)
 	cmd := exec.Command(gpgPath, gpgOptions...)
 	cmd.Stdin = contentReader
+	cmd.Stderr = &stderr
+
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("Error: %s, Stderr: %s", err.Error(), stderr.String())
+	}
+
+	return nil
+}
+
+func gitAddAndCommit(storePath, file string) error {
+	gitBaseOptions := []string{"-C", storePath}
+
+	var stderr bytes.Buffer
+	cmd := exec.Command("git", append(gitBaseOptions, []string{"add", file}...)...)
+	cmd.Stderr = &stderr
+
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("Error: %s, Stderr: %s", err.Error(), stderr.String())
+	}
+
+	commitMessage := fmt.Sprintf("Add password %s from browserpass", file)
+	cmd = exec.Command("git", append(gitBaseOptions, []string{"commit", "-m", commitMessage}...)...)
 	cmd.Stderr = &stderr
 
 	if err := cmd.Run(); err != nil {
