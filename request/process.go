@@ -27,10 +27,17 @@ type settings struct {
 	Stores  map[string]store `json:"stores"`
 }
 
+type credentials struct {
+	Login    string `json:"login"`
+	Password string `json:"password"`
+	Email    string `json:"email"`
+}
+
 type request struct {
 	Action       string      `json:"action"`
 	Settings     settings    `json:"settings"`
 	File         string      `json:"file"`
+	Credentials  credentials `json:"credentials"`
 	StoreID      string      `json:"storeId"`
 	EchoResponse interface{} `json:"echoResponse"`
 }
@@ -68,6 +75,10 @@ func Process() {
 		listFiles(request)
 	case "fetch":
 		fetchDecryptedContents(request)
+	case "exists":
+		checkFile(request)
+	case "create":
+		createFile(request)
 	case "echo":
 		response.SendRaw(request.EchoResponse)
 	default:
