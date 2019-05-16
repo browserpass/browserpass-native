@@ -158,11 +158,13 @@ If you provided `PREFIX` and/or `DESTDIR` while running `make install`, remember
 | `make hosts-firefox-user`  | Configure browserpass for Firefox browser, for the current user only       |
 | `make hosts-chrome-user`   | Configure browserpass for Google Chrome browser, for the current user only |
 | `make hosts-brave-user`    | Configure browserpass for Brave browser, for the current user only         |
+| `make hosts-iridium-user`  | Configure browserpass for Iridium browser, for the current user only       |
 | `make hosts-vivaldi-user`  | Configure browserpass for Vivaldi browser, for the current user only       |
 | `sudo make hosts-chromium` | Configure browserpass for Chromium browser, system-wide                    |
 | `sudo make hosts-firefox`  | Configure browserpass for Firefox browser, system-wide                     |
 | `sudo make hosts-chrome`   | Configure browserpass for Google Chrome browser, system-wide               |
 | `sudo make hosts-brave`    | Configure browserpass for Brave browser, system-wide                       |
+| `sudo make hosts-iridium`  | Configure browserpass for Iridium browser, system-wide                     |
 | `sudo make hosts-vivaldi`  | Configure browserpass for Vivaldi browser, system-wide                     |
 
 In addition, Chromium-based browsers support the following `make` goals:
@@ -172,10 +174,12 @@ In addition, Chromium-based browsers support the following `make` goals:
 | `make policies-chromium-user` | Automatically install browser extension from Web Store for Chromium browser, for the current user only      |
 | `make policies-chrome-user`   | Automatically install browser extension from Web Store for Google Chrome browser, for the current user only |
 | `make policies-brave-user`    | Automatically install browser extension from Web Store for Brave browser, for the current user only         |
+| `make policies-iridium-user`  | Automatically install browser extension from Web Store for Iridium browser, for the current user only       |
 | `make policies-vivaldi-user`  | Automatically install browser extension from Web Store for Vivaldi browser, for the current user only       |
 | `sudo make policies-chromium` | Automatically install browser extension from Web Store for Chromium browser, system-wide                    |
 | `sudo make policies-chrome`   | Automatically install browser extension from Web Store for Google Chrome browser, system-wide               |
 | `sudo make policies-brave`    | Automatically install browser extension from Web Store for Brave browser, system-wide                       |
+| `sudo make policies-iridium`  | Automatically install browser extension from Web Store for Iridium browser, system-wide                     |
 | `sudo make policies-vivaldi`  | Automatically install browser extension from Web Store for Vivaldi browser, system-wide                     |
 
 ## Building the app
