@@ -114,9 +114,9 @@ hosts-iridium:
 	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "/etc/iridium-browser/native-messaging-hosts/$(APP_ID).json"; \
 	            [ -e "/etc/iridium-browser/native-messaging-hosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
-	Darwin)     mkdir -p "/Library/Application Support/Chromium/NativeMessagingHosts/"; \
-	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/Chromium/NativeMessagingHosts/$(APP_ID).json"; \
-	            [ -e "/Library/Application Support/Chromium/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	Darwin)     mkdir -p "/Library/Application Support/Iridium/NativeMessagingHosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/Iridium/NativeMessagingHosts/$(APP_ID).json"; \
+	            [ -e "/Library/Application Support/Iridium/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
 	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
@@ -128,9 +128,9 @@ hosts-iridium-user:
 	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/iridium/NativeMessagingHosts/$(APP_ID).json"; \
 	            [ -e "${HOME}/.config/iridium/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
-	Darwin)     mkdir -p "${HOME}/Library/Application Support/Chromium/NativeMessagingHosts/"; \
-	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Chromium/NativeMessagingHosts/$(APP_ID).json"; \
-	            [ -e "${HOME}/Library/Application Support/Chromium/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	Darwin)     mkdir -p "${HOME}/Library/Application Support/Iridium/NativeMessagingHosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Iridium/NativeMessagingHosts/$(APP_ID).json"; \
+	            [ -e "${HOME}/Library/Application Support/Iridium/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
 	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
@@ -276,6 +276,35 @@ hosts-firefox-user:
 	esac
 
 # Browser-specific policies targets
+
+
+.PHONY: policies-iridium-user
+policies-iridium-user:
+	@case $(OS) in \
+	Linux|*BSD) mkdir -p "${HOME}/.config/iridium/policies/managed/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/.config/iridium/policies/managed/$(APP_ID).json"; \
+	            [ -e "${HOME}/.config/iridium/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	Darwin)     mkdir -p "${HOME}/Library/Application Support/Iridium/policies/managed/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Iridium/policies/managed/$(APP_ID).json"; \
+	            [ -e "${HOME}/Library/Application Support/Iridium/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
+
+.PHONY: policies-iridium
+policies-iridium:
+	@case $(OS) in \
+	Linux)      mkdir -p "/etc/opt/chrome/policies/managed/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "/etc/opt/chrome/policies/managed/$(APP_ID).json"; \
+	            [ -e "/etc/opt/chrome/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	Darwin)     mkdir -p "/Library/Application Support/Chromium/policies/managed/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "/Library/Application Support/Chromium/policies/managed/$(APP_ID).json"; \
+	            [ -e "/Library/Application Support/Chromium/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
 
 .PHONY: policies-chromium
 policies-chromium:
