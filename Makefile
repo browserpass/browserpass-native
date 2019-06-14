@@ -114,6 +114,10 @@ hosts-chromium:
 	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "/etc/chromium/native-messaging-hosts/$(APP_ID).json"; \
 	            [ -e "/etc/chromium/native-messaging-hosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
+	FreeBSD)    mkdir -p "${PREFIX}/etc/chrome/native-messaging-hosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${PREFIX}/etc/chrome/native-messaging-hosts/$(APP_ID).json"; \
+	            [ -e "${PREFIX}/etc/chrome/native-messaging-hosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
 	Darwin)     mkdir -p "/Library/Application Support/Chromium/NativeMessagingHosts/"; \
 	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/Chromium/NativeMessagingHosts/$(APP_ID).json"; \
 	            [ -e "/Library/Application Support/Chromium/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
