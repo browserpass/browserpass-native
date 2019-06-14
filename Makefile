@@ -254,6 +254,10 @@ hosts-firefox:
 	            ln -sfv "$(LIB_DIR)/browserpass/hosts/firefox/$(APP_ID).json" "/usr/lib/mozilla/native-messaging-hosts/$(APP_ID).json"; \
 	            [ -e "/usr/lib/mozilla/native-messaging-hosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
+	FreeBSD)    mkdir -p "$(LIB_DIR)/mozilla/native-messaging-hosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/firefox/$(APP_ID).json" "${LIB_DIR}/mozilla/native-messaging-hosts/$(APP_ID).json"; \
+	            [ -e "${LIB_DIR}/mozilla/native-messaging-hosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
 	Darwin)     mkdir -p "/Library/Application Support/Mozilla/NativeMessagingHosts/"; \
 	            ln -sfv "$(LIB_DIR)/browserpass/hosts/firefox/$(APP_ID).json" "/Library/Application Support/Mozilla/NativeMessagingHosts/$(APP_ID).json"; \
 	            [ -e "/Library/Application Support/Mozilla/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
