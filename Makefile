@@ -44,6 +44,9 @@ browserpass-freebsd64: *.go **/*.go
 browserpass-windows64: *.go **/*.go
 	env GOOS=windows GOARCH=amd64 go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@.exe
 
+browserpass-windows: *.go **/*.go
+	env GOOS=windows GOARCH=386 go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@.exe
+
 .PHONY: test
 test:
 	go test ./...
