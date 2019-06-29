@@ -251,6 +251,34 @@ hosts-iridium-user:
 	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
+.PHONY: hosts-slimjet
+hosts-slimjet:
+	@case $(OS) in \
+	Linux)      mkdir -p "/etc/opt/slimjet/native-messaging-hosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "/etc/opt/slimjet/native-messaging-hosts/$(APP_ID).json"; \
+	            [ -e "/etc/opt/slimjet/native-messaging-hosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	Darwin)     mkdir -p "/Library/Application Support/Slimjet/NativeMessagingHosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/Slimjet/NativeMessagingHosts/$(APP_ID).json"; \
+	            [ -e "/Library/Application Support/Slimjet/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
+
+.PHONY: hosts-slimjet-user
+hosts-slimjet-user:
+	@case $(OS) in \
+	Linux|*BSD) mkdir -p "${HOME}/.config/slimject/NativeMessagingHosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/slimject/NativeMessagingHosts/$(APP_ID).json"; \
+	            [ -e "${HOME}/.config/slimject/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	Darwin)     mkdir -p "${HOME}/Library/Application Support/Slimjet/NativeMessagingHosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Slimjet/NativeMessagingHosts/$(APP_ID).json"; \
+	            [ -e "${HOME}/Library/Application Support/Slimjet/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
+
 .PHONY: hosts-firefox
 hosts-firefox:
 	@case $(OS) in \
@@ -417,6 +445,34 @@ policies-iridium-user:
 	Darwin)     mkdir -p "${HOME}/Library/Application Support/Iridium/policies/managed/"; \
 	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Iridium/policies/managed/$(APP_ID).json"; \
 	            [ -e "${HOME}/Library/Application Support/Iridium/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
+
+.PHONY: policies-slimjet
+policies-slimjet:
+	@case $(OS) in \
+	Linux)      mkdir -p "/etc/opt/slimjet/policies/managed/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "/etc/opt/slimjet/policies/managed/$(APP_ID).json"; \
+	            [ -e "/etc/opt/slimjet/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	Darwin)     mkdir -p "/Library/Application Support/Slimjet/policies/managed/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "/Library/Application Support/Slimjet/policies/managed/$(APP_ID).json"; \
+	            [ -e "/Library/Application Support/Slimjet/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
+
+.PHONY: policies-slimjet-user
+policies-slimjet-user:
+	@case $(OS) in \
+	Linux|*BSD) mkdir -p "${HOME}/.config/slimjet/policies/managed/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/.config/slimjet/policies/managed/$(APP_ID).json"; \
+	            [ -e "${HOME}/.config/slimjet/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	Darwin)     mkdir -p "${HOME}/Library/Application Support/Slimjet/policies/managed/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Slimjet/policies/managed/$(APP_ID).json"; \
+	            [ -e "${HOME}/Library/Application Support/Slimjet/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
 	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
