@@ -5,6 +5,7 @@ PREFIX ?= /usr
 BIN_DIR = $(DESTDIR)$(PREFIX)/bin
 LIB_DIR = $(DESTDIR)$(PREFIX)/lib
 SHARE_DIR = $(DESTDIR)$(PREFIX)/share
+XDG_CONFIG_HOME ?= $(HOME)/.config
 
 BIN_PATH = $(BIN_DIR)/$(BIN)
 BIN_PATH_WINDOWS = C:\\\\\\\\\\\\\\\\Program Files\\\\\\\\\\\\\\\\Browserpass\\\\\\\\\\\\\\\\browserpass-windows64.exe
@@ -127,9 +128,9 @@ hosts-chromium:
 .PHONY: hosts-chromium-user
 hosts-chromium-user:
 	@case $(OS) in \
-	Linux|*BSD) mkdir -p "${HOME}/.config/chromium/NativeMessagingHosts/"; \
-	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/chromium/NativeMessagingHosts/$(APP_ID).json"; \
-	            [ -e "${HOME}/.config/chromium/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	Linux|*BSD) mkdir -p "$(XDG_CONFIG_HOME)/chromium/NativeMessagingHosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "$(XDG_CONFIG_HOME)/chromium/NativeMessagingHosts/$(APP_ID).json"; \
+	            [ -e "$(XDG_CONFIG_HOME)/chromium/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
 	Darwin)     mkdir -p "${HOME}/Library/Application Support/Chromium/NativeMessagingHosts/"; \
 	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Chromium/NativeMessagingHosts/$(APP_ID).json"; \
@@ -155,9 +156,9 @@ hosts-chrome:
 .PHONY: hosts-chrome-user
 hosts-chrome-user:
 	@case $(OS) in \
-	Linux|*BSD) mkdir -p "${HOME}/.config/google-chrome/NativeMessagingHosts/"; \
-	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/google-chrome/NativeMessagingHosts/$(APP_ID).json"; \
-	            [ -e "${HOME}/.config/google-chrome/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	Linux|*BSD) mkdir -p "$(XDG_CONFIG_HOME)/google-chrome/NativeMessagingHosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "$(XDG_CONFIG_HOME)/google-chrome/NativeMessagingHosts/$(APP_ID).json"; \
+	            [ -e "$(XDG_CONFIG_HOME)/google-chrome/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
 	Darwin)     mkdir -p "${HOME}/Library/Application Support/Google/Chrome/NativeMessagingHosts/"; \
 	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Google/Chrome/NativeMessagingHosts/$(APP_ID).json"; \
@@ -183,9 +184,9 @@ hosts-vivaldi:
 .PHONY: hosts-vivaldi-user
 hosts-vivaldi-user:
 	@case $(OS) in \
-	Linux|*BSD) mkdir -p "${HOME}/.config/vivaldi/NativeMessagingHosts/"; \
-	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/vivaldi/NativeMessagingHosts/$(APP_ID).json"; \
-	            [ -e "${HOME}/.config/vivaldi/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	Linux|*BSD) mkdir -p "$(XDG_CONFIG_HOME)/vivaldi/NativeMessagingHosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "$(XDG_CONFIG_HOME)/vivaldi/NativeMessagingHosts/$(APP_ID).json"; \
+	            [ -e "$(XDG_CONFIG_HOME)/vivaldi/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
 	Darwin)     mkdir -p "${HOME}/Library/Application Support/Vivaldi/NativeMessagingHosts/"; \
 	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Vivaldi/NativeMessagingHosts/$(APP_ID).json"; \
@@ -211,9 +212,9 @@ hosts-brave:
 .PHONY: hosts-brave-user
 hosts-brave-user:
 	@case $(OS) in \
-	Linux|*BSD) mkdir -p "${HOME}/.config/BraveSoftware/Brave-Browser/NativeMessagingHosts/"; \
-	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/BraveSoftware/Brave-Browser/NativeMessagingHosts/$(APP_ID).json"; \
-	            [ -e "${HOME}/.config/BraveSoftware/Brave-Browser/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	Linux|*BSD) mkdir -p "$(XDG_CONFIG_HOME)/BraveSoftware/Brave-Browser/NativeMessagingHosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "$(XDG_CONFIG_HOME)/BraveSoftware/Brave-Browser/NativeMessagingHosts/$(APP_ID).json"; \
+	            [ -e "$(XDG_CONFIG_HOME)/BraveSoftware/Brave-Browser/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
 	Darwin)     mkdir -p "${HOME}/Library/Application Support/Google/Chrome/NativeMessagingHosts/"; \
 	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Google/Chrome/NativeMessagingHosts/$(APP_ID).json"; \
@@ -239,9 +240,9 @@ hosts-iridium:
 .PHONY: hosts-iridium-user
 hosts-iridium-user:
 	@case $(OS) in \
-	Linux|*BSD) mkdir -p "${HOME}/.config/iridium/NativeMessagingHosts/"; \
-	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/.config/iridium/NativeMessagingHosts/$(APP_ID).json"; \
-	            [ -e "${HOME}/.config/iridium/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	Linux|*BSD) mkdir -p "$(XDG_CONFIG_HOME)/iridium/NativeMessagingHosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "$(XDG_CONFIG_HOME)/iridium/NativeMessagingHosts/$(APP_ID).json"; \
+	            [ -e "$(XDG_CONFIG_HOME)/iridium/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
 	Darwin)     mkdir -p "${HOME}/Library/Application Support/Iridium/NativeMessagingHosts/"; \
 	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Iridium/NativeMessagingHosts/$(APP_ID).json"; \
@@ -297,9 +298,9 @@ policies-chromium:
 .PHONY: policies-chromium-user
 policies-chromium-user:
 	@case $(OS) in \
-	Linux|*BSD) mkdir -p "${HOME}/.config/chromium/policies/managed/"; \
-	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/.config/chromium/policies/managed/$(APP_ID).json"; \
-	            [ -e "${HOME}/.config/chromium/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	Linux|*BSD) mkdir -p "$(XDG_CONFIG_HOME)/chromium/policies/managed/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "$(XDG_CONFIG_HOME)/chromium/policies/managed/$(APP_ID).json"; \
+	            [ -e "$(XDG_CONFIG_HOME)/chromium/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
 	Darwin)     mkdir -p "${HOME}/Library/Application Support/Chromium/policies/managed/"; \
 	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Chromium/policies/managed/$(APP_ID).json"; \
@@ -325,9 +326,9 @@ policies-chrome:
 .PHONY: policies-chrome-user
 policies-chrome-user:
 	@case $(OS) in \
-	Linux|*BSD) mkdir -p "${HOME}/.config/google-chrome/policies/managed/"; \
-	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/.config/google-chrome/policies/managed/$(APP_ID).json"; \
-	            [ -e "${HOME}/.config/google-chrome/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	Linux|*BSD) mkdir -p "$(XDG_CONFIG_HOME)/google-chrome/policies/managed/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "$(XDG_CONFIG_HOME)/google-chrome/policies/managed/$(APP_ID).json"; \
+	            [ -e "$(XDG_CONFIG_HOME)/google-chrome/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
 	Darwin)     mkdir -p "${HOME}/Library/Application Support/Google/Chrome/policies/managed/"; \
 	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Google/Chrome/policies/managed/$(APP_ID).json"; \
@@ -353,9 +354,9 @@ policies-vivaldi:
 .PHONY: policies-vivaldi-user
 policies-vivaldi-user:
 	@case $(OS) in \
-	Linux|*BSD) mkdir -p "${HOME}/.config/vivaldi/policies/managed/"; \
-	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/.config/vivaldi/policies/managed/$(APP_ID).json"; \
-	            [ -e "${HOME}/.config/vivaldi/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	Linux|*BSD) mkdir -p "$(XDG_CONFIG_HOME)/vivaldi/policies/managed/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "$(XDG_CONFIG_HOME)/vivaldi/policies/managed/$(APP_ID).json"; \
+	            [ -e "$(XDG_CONFIG_HOME)/vivaldi/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
 	Darwin)     mkdir -p "${HOME}/Library/Application Support/Vivaldi/policies/managed/"; \
 	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Vivaldi/policies/managed/$(APP_ID).json"; \
@@ -381,9 +382,9 @@ policies-brave:
 .PHONY: policies-brave-user
 policies-brave-user:
 	@case $(OS) in \
-	Linux|*BSD) mkdir -p "${HOME}/.config/BraveSoftware/Brave-Browser/policies/managed/"; \
-	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/.config/BraveSoftware/Brave-Browser/policies/managed/$(APP_ID).json"; \
-	            [ -e "${HOME}/.config/BraveSoftware/Brave-Browser/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	Linux|*BSD) mkdir -p "$(XDG_CONFIG_HOME)/BraveSoftware/Brave-Browser/policies/managed/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "$(XDG_CONFIG_HOME)/BraveSoftware/Brave-Browser/policies/managed/$(APP_ID).json"; \
+	            [ -e "$(XDG_CONFIG_HOME)/BraveSoftware/Brave-Browser/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
 	Darwin)     mkdir -p "${HOME}/Library/Application Support/Google/Chrome/policies/managed/"; \
 	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Google/Chrome/policies/managed/$(APP_ID).json"; \
@@ -409,9 +410,9 @@ policies-iridium:
 .PHONY: policies-iridium-user
 policies-iridium-user:
 	@case $(OS) in \
-	Linux|*BSD) mkdir -p "${HOME}/.config/iridium/policies/managed/"; \
-	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/.config/iridium/policies/managed/$(APP_ID).json"; \
-	            [ -e "${HOME}/.config/iridium/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	Linux|*BSD) mkdir -p "$(XDG_CONFIG_HOME)/iridium/policies/managed/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "$(XDG_CONFIG_HOME)/iridium/policies/managed/$(APP_ID).json"; \
+	            [ -e "$(XDG_CONFIG_HOME)/iridium/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
 	Darwin)     mkdir -p "${HOME}/Library/Application Support/Iridium/policies/managed/"; \
 	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Iridium/policies/managed/$(APP_ID).json"; \
