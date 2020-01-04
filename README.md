@@ -10,6 +10,7 @@ This is a host application for [browserpass](https://github.com/browserpass/brow
     -   [Install via package manager](#install-via-package-manager)
     -   [Install manually](#install-manually)
         -   [Install on Nix / NixOS](#install-on-nix--nixos)
+        -   [Install on Windows](#install-on-windows)
         -   [Install on Windows through WSL](#install-on-windows-through-wsl)
     -   [Configure browsers](#configure-browsers)
 -   [Building the app](#building-the-app)
@@ -61,8 +62,6 @@ gpg:                 aka ...
 Primary key fingerprint: EB4F 9E5A 60D3 2232 BB52  150C 12C8 7A28 FEAC 6B20
      Subkey fingerprint: 8053 EB88 879A 68CB 4873  D32B 011F DC52 DA83 9335
 ```
-
-If you are on Windows, just run the installer, it will install all the necessary files in `C:\Program Files\Browserpass` and it will also [configure browsers](#configure-browsers). You are done!
 
 Unpack the archive. If you decided to compile the application yourself, refer to the [Building the app](#building-the-app) section on how to do so. Once complete, continue with the steps below.
 
@@ -119,18 +118,22 @@ $ nix-env -iA nixpkgs.browserpass # Or nix-env -iA nixos.browserpass on NixOS
 $ DESTDIR=~/.nix-profile make -f ~/.nix-profile/lib/browserpass/Makefile <desired make goal>
 ```
 
+#### Install on Windows
+Download [the latest Github release](https://github.com/browserpass/browserpass-native/releases/latest) for `windows64`.
+
+Run the installer, it will install all the necessary files in `C:\Program Files\Browserpass` and it will also [configure browsers](#configure-browsers).
+
 #### Install on Windows through WSL
 
-If you want to use WSL instead, follow Linux installation steps, then create `%localappdata%\Browserpass\browserpass-wsl.bat` with the following contents:
-
+If you want to use WSL instead
+1) Follow the [installation](#installation) steps for the WSL distribution you are using. There is no need to configure the browser as your browser does not run in WSL.
+2) Follow the then [installation](#install-on-windows) steps for installing on Windows.
+3) Create `C:\Program Files\Browserpass\browserpass-wsl.bat` with the following contents:
 ```
 @echo off
 bash -c "/usr/bin/browserpass-linux64 2>/dev/null"
 ```
-
-Then edit the hosts json files (in our example `C:\Program Files\Browserpass\browser-files\*-host.json`) and replace `%%replace%%` with a full path to `browserpass-wsl.bat` you've just created.
-
-Finally proceed to the [Configure browsers on Windows](#configure-browsers-on-windows) section.
+4) Edit the hosts json files (in our example `C:\Program Files\Browserpass\browser-files\*-host.json`) and replace `browserpass-windows64.exe` with `browserpass-wsl.bat` you've just created.
 
 Remember to check [Hints for configuring gpg](#hints-for-configuring-gpg) on how to configure pinentry to unlock your PGP key.
 
