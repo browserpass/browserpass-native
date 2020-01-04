@@ -10,6 +10,7 @@ This is a host application for [browserpass](https://github.com/browserpass/brow
     -   [Install via package manager](#install-via-package-manager)
     -   [Install manually](#install-manually)
         -   [Install on Nix / NixOS](#install-on-nix--nixos)
+        -   [Install on Windows](#install-on-windows)
         -   [Install on Windows through WSL](#install-on-windows-through-wsl)
     -   [Configure browsers](#configure-browsers)
 -   [Building the app](#building-the-app)
@@ -125,7 +126,7 @@ Run the installer, it will install all the necessary files in `C:\Program Files\
 #### Install on Windows through WSL
 
 If you want to use WSL instead
-1) Follow the [installation](#installation) steps for the WSL distrobution you are using. There is no need to configure the browswer as your browser does not run in WSL.
+1) Follow the [installation](#installation) steps for the WSL distribution you are using. There is no need to configure the browser as your browser does not run in WSL.
 2) Follow the then [installation](#install-on-windows) steps for installing on Windows.
 3) Create `C:\Program Files\Browserpass\browserpass-wsl.bat` with the following contents:
 ```
