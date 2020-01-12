@@ -18,7 +18,7 @@ This is a host application for [browserpass](https://github.com/browserpass/brow
     -   [Build using Docker](#build-using-docker)
 -   [Updates](#updates)
 -   [FAQ](#faq)
-    -   [Hints for configuring gpg](#hints-for-configuring-gpg)
+    -   [Error: Unable to fetch and parse login fields](#error-unable-to-fetch-and-parse-login-fields)
 -   [Contributing](#contributing)
 
 ## Installation
@@ -239,20 +239,29 @@ If you installed manually, repeat the steps in the [Install manually](#install-m
 
 ## FAQ
 
-### Hints for configuring gpg
+### Error: Unable to fetch and parse login fields
 
-First make sure `gpg` and some `pinentry` are installed.
+If you can see passwords, but unable to fill forms or copy credentials, you likely have issues with your `gpg` setup.
+
+First things first, make sure that `gpg` and some GUI `pinentry` are installed.
 
 -   on macOS many people succeeded with `pinentry-mac`
+-   on Linux [users report](https://github.com/browserpass/browserpass-extension/issues/155) that `pinentry-gnome3` does not work well with GNOME 3 and Firefox, use e.g. `pinentry-gtk-2`
 -   on Windows WSL people succeded with [pinentry-wsl-ps1](https://github.com/diablodale/pinentry-wsl-ps1)
 
-Then ensure that `gpg-agent` process is actually running, if not you need to investigate how to enable it.
+`pinentry` is the application that asks you your password to unlock PGP key when you for example use `pass`.
+
+The selected `pinentry` **must have GUI**, console-based (like `pinentry-tty` or `pinentry-curses`) **are not supported** (unless you know what you are doing).
+
+Ensure that `gpg-agent` process is actually running, if not you need to investigate how to enable it.
 
 Finally configure a GUI pinentry program in `~/.gnupg/gpg-agent.conf`:
 
 ```
 pinentry-program /full/path/to/pinentry
 ```
+
+You will need to restart `gpg-agent` using: `$ gpgconf --kill gpg-agent`
 
 If Browserpass is unable to locate the proper `gpg` binary, try configuring a full path to your `gpg` in the browser extension settings or in `.browserpass.json` file in the root of your password store:
 
