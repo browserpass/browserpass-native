@@ -19,6 +19,7 @@ This is a host application for [browserpass](https://github.com/browserpass/brow
 -   [Updates](#updates)
 -   [FAQ](#faq)
     -   [Error: Unable to fetch and parse login fields](#error-unable-to-fetch-and-parse-login-fields)
+-   [Uninstallation](#uninstallation)
 -   [Contributing](#contributing)
 
 ## Installation
@@ -270,6 +271,12 @@ If Browserpass is unable to locate the proper `gpg` binary, try configuring a fu
     "gpgPath": "/full/path/to/gpg"
 }
 ```
+
+## Uninstallation
+
+If you installed Browserpass via a package manager, uninstalling the package will hopefully do all the necessary cleanup.
+
+For manual installations, uninstallation procedure basically consists of following the steps you ran in Makefile in reverse.
 
 ## Contributing
 
