@@ -33,6 +33,9 @@ browserpass: *.go **/*.go
 browserpass-linux64: *.go **/*.go
 	env GOOS=linux GOARCH=amd64 go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@
 
+browserpass-arm64: *.go **/*.go
+	env GOOS=linux GOARCH=arm64 go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@
+
 browserpass-darwin64: *.go **/*.go
 	env GOOS=darwin GOARCH=amd64 go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@
 
@@ -61,7 +64,7 @@ clean:
 	rm -rf dist
 
 .PHONY: dist
-dist: clean browserpass-linux64 browserpass-darwin64 browserpass-openbsd64 browserpass-freebsd64 browserpass-windows64
+dist: clean browserpass-linux64 browserpass-arm64 browserpass-darwin64 browserpass-openbsd64 browserpass-freebsd64 browserpass-windows64
 	mkdir -p dist
 
 	git archive -o dist/browserpass-native-$(VERSION).tar.gz --format tar.gz --prefix=browserpass-native-$(VERSION)/ $(VERSION)
@@ -69,7 +72,7 @@ dist: clean browserpass-linux64 browserpass-darwin64 browserpass-openbsd64 brows
 	$(eval TMP := $(shell mktemp -d))
 
 	# Unix installers
-	for os in linux64 darwin64 openbsd64 freebsd64; do \
+	for os in linux64 arm64 darwin64 openbsd64 freebsd64; do \
 	    mkdir $(TMP)/browserpass-"$$os"-$(VERSION); \
 	    cp -a browserpass-"$$os"* browser-files Makefile README.md LICENSE $(TMP)/browserpass-"$$os"-$(VERSION); \
         (cd $(TMP) && tar -cvzf ${CURDIR}/dist/browserpass-"$$os"-$(VERSION).tar.gz browserpass-"$$os"-$(VERSION)); \
