@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='windows-1252'?>
 <Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
-  <Product Name='Browserpass' Id='ABCDDCBA-86C7-4D14-AEC0-86416A69ABDE' UpgradeCode='ABCDDCBA-7349-453F-94F6-BCB5110BA4FD' Language='1033' Codepage='1252' Version='3.0.6' Manufacturer='Browserpass'>
+  <Product Name='Browserpass' Id='ABCDDCBA-86C7-4D14-AEC0-86416A69ABDE' UpgradeCode='ABCDDCBA-7349-453F-94F6-BCB5110BA4FD' Language='1033' Codepage='1252' Version='3.0.7' Manufacturer='Browserpass'>
 
     <Package Id='*' Keywords='Installer' Manufacturer='Browserpass' InstallerVersion='200' Languages='1033' Compressed='yes' SummaryCodepage='1252' />
     <Media Id='1' Cabinet='Sample.cab' EmbedCab='yes' DiskPrompt="CD-ROM #1" />
