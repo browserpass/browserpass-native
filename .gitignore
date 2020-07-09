@@ -1,3 +1,4 @@
 /browserpass
 /browserpass-*
-dist/
+dist
+vendor

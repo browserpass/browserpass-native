@@ -10,9 +10,11 @@ XDG_CONFIG_HOME ?= $(HOME)/.config
 BIN_PATH = $(BIN_DIR)/$(BIN)
 BIN_PATH_WINDOWS = C:\\\\\\\\\\\\\\\\Program Files\\\\\\\\\\\\\\\\Browserpass\\\\\\\\\\\\\\\\browserpass-windows64.exe
 
-GO_GCFLAGS := "all=-trimpath=${PWD}"
-GO_ASMFLAGS := "all=-trimpath=${PWD}"
-GO_LDFLAGS := "-extldflags ${LDFLAGS}"
+export CGO_CPPFLAGS := ${CPPFLAGS}
+export CGO_CFLAGS := ${CFLAGS}
+export CGO_CXXFLAGS := ${CXXFLAGS}
+export CGO_LDFLAGS := ${LDFLAGS}
+GOFLAGS := -buildmode=pie -trimpath
 
 APP_ID = com.github.browserpass.native
 OS = $(shell uname -s)
@@ -28,28 +30,28 @@ INSTALL = $(shell which ginstall 2>/dev/null || which install 2>/dev/null)
 all: browserpass test
 
 browserpass: *.go **/*.go
-	go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@
+	env GOFLAGS="$(GOFLAGS)" go build -o $@
 
 browserpass-linux64: *.go **/*.go
-	env GOOS=linux GOARCH=amd64 go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@
+	env GOOS=linux GOARCH=amd64 go build -o $@
 
 browserpass-arm64: *.go **/*.go
-	env GOOS=linux GOARCH=arm64 go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@
+	env GOOS=linux GOARCH=arm64 go build -o $@
 
 browserpass-darwin64: *.go **/*.go
-	env GOOS=darwin GOARCH=amd64 go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@
+	env GOOS=darwin GOARCH=amd64 go build -o $@
 
 browserpass-openbsd64: *.go **/*.go
-	env GOOS=openbsd GOARCH=amd64 go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@
+	env GOOS=openbsd GOARCH=amd64 go build -o $@
 
 browserpass-freebsd64: *.go **/*.go
-	env GOOS=freebsd GOARCH=amd64 go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@
+	env GOOS=freebsd GOARCH=amd64 go build -o $@
 
 browserpass-windows64: *.go **/*.go
-	env GOOS=windows GOARCH=amd64 go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@.exe
+	env GOOS=windows GOARCH=amd64 go build -o $@.exe
 
 browserpass-windows: *.go **/*.go
-	env GOOS=windows GOARCH=386 go build -ldflags $(GO_LDFLAGS) -gcflags $(GO_GCFLAGS) -asmflags $(GO_ASMFLAGS) -o $@.exe
+	env GOOS=windows GOARCH=386 go build -o $@.exe
 
 .PHONY: test
 test:
@@ -58,24 +60,31 @@ test:
 #######################
 # For official releases
 
+.PHONY: vendor
+vendor:
+	go mod tidy
+	go mod vendor
+
 .PHONY: clean
 clean:
 	rm -f browserpass browserpass-*
 	rm -rf dist
+	rm -rf vendor
 
 .PHONY: dist
-dist: clean browserpass-linux64 browserpass-arm64 browserpass-darwin64 browserpass-openbsd64 browserpass-freebsd64 browserpass-windows64
-	mkdir -p dist
-
-	git archive -o dist/browserpass-native-$(VERSION).tar.gz --format tar.gz --prefix=browserpass-native-$(VERSION)/ $(VERSION)
-
+dist: clean vendor browserpass-linux64 browserpass-arm64 browserpass-darwin64 browserpass-openbsd64 browserpass-freebsd64 browserpass-windows64
 	$(eval TMP := $(shell mktemp -d))
+
+	# Full source code
+	mkdir "$(TMP)/browserpass-native-$(VERSION)"
+	cp -r * "$(TMP)/browserpass-native-$(VERSION)"
+	(cd "$(TMP)" && tar -cvzf "browserpass-native-$(VERSION)-src.tar.gz" "browserpass-native-$(VERSION)")
 
 	# Unix installers
 	for os in linux64 arm64 darwin64 openbsd64 freebsd64; do \
 	    mkdir $(TMP)/browserpass-"$$os"-$(VERSION); \
 	    cp -a browserpass-"$$os"* browser-files Makefile README.md LICENSE $(TMP)/browserpass-"$$os"-$(VERSION); \
-        (cd $(TMP) && tar -cvzf ${CURDIR}/dist/browserpass-"$$os"-$(VERSION).tar.gz browserpass-"$$os"-$(VERSION)); \
+        (cd $(TMP) && tar -cvzf browserpass-"$$os"-$(VERSION).tar.gz browserpass-"$$os"-$(VERSION)); \
 	done
 
 	# Windows installer
@@ -83,14 +92,17 @@ dist: clean browserpass-linux64 browserpass-arm64 browserpass-darwin64 browserpa
 	cp -a browserpass-windows64.exe browser-files Makefile README.md LICENSE windows-setup.wxs $(TMP)/browserpass-windows64-$(VERSION)
 	(cd $(TMP)/browserpass-windows64-$(VERSION); \
 	make BIN_PATH="$(BIN_PATH_WINDOWS)" configure; \
-	wixl --verbose --arch x64 windows-setup.wxs --output ${CURDIR}/dist/browserpass-windows64-$(VERSION).msi)
+	wixl --verbose --arch x64 windows-setup.wxs --output ../browserpass-windows64-$(VERSION).msi)
 
-	rm -rf $(TMP)
+	mkdir -p dist
+	mv "$(TMP)/"*.tar.gz "$(TMP)/"*.msi dist
+	git archive -o dist/browserpass-native-$(VERSION).tar.gz --format tar.gz --prefix=browserpass-native-$(VERSION)/ $(VERSION)
 
 	for file in dist/*; do \
 	    gpg --detach-sign --armor "$$file"; \
 	done
 
+	rm -rf $(TMP)
 	rm -f dist/browserpass-native-$(VERSION).tar.gz
 
 #######################
