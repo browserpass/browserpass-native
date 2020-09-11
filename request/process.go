@@ -73,6 +73,8 @@ func Process() {
 		fetchDecryptedContents(request)
 	case "save":
 		saveEncryptedContents(request)
+	case "delete":
+		deleteFile(request)
 	case "echo":
 		response.SendRaw(request.EchoResponse)
 	default:
