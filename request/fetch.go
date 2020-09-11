@@ -1,14 +1,11 @@
 package request
 
 import (
-	"bytes"
-	"fmt"
-	"os"
-	"os/exec"
 	"path/filepath"
 	"strings"
 
 	"github.com/browserpass/browserpass-native/errors"
+	"github.com/browserpass/browserpass-native/helpers"
 	"github.com/browserpass/browserpass-native/response"
 	log "github.com/sirupsen/logrus"
 )
@@ -71,7 +68,7 @@ func fetchDecryptedContents(request *request) {
 		} else {
 			gpgPath = store.Settings.GpgPath
 		}
-		err = validateGpgBinary(gpgPath)
+		err = helpers.ValidateGpgBinary(gpgPath)
 		if err != nil {
 			log.Errorf(
 				"The provided gpg binary path '%v' is invalid: %+v",
@@ -88,7 +85,7 @@ func fetchDecryptedContents(request *request) {
 			)
 		}
 	} else {
-		gpgPath, err = detectGpgBinary()
+		gpgPath, err = helpers.DetectGpgBinary()
 		if err != nil {
 			log.Error("Unable to detect the location of the gpg binary: ", err)
 			response.SendErrorAndExit(
@@ -102,7 +99,7 @@ func fetchDecryptedContents(request *request) {
 		}
 	}
 
-	responseData.Contents, err = decryptFile(&store, request.File, gpgPath)
+	responseData.Contents, err = helpers.GpgDecryptFile(filepath.Join(store.Path, request.File), gpgPath)
 	if err != nil {
 		log.Errorf(
 			"Unable to decrypt the password file '%v' in the password store '%+v': %+v",
@@ -123,47 +120,4 @@ func fetchDecryptedContents(request *request) {
 	}
 
 	response.SendOk(responseData)
-}
-
-func detectGpgBinary() (string, error) {
-	// Look in $PATH first, then check common locations - the first successful result wins
-	gpgBinaryPriorityList := []string{
-		"gpg2", "gpg",
-		"/bin/gpg2", "/usr/bin/gpg2", "/usr/local/bin/gpg2",
-		"/bin/gpg", "/usr/bin/gpg", "/usr/local/bin/gpg",
-	}
-
-	for _, binary := range gpgBinaryPriorityList {
-		err := validateGpgBinary(binary)
-		if err == nil {
-			return binary, nil
-		}
-	}
-	return "", fmt.Errorf("Unable to detect the location of the gpg binary to use")
-}
-
-func validateGpgBinary(gpgPath string) error {
-	return exec.Command(gpgPath, "--version").Run()
-}
-
-func decryptFile(store *store, file string, gpgPath string) (string, error) {
-	passwordFilePath := filepath.Join(store.Path, file)
-	passwordFile, err := os.Open(passwordFilePath)
-	if err != nil {
-		return "", err
-	}
-
-	var stdout, stderr bytes.Buffer
-	gpgOptions := []string{"--decrypt", "--yes", "--quiet", "--batch", "-"}
-
-	cmd := exec.Command(gpgPath, gpgOptions...)
-	cmd.Stdin = passwordFile
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-
-	if err := cmd.Run(); err != nil {
-		return "", fmt.Errorf("Error: %s, Stderr: %s", err.Error(), stderr.String())
-	}
-
-	return stdout.String(), nil
 }
