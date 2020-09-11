@@ -66,6 +66,8 @@ func Process() {
 		configure(request)
 	case "list":
 		listFiles(request)
+	case "tree":
+		listDirectories(request)
 	case "fetch":
 		fetchDecryptedContents(request)
 	case "echo":

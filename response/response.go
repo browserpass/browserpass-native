@@ -52,6 +52,18 @@ func MakeListResponse() *ListResponse {
 	}
 }
 
+// TreeResponse a response format for the "tree" request
+type TreeResponse struct {
+	Directories map[string][]string `json:"directories"`
+}
+
+// MakeTreeResponse initializes an empty tree response
+func MakeTreeResponse() *TreeResponse {
+	return &TreeResponse{
+		Directories: make(map[string][]string),
+	}
+}
+
 // FetchResponse a response format for the "fetch" request
 type FetchResponse struct {
 	Contents string `json:"contents"`
