@@ -31,6 +31,7 @@ type request struct {
 	Action       string      `json:"action"`
 	Settings     settings    `json:"settings"`
 	File         string      `json:"file"`
+	Contents     string      `json:"contents"`
 	StoreID      string      `json:"storeId"`
 	EchoResponse interface{} `json:"echoResponse"`
 }
@@ -70,6 +71,8 @@ func Process() {
 		listDirectories(request)
 	case "fetch":
 		fetchDecryptedContents(request)
+	case "save":
+		saveEncryptedContents(request)
 	case "echo":
 		response.SendRaw(request.EchoResponse)
 	default:
