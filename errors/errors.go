@@ -28,8 +28,11 @@ const (
 	CodeUnableToListDirectoriesInPasswordStore                Code = 25
 	CodeUnableToDetermineRelativeDirectoryPathInPasswordStore Code = 26
 	CodeEmptyContents                                         Code = 27
-	CodeUnableToDetectGpgRecipients                           Code = 28
+	CodeUnableToDetermineGpgRecipients                        Code = 28
 	CodeUnableToEncryptPasswordFile                           Code = 29
+	CodeUnableToDeletePasswordFile                            Code = 30
+	CodeUnableToDetermineIsDirectoryEmpty                     Code = 31
+	CodeUnableToDeleteEmptyDirectory                          Code = 32
 )
 
 // Field extra field in the error response params

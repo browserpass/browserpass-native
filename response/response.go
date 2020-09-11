@@ -83,6 +83,15 @@ func MakeSaveResponse() *SaveResponse {
 	return &SaveResponse{}
 }
 
+// DeleteResponse a response format for the "delete" request
+type DeleteResponse struct {
+}
+
+// MakeDeleteResponse initializes an empty delete response
+func MakeDeleteResponse() *DeleteResponse {
+	return &DeleteResponse{}
+}
+
 // SendOk sends a success response to the browser extension in the predefined json format
 func SendOk(data interface{}) {
 	SendRaw(&okResponse{

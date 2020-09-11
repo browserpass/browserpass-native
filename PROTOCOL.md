@@ -60,6 +60,12 @@ should be supplied as a `message` parameter.
 | 24   | Unable to decrypt the password file                                     | message, action, error, storeId, storePath, storeName, file      |
 | 25   | Unable to list directories in a password store                          | message, action, error, storeId, storePath, storeName            |
 | 26   | Unable to determine a relative path for a directory in a password store | message, action, error, storeId, storePath, storeName, directory |
+| 27   | The entry contents is missing                                           | message, action                                                  |
+| 28   | Unable to determine the recepients for the gpg encryption               | message, action, error, storeId, storePath, storeName, file      |
+| 29   | Unable to encrypt the password file                                     | message, action, error, storeId, storePath, storeName, file      |
+| 30   | Unable to delete the password file                                      | message, action, error, storeId, storePath, storeName, file      |
+| 31   | Unable to determine if directory is empty and can be deleted            | message, action, error, storeId, storePath, storeName, directory |
+| 32   | Unable to delete the empty directory                                    | message, action, error, storeId, storePath, storeName, directory |
 
 ## Settings
 
@@ -228,6 +234,30 @@ Encrypt the given contents and save to a specific file.
     "storeId": "<storeId>",
     "file": "relative/path/to/file.gpg",
     "contents": "<contents to encrypt and save>"
+}
+```
+
+#### Response
+
+```
+{
+    "status": "ok",
+    "version": <int>
+}
+```
+
+### Delete
+
+Delete a specific file and empty parent directories caused by the deletion, if any.
+
+#### Request
+
+```
+{
+    "settings": <settings object>,
+    "action": "delete",
+    "storeId": "<storeId>",
+    "file": "relative/path/to/file.gpg"
 }
 ```
 

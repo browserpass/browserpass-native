@@ -26,11 +26,11 @@ func saveEncryptedContents(request *request) {
 	}
 
 	if request.Contents == "" {
-		log.Errorf("The provided contents is empty")
+		log.Errorf("The entry contents is missing")
 		response.SendErrorAndExit(
 			errors.CodeEmptyContents,
 			&map[errors.Field]string{
-				errors.FieldMessage: "The provided contents is empty",
+				errors.FieldMessage: "The entry contents is missing",
 				errors.FieldAction:  "save",
 			},
 		)
@@ -114,11 +114,11 @@ func saveEncryptedContents(request *request) {
 
 	recipients, err := helpers.DetectGpgRecipients(filePath)
 	if err != nil {
-		log.Error("Unable to detect gpg recipients for encryption: ", err)
+		log.Error("Unable to determine recipients for the gpg encryption: ", err)
 		response.SendErrorAndExit(
-			errors.CodeUnableToDetectGpgRecipients,
+			errors.CodeUnableToDetermineGpgRecipients,
 			&map[errors.Field]string{
-				errors.FieldMessage:   "Unable to detect gpg recipients for encryption",
+				errors.FieldMessage:   "Unable to determine recipients for the gpg encryption",
 				errors.FieldAction:    "save",
 				errors.FieldError:     err.Error(),
 				errors.FieldFile:      request.File,
