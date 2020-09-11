@@ -215,6 +215,31 @@ Get the decrypted contents of a specific file.
 }
 ```
 
+### Save
+
+Encrypt the given contents and save to a specific file.
+
+#### Request
+
+```
+{
+    "settings": <settings object>,
+    "action": "save",
+    "storeId": "<storeId>",
+    "file": "relative/path/to/file.gpg",
+    "contents": "<contents to encrypt and save>"
+}
+```
+
+#### Response
+
+```
+{
+    "status": "ok",
+    "version": <int>
+}
+```
+
 ### Echo
 
 Send the `echoResponse` in the request as a response.

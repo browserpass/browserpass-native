@@ -74,6 +74,15 @@ func MakeFetchResponse() *FetchResponse {
 	return &FetchResponse{}
 }
 
+// SaveResponse a response format for the "save" request
+type SaveResponse struct {
+}
+
+// MakeSaveResponse initializes an empty save response
+func MakeSaveResponse() *SaveResponse {
+	return &SaveResponse{}
+}
+
 // SendOk sends a success response to the browser extension in the predefined json format
 func SendOk(data interface{}) {
 	SendRaw(&okResponse{

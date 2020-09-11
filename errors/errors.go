@@ -27,6 +27,9 @@ const (
 	CodeUnableToDecryptPasswordFile                           Code = 24
 	CodeUnableToListDirectoriesInPasswordStore                Code = 25
 	CodeUnableToDetermineRelativeDirectoryPathInPasswordStore Code = 26
+	CodeEmptyContents                                         Code = 27
+	CodeUnableToDetectGpgRecipients                           Code = 28
+	CodeUnableToEncryptPasswordFile                           Code = 29
 )
 
 // Field extra field in the error response params
