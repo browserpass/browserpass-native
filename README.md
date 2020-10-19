@@ -120,6 +120,7 @@ $ DESTDIR=~/.nix-profile make -f ~/.nix-profile/lib/browserpass/Makefile <desire
 ```
 
 #### Install on Windows
+
 Download [the latest Github release](https://github.com/browserpass/browserpass-native/releases/latest) for `windows64`.
 
 Run the installer, it will install all the necessary files in `C:\Program Files\Browserpass` and it will also [configure browsers](#configure-browsers).
@@ -127,16 +128,19 @@ Run the installer, it will install all the necessary files in `C:\Program Files\
 #### Install on Windows through WSL
 
 If you want to use WSL instead
-1) Follow the [installation](#installation) steps for the WSL distribution you are using. There is no need to configure the browser as your browser does not run in WSL.
-2) Follow the then [installation](#install-on-windows) steps for installing on Windows.
-3) Create `C:\Program Files\Browserpass\browserpass-wsl.bat` with the following contents:
+
+1. Follow the [installation](#installation) steps for the WSL distribution you are using. There is no need to configure the browser as your browser does not run in WSL.
+2. Follow the then [installation](#install-on-windows) steps for installing on Windows.
+3. Create `C:\Program Files\Browserpass\browserpass-wsl.bat` with the following contents:
+
 ```
 @echo off
 bash -c "/usr/bin/browserpass-linux64 2>/dev/null"
 ```
-4) Edit the hosts json files (in our example `C:\Program Files\Browserpass\browser-files\*-host.json`) and replace `browserpass-windows64.exe` with `browserpass-wsl.bat` you've just created.
 
-Remember to check [Hints for configuring gpg](#hints-for-configuring-gpg) on how to configure pinentry to unlock your PGP key.
+4. Edit the hosts json files (in our example `C:\Program Files\Browserpass\browser-files\*-host.json`) and replace `browserpass-windows64.exe` with `browserpass-wsl.bat` you've just created.
+
+Remember to check [Hints for configuring gpg](#error-unable-to-fetch-and-parse-login-fields) on how to configure pinentry to unlock your PGP key.
 
 ### Configure browsers
 
