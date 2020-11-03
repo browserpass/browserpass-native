@@ -1,4 +1,4 @@
-BIN = browserpass
+BIN ?= browserpass
 VERSION = $(shell cat .version)
 
 PREFIX ?= /usr
