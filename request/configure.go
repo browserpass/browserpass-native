@@ -154,6 +154,16 @@ func getDefaultPasswordStorePath() (string, error) {
 	}
 
 	path = filepath.Join(usr.HomeDir, ".password-store")
+	fileInfo, err := os.Stat(path)
+	if fileInfo != nil {
+		return path, nil
+	}
+
+	xdgPath := os.Getenv("XDG_DATA_HOME")
+	if xdgPath != "" {
+		path = filepath.Join(xdgPath, "password-store")
+	}
+
 	return path, nil
 }
 

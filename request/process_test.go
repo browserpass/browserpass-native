@@ -6,6 +6,9 @@ import (
 	"io"
 	"reflect"
 	"testing"
+	"os"
+	"fmt"
+	"path/filepath"
 )
 
 func Test_ParseRequestLength_ConsidersFirstFourBytes(t *testing.T) {
@@ -112,5 +115,33 @@ func Test_ParseRequest_InvalidJson(t *testing.T) {
 	// Assert
 	if err == nil {
 		t.Fatalf("Expected a parsing error, but didn't get it")
+	}
+}
+
+
+func Test_ParseRequest_GetDefaultPasswordStorePath(t *testing.T) {
+	// Arrange
+	classicPath := fmt.Sprintf("/home/%s/.password-store", os.Getenv("USER"))
+	xdgDataPath := fmt.Sprintf("/home/%s/.local", os.Getenv("USER"))
+	xdgPath := filepath.Join(xdgDataPath, "password-store")
+	os.Unsetenv("XDG_DATA_HOME")
+
+	// Act
+	path, _ := getDefaultPasswordStorePath()
+
+	// Assert
+	if path != classicPath {
+		t.Fatalf("Expected '%s', got '%s'", classicPath, path)
+	}
+
+	// Arrange
+	os.Setenv("XDG_DATA_HOME", xdgDataPath)
+
+	// Act
+	path, _ = getDefaultPasswordStorePath()
+
+	// Assert
+	if path != xdgPath {
+		t.Fatalf("Expected '%s', got '%s'", xdgPath, path)
 	}
 }
