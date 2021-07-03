@@ -52,6 +52,18 @@ func MakeListResponse() *ListResponse {
 	}
 }
 
+// TreeResponse a response format for the "tree" request
+type TreeResponse struct {
+	Directories map[string][]string `json:"directories"`
+}
+
+// MakeTreeResponse initializes an empty tree response
+func MakeTreeResponse() *TreeResponse {
+	return &TreeResponse{
+		Directories: make(map[string][]string),
+	}
+}
+
 // FetchResponse a response format for the "fetch" request
 type FetchResponse struct {
 	Contents string `json:"contents"`
@@ -60,6 +72,24 @@ type FetchResponse struct {
 // MakeFetchResponse initializes an empty fetch response
 func MakeFetchResponse() *FetchResponse {
 	return &FetchResponse{}
+}
+
+// SaveResponse a response format for the "save" request
+type SaveResponse struct {
+}
+
+// MakeSaveResponse initializes an empty save response
+func MakeSaveResponse() *SaveResponse {
+	return &SaveResponse{}
+}
+
+// DeleteResponse a response format for the "delete" request
+type DeleteResponse struct {
+}
+
+// MakeDeleteResponse initializes an empty delete response
+func MakeDeleteResponse() *DeleteResponse {
+	return &DeleteResponse{}
 }
 
 // SendOk sends a success response to the browser extension in the predefined json format

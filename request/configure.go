@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/browserpass/browserpass-native/errors"
+	"github.com/browserpass/browserpass-native/helpers"
 	"github.com/browserpass/browserpass-native/response"
 	log "github.com/sirupsen/logrus"
 )
@@ -17,7 +18,7 @@ func configure(request *request) {
 
 	// User configured gpgPath in the browser, check if it is a valid binary to use
 	if request.Settings.GpgPath != "" {
-		err := validateGpgBinary(request.Settings.GpgPath)
+		err := helpers.ValidateGpgBinary(request.Settings.GpgPath)
 		if err != nil {
 			log.Errorf(
 				"The provided gpg binary path '%v' is invalid: %+v",
