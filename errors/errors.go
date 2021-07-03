@@ -25,6 +25,8 @@ const (
 	CodeUnableToDetectGpgPath                            Code = 22
 	CodeInvalidPasswordFileExtension                     Code = 23
 	CodeUnableToDecryptPasswordFile                      Code = 24
+	CodeUnableToEncryptPasswordFile                      Code = 25
+	CodeUnableToGitCommit                                Code = 26
 )
 
 // Field extra field in the error response params

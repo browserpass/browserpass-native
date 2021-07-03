@@ -125,23 +125,6 @@ func fetchDecryptedContents(request *request) {
 	response.SendOk(responseData)
 }
 
-func detectGpgBinary() (string, error) {
-	// Look in $PATH first, then check common locations - the first successful result wins
-	gpgBinaryPriorityList := []string{
-		"gpg2", "gpg",
-		"/bin/gpg2", "/usr/bin/gpg2", "/usr/local/bin/gpg2",
-		"/bin/gpg", "/usr/bin/gpg", "/usr/local/bin/gpg",
-	}
-
-	for _, binary := range gpgBinaryPriorityList {
-		err := validateGpgBinary(binary)
-		if err == nil {
-			return binary, nil
-		}
-	}
-	return "", fmt.Errorf("Unable to detect the location of the gpg binary to use")
-}
-
 func validateGpgBinary(gpgPath string) error {
 	return exec.Command(gpgPath, "--version").Run()
 }
