@@ -328,6 +328,25 @@ hosts-firefox-user:
 	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
+.PHONY: hosts-librewolf
+hosts-librewolf:
+	@case $(OS) in \
+	Linux)      mkdir -p "$(LIB_DIR)/librewolf/native-messaging-hosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/firefox/$(APP_ID).json" "/usr/lib/librewolf/native-messaging-hosts/$(APP_ID).json"; \
+	            [ -e "/usr/lib/librewolf/native-messaging-hosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
+
+.PHONY: hosts-librewolf-user
+hosts-librewolf-user:
+	@case $(OS) in \
+	Linux|*BSD) mkdir -p "${HOME}/.librewolf/native-messaging-hosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/firefox/$(APP_ID).json" "${HOME}/.librewolf/native-messaging-hosts/$(APP_ID).json"; \
+	            [ -e "${HOME}/.librewolf/native-messaging-hosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
 # Browser-specific policies targets
 
 .PHONY: policies-chromium
