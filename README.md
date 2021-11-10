@@ -165,6 +165,7 @@ If you provided `PREFIX` and/or `DESTDIR` while running `make install`, remember
 | -------------------------- | ------------------------------------------------------------------------------------ |
 | `make hosts-chromium-user` | Configure browserpass for Chromium browser, for the current user only                |
 | `make hosts-firefox-user`  | Configure browserpass for Firefox browser, for the current user only                 |
+| `make hosts-librewolf-user`| Configure browserpass for Librewolf browser, for the current user only               |
 | `make hosts-chrome-user`   | Configure browserpass for Google Chrome or Opera browsers, for the current user only |
 | `make hosts-brave-user`    | Configure browserpass for Brave browser, for the current user only                   |
 | `make hosts-iridium-user`  | Configure browserpass for Iridium browser, for the current user only                 |
@@ -172,6 +173,7 @@ If you provided `PREFIX` and/or `DESTDIR` while running `make install`, remember
 | `make hosts-slimjet-user`  | Configure browserpass for Slimjet browser, for the current user only                 |
 | `sudo make hosts-chromium` | Configure browserpass for Chromium browser, system-wide                              |
 | `sudo make hosts-firefox`  | Configure browserpass for Firefox browser, system-wide                               |
+| `sudo make hosts-librewolf`| Configure browserpass for Librewolf browser, system-wide                             |
 | `sudo make hosts-chrome`   | Configure browserpass for Google Chrome or Opera browsers, system-wide               |
 | `sudo make hosts-brave`    | Configure browserpass for Brave browser, system-wide                                 |
 | `sudo make hosts-iridium`  | Configure browserpass for Iridium browser, system-wide                               |
