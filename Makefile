@@ -10,10 +10,7 @@ XDG_CONFIG_HOME ?= $(HOME)/.config
 BIN_PATH = $(BIN_DIR)/$(BIN)
 BIN_PATH_WINDOWS = C:\\\\\\\\\\\\\\\\Program Files\\\\\\\\\\\\\\\\Browserpass\\\\\\\\\\\\\\\\browserpass-windows64.exe
 
-export CGO_CPPFLAGS := ${CPPFLAGS}
-export CGO_CFLAGS := ${CFLAGS}
-export CGO_CXXFLAGS := ${CXXFLAGS}
-export CGO_LDFLAGS := ${LDFLAGS}
+export CGO_ENABLED := 0
 GOFLAGS := -buildmode=pie -trimpath
 
 APP_ID = com.github.browserpass.native
