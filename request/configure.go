@@ -2,12 +2,13 @@ package request
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"os"
 	"os/user"
 	"path/filepath"
 
-	"github.com/browserpass/browserpass-native/errors"
+	bpErrors "github.com/browserpass/browserpass-native/errors"
 	"github.com/browserpass/browserpass-native/response"
 	log "github.com/sirupsen/logrus"
 )
@@ -24,12 +25,12 @@ func configure(request *request) {
 				request.Settings.GpgPath, err,
 			)
 			response.SendErrorAndExit(
-				errors.CodeInvalidGpgPath,
-				&map[errors.Field]string{
-					errors.FieldMessage: "The provided gpg binary path is invalid",
-					errors.FieldAction:  "configure",
-					errors.FieldError:   err.Error(),
-					errors.FieldGpgPath: request.Settings.GpgPath,
+				bpErrors.CodeInvalidGpgPath,
+				&map[bpErrors.Field]string{
+					bpErrors.FieldMessage: "The provided gpg binary path is invalid",
+					bpErrors.FieldAction:  "configure",
+					bpErrors.FieldError:   err.Error(),
+					bpErrors.FieldGpgPath: request.Settings.GpgPath,
 				},
 			)
 		}
@@ -45,14 +46,14 @@ func configure(request *request) {
 				store, err,
 			)
 			response.SendErrorAndExit(
-				errors.CodeInaccessiblePasswordStore,
-				&map[errors.Field]string{
-					errors.FieldMessage:   "The password store is not accessible",
-					errors.FieldAction:    "configure",
-					errors.FieldError:     err.Error(),
-					errors.FieldStoreID:   store.ID,
-					errors.FieldStoreName: store.Name,
-					errors.FieldStorePath: store.Path,
+				bpErrors.CodeInaccessiblePasswordStore,
+				&map[bpErrors.Field]string{
+					bpErrors.FieldMessage:   "The password store is not accessible",
+					bpErrors.FieldAction:    "configure",
+					bpErrors.FieldError:     err.Error(),
+					bpErrors.FieldStoreID:   store.ID,
+					bpErrors.FieldStoreName: store.Name,
+					bpErrors.FieldStorePath: store.Path,
 				},
 			)
 		}
@@ -70,14 +71,14 @@ func configure(request *request) {
 				store, err,
 			)
 			response.SendErrorAndExit(
-				errors.CodeUnreadablePasswordStoreDefaultSettings,
-				&map[errors.Field]string{
-					errors.FieldMessage:   "Unable to read .browserpass.json of the password store",
-					errors.FieldAction:    "configure",
-					errors.FieldError:     err.Error(),
-					errors.FieldStoreID:   store.ID,
-					errors.FieldStoreName: store.Name,
-					errors.FieldStorePath: store.Path,
+				bpErrors.CodeUnreadablePasswordStoreDefaultSettings,
+				&map[bpErrors.Field]string{
+					bpErrors.FieldMessage:   "Unable to read .browserpass.json of the password store",
+					bpErrors.FieldAction:    "configure",
+					bpErrors.FieldError:     err.Error(),
+					bpErrors.FieldStoreID:   store.ID,
+					bpErrors.FieldStoreName: store.Name,
+					bpErrors.FieldStorePath: store.Path,
 				},
 			)
 		}
@@ -91,11 +92,11 @@ func configure(request *request) {
 		if err != nil {
 			log.Error("Unable to determine the location of the default password store: ", err)
 			response.SendErrorAndExit(
-				errors.CodeUnknownDefaultPasswordStoreLocation,
-				&map[errors.Field]string{
-					errors.FieldMessage: "Unable to determine the location of the default password store",
-					errors.FieldAction:  "configure",
-					errors.FieldError:   err.Error(),
+				bpErrors.CodeUnknownDefaultPasswordStoreLocation,
+				&map[bpErrors.Field]string{
+					bpErrors.FieldMessage: "Unable to determine the location of the default password store",
+					bpErrors.FieldAction:  "configure",
+					bpErrors.FieldError:   err.Error(),
 				},
 			)
 		} else {
@@ -106,12 +107,12 @@ func configure(request *request) {
 					possibleDefaultStorePath, err,
 				)
 				response.SendErrorAndExit(
-					errors.CodeInaccessibleDefaultPasswordStore,
-					&map[errors.Field]string{
-						errors.FieldMessage:   "The default password store is not accessible",
-						errors.FieldAction:    "configure",
-						errors.FieldError:     err.Error(),
-						errors.FieldStorePath: possibleDefaultStorePath,
+					bpErrors.CodeInaccessibleDefaultPasswordStore,
+					&map[bpErrors.Field]string{
+						bpErrors.FieldMessage:   "The default password store is not accessible",
+						bpErrors.FieldAction:    "configure",
+						bpErrors.FieldError:     err.Error(),
+						bpErrors.FieldStorePath: possibleDefaultStorePath,
 					},
 				)
 			}
@@ -128,12 +129,12 @@ func configure(request *request) {
 				responseData.DefaultStore.Path, err,
 			)
 			response.SendErrorAndExit(
-				errors.CodeUnreadableDefaultPasswordStoreDefaultSettings,
-				&map[errors.Field]string{
-					errors.FieldMessage:   "Unable to read .browserpass.json of the default password store",
-					errors.FieldAction:    "configure",
-					errors.FieldError:     err.Error(),
-					errors.FieldStorePath: responseData.DefaultStore.Path,
+				bpErrors.CodeUnreadableDefaultPasswordStoreDefaultSettings,
+				&map[bpErrors.Field]string{
+					bpErrors.FieldMessage:   "Unable to read .browserpass.json of the default password store",
+					bpErrors.FieldAction:    "configure",
+					bpErrors.FieldError:     err.Error(),
+					bpErrors.FieldStorePath: responseData.DefaultStore.Path,
 				},
 			)
 		}
@@ -146,6 +147,34 @@ func getDefaultPasswordStorePath() (string, error) {
 	path := os.Getenv("PASSWORD_STORE_DIR")
 	if path != "" {
 		return path, nil
+	}
+
+	path = os.Getenv("GOPASS_HOMEDIR")
+	if path != "" {
+		return path, nil
+	}
+
+	homeDir := os.Getenv("HOME")
+	if homeDir != "" {
+		path = filepath.Join(homeDir, ".password-store")
+		if _, err := os.Stat(path); errors.Is(err, os.ErrExist) {
+			return path, nil
+		}
+	}
+
+	xdgDataHomeDir := os.Getenv("XDG_DATA_HOME")
+	if xdgDataHomeDir != "" {
+		path = filepath.Join(xdgDataHomeDir, "gopass", "stores", "root")
+		if _, err := os.Stat(path); errors.Is(err, os.ErrExist) {
+			return path, nil
+		}
+	}
+
+	if homeDir != "" {
+		path = filepath.Join(homeDir, ".local", "share", "gopass", "stores", "root")
+		if _, err := os.Stat(path); errors.Is(err, os.ErrExist) {
+			return path, nil
+		}
 	}
 
 	usr, err := user.Current()
