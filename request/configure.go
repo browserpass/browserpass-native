@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
-	"os/user"
 	"path/filepath"
 
 	"github.com/browserpass/browserpass-native/errors"
@@ -148,12 +147,12 @@ func getDefaultPasswordStorePath() (string, error) {
 		return path, nil
 	}
 
-	usr, err := user.Current()
+	home, err := os.UserHomeDir()
 	if err != nil {
 		return "", err
 	}
 
-	path = filepath.Join(usr.HomeDir, ".password-store")
+	path = filepath.Join(home, ".password-store")
 	return path, nil
 }
 
