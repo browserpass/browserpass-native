@@ -185,6 +185,33 @@ hosts-chrome-user:
 	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
+.PHONY: hosts-edge
+hosts-edge:
+	@case $(OS) in \
+	# Linux)      mkdir -p "/opt/microsoft/msedge/native-messaging-hosts/"; \
+	#             ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "/opt/microsoft/msedge/native-messaging-hosts/$(APP_ID).json"; \
+	#             [ -e "/opt/microsoft/msedge/native-messaging-hosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	#             ;; \
+	# Darwin)     mkdir -p "/Library/Google/Chrome/NativeMessagingHosts/"; \
+	#             ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Google/Chrome/NativeMessagingHosts/$(APP_ID).json"; \
+	#             [ -e "/Library/Google/Chrome/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	#             ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
+
+.PHONY: hosts-edge-user
+hosts-edge-user:
+	@case $(OS) in \
+	Linux|*BSD) mkdir -p "$(XDG_CONFIG_HOME)/microsoft-edge/NativeMessagingHosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "$(XDG_CONFIG_HOME)/microsoft-edge/NativeMessagingHosts/$(APP_ID).json"; \
+	            [ -e "$(XDG_CONFIG_HOME)/microsoft-edge/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	# Darwin)     mkdir -p "${HOME}/Library/Application Support/Google/Chrome/NativeMessagingHosts/"; \
+	#             ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Google/Chrome/NativeMessagingHosts/$(APP_ID).json"; \
+	#             [ -e "${HOME}/Library/Application Support/Google/Chrome/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	#             ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
+
 .PHONY: hosts-vivaldi
 hosts-vivaldi:
 	@case $(OS) in \
@@ -399,6 +426,34 @@ policies-chrome-user:
 	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Google/Chrome/policies/managed/$(APP_ID).json"; \
 	            [ -e "${HOME}/Library/Application Support/Google/Chrome/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
+
+.PHONY: policies-edge
+policies-edge:
+	@case $(OS) in \
+	# Linux)      mkdir -p "/etc/opt/chrome/policies/managed/"; \
+	#             ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "/etc/opt/chrome/policies/managed/$(APP_ID).json"; \
+	#             [ -e "/etc/opt/chrome/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	#             ;; \
+	# Darwin)     mkdir -p "/Library/Google/Chrome/policies/managed/"; \
+	#             ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "/Library/Google/Chrome/policies/managed/$(APP_ID).json"; \
+	#             [ -e "/Library/Google/Chrome/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	#             ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
+
+.PHONY: policies-edge-user
+policies-edge-user:
+	@case $(OS) in \
+	# Linux|*BSD) mkdir -p "$(XDG_CONFIG_HOME)/microsoft-edge/policies/managed/"; \
+	#             ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "$(XDG_CONFIG_HOME)/microsoft-edge/policies/managed/$(APP_ID).json"; \
+	#             [ -e "$(XDG_CONFIG_HOME)/microsoft-edge/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	#             ;; \
+	# Darwin)     mkdir -p "${HOME}/Library/Application Support/Google/Chrome/policies/managed/"; \
+	#             ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Google/Chrome/policies/managed/$(APP_ID).json"; \
+	#             [ -e "${HOME}/Library/Application Support/Google/Chrome/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	#             ;; \
 	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
