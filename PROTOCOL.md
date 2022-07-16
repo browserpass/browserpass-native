@@ -121,8 +121,8 @@ is alive, determine the version at startup, and provide per-store defaults.
             "path": "/path/to/default/store",
             "settings": "<raw contents of $defaultPath/.browserpass.json>",
         },
-        “storeSettings”: {
-            “storeId”: "<raw contents of storePath/.browserpass.json>"
+        "storeSettings": {
+            "storeId": "<raw contents of storePath/.browserpass.json>"
         }
     }
 }
