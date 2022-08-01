@@ -3,8 +3,8 @@ package version
 import "fmt"
 
 const major = 3
-const minor = 0
-const patch = 10
+const minor = 1
+const patch = 0
 
 // Code version as integer
 const Code = major*1000000 + minor*1000 + patch
