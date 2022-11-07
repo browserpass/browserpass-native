@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"bufio"
 	"bytes"
 	"fmt"
 	"io"
@@ -37,20 +38,44 @@ func GpgDecryptFile(filePath string, gpgPath string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	passwordFile.Close()
+	passDir := fmt.Sprintf("%s/", filepath.Dir(passwordFile.Name()))
 
-	var stdout, stderr bytes.Buffer
-	gpgOptions := []string{"--decrypt", "--yes", "--quiet", "--batch", "-"}
+	tmpFile, err := ioutil.TempFile("",
+		fmt.Sprintf(
+			"bp_%s_", strings.TrimPrefix(passwordFile.Name(), passDir),
+		),
+	)
+
+	if err != nil {
+		return "", fmt.Errorf("error: %s", err.Error())
+	}
+
+	// Ensure tmpFile with plain text secret is removed
+	defer os.Remove(tmpFile.Name())
+
+	var stderr bytes.Buffer
+	gpgOptions := []string{
+		"--decrypt", "--yes", "--quiet", "--batch", "--output", tmpFile.Name(), passwordFile.Name(),
+	}
 
 	cmd := exec.Command(gpgPath, gpgOptions...)
-	cmd.Stdin = passwordFile
-	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 
 	if err := cmd.Run(); err != nil {
-		return "", fmt.Errorf("Error: %s, Stderr: %s", err.Error(), stderr.String())
+		return "", fmt.Errorf("error: %s, Stderr: %s", err.Error(), stderr.String())
 	}
 
-	return stdout.String(), nil
+	scanner := bufio.NewScanner(tmpFile)
+	out := []string{}
+	for scanner.Scan() {
+		out = append(out, scanner.Text())
+	}
+	if err := scanner.Err(); err != nil {
+		return "", fmt.Errorf("error: %s", err.Error())
+	}
+
+	return strings.Join(out, "\n"), nil
 }
 
 func GpgEncryptFile(filePath string, contents string, recipients []string, gpgPath string) error {
@@ -71,7 +96,7 @@ func GpgEncryptFile(filePath string, contents string, recipients []string, gpgPa
 	cmd.Stderr = &stderr
 
 	if err = cmd.Run(); err != nil {
-		return fmt.Errorf("Error: %s, Stderr: %s", err.Error(), stderr.String())
+		return fmt.Errorf("error %s, stderr: %s", err.Error(), stderr.String())
 	}
 
 	return nil
