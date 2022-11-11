@@ -38,35 +38,24 @@ func GpgDecryptFile(filePath string, gpgPath string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	passwordFile.Close()
-	passDir := fmt.Sprintf("%s/", filepath.Dir(passwordFile.Name()))
-
-	tmpFile, err := ioutil.TempFile("",
-		fmt.Sprintf(
-			"bp_%s_", strings.TrimPrefix(passwordFile.Name(), passDir),
-		),
-	)
-
-	if err != nil {
-		return "", fmt.Errorf("error: %s", err.Error())
-	}
-
-	// Ensure tmpFile with plain text secret is removed
-	defer os.Remove(tmpFile.Name())
 
 	var stderr bytes.Buffer
-	gpgOptions := []string{
-		"--decrypt", "--yes", "--quiet", "--batch", "--output", tmpFile.Name(), passwordFile.Name(),
-	}
+	gpgOptions := []string{"--decrypt", "--yes", "--quiet", "--batch", "-"}
 
 	cmd := exec.Command(gpgPath, gpgOptions...)
+	cmd.Stdin = passwordFile
 	cmd.Stderr = &stderr
 
-	if err := cmd.Run(); err != nil {
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
 		return "", fmt.Errorf("error: %s, Stderr: %s", err.Error(), stderr.String())
 	}
 
-	scanner := bufio.NewScanner(tmpFile)
+	if err := cmd.Start(); err != nil {
+		return "", fmt.Errorf("error: %s, Stderr: %s", err.Error(), stderr.String())
+	}
+
+	scanner := bufio.NewScanner(stdout)
 	out := []string{}
 	for scanner.Scan() {
 		out = append(out, scanner.Text())
@@ -84,7 +73,7 @@ func GpgEncryptFile(filePath string, contents string, recipients []string, gpgPa
 		return fmt.Errorf("Unable to create directory structure: %s", err.Error())
 	}
 
-	var stdout, stderr bytes.Buffer
+	var stderr bytes.Buffer
 	gpgOptions := []string{"--encrypt", "--yes", "--quiet", "--batch", "--output", filePath}
 	for _, recipient := range recipients {
 		gpgOptions = append(gpgOptions, "--recipient", recipient)
@@ -92,7 +81,6 @@ func GpgEncryptFile(filePath string, contents string, recipients []string, gpgPa
 
 	cmd := exec.Command(gpgPath, gpgOptions...)
 	cmd.Stdin = strings.NewReader(contents)
-	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 
 	if err = cmd.Run(); err != nil {
