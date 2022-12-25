@@ -1,7 +1,6 @@
 package helpers
 
 import (
-	"bufio"
 	"bytes"
 	"fmt"
 	"io"
@@ -39,32 +38,19 @@ func GpgDecryptFile(filePath string, gpgPath string) (string, error) {
 		return "", err
 	}
 
-	var stderr bytes.Buffer
+	var stdout, stderr bytes.Buffer
 	gpgOptions := []string{"--decrypt", "--yes", "--quiet", "--batch", "-"}
 
 	cmd := exec.Command(gpgPath, gpgOptions...)
 	cmd.Stdin = passwordFile
+	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 
-	stdout, err := cmd.StdoutPipe()
-	if err != nil {
-		return "", fmt.Errorf("error: %s, Stderr: %s", err.Error(), stderr.String())
+	if err := cmd.Run(); err != nil {
+		return "", fmt.Errorf("Error: %s, Stderr: %s", err.Error(), stderr.String())
 	}
 
-	if err := cmd.Start(); err != nil {
-		return "", fmt.Errorf("error: %s, Stderr: %s", err.Error(), stderr.String())
-	}
-
-	scanner := bufio.NewScanner(stdout)
-	out := []string{}
-	for scanner.Scan() {
-		out = append(out, scanner.Text())
-	}
-	if err := scanner.Err(); err != nil {
-		return "", fmt.Errorf("error: %s", err.Error())
-	}
-
-	return strings.Join(out, "\n"), nil
+	return stdout.String(), nil
 }
 
 func GpgEncryptFile(filePath string, contents string, recipients []string, gpgPath string) error {
@@ -73,7 +59,7 @@ func GpgEncryptFile(filePath string, contents string, recipients []string, gpgPa
 		return fmt.Errorf("Unable to create directory structure: %s", err.Error())
 	}
 
-	var stderr bytes.Buffer
+	var stdout, stderr bytes.Buffer
 	gpgOptions := []string{"--encrypt", "--yes", "--quiet", "--batch", "--output", filePath}
 	for _, recipient := range recipients {
 		gpgOptions = append(gpgOptions, "--recipient", recipient)
@@ -81,10 +67,11 @@ func GpgEncryptFile(filePath string, contents string, recipients []string, gpgPa
 
 	cmd := exec.Command(gpgPath, gpgOptions...)
 	cmd.Stdin = strings.NewReader(contents)
+	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 
 	if err = cmd.Run(); err != nil {
-		return fmt.Errorf("error %s, stderr: %s", err.Error(), stderr.String())
+		return fmt.Errorf("Error: %s, Stderr: %s", err.Error(), stderr.String())
 	}
 
 	return nil
