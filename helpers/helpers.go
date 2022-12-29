@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"bufio"
 	"bytes"
 	"fmt"
 	"io"
@@ -82,7 +83,7 @@ func DetectGpgRecipients(filePath string) ([]string, error) {
 	for {
 		file, err := ioutil.ReadFile(filepath.Join(dir, ".gpg-id"))
 		if err == nil {
-			return strings.Split(strings.TrimSpace(string(file)), "\n"), nil
+			return SplitLines(strings.TrimSpace(string(file))), nil
 		}
 
 		if !os.IsNotExist(err) {
@@ -111,4 +112,14 @@ func IsDirectoryEmpty(dirPath string) (bool, error) {
 	}
 
 	return false, err
+}
+
+// SplitLines breaks a string up into lines
+func SplitLines(s string) (l []string) {
+	sc := bufio.NewScanner(strings.NewReader(s))
+	sc.Split(bufio.ScanLines)
+	for sc.Scan() {
+		l = append(l, sc.Text())
+	}
+	return
 }
