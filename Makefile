@@ -211,6 +211,7 @@ hosts-edge-user:
 	#             [ -e "${HOME}/Library/Application Support/Google/Chrome/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	#             ;; \
 	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
 
 .PHONY: hosts-vivaldi
 hosts-vivaldi:
