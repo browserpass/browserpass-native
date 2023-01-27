@@ -241,6 +241,34 @@ hosts-vivaldi-user:
 	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
 
+.PHONY: hosts-yandex
+hosts-yandex:
+	@case $(OS) in \
+	Linux)      mkdir -p "/etc/opt/yandex-browser/native-messaging-hosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "/etc/opt/yandex-browser/native-messaging-hosts/$(APP_ID).json"; \
+	            [ -e "/etc/opt/yandex-browser/native-messaging-hosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	Darwin)     mkdir -p "/Library/Application Support/Yandex/NativeMessagingHosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/Yandex/NativeMessagingHosts/$(APP_ID).json"; \
+	            [ -e "/Library/Application Support/Yandex/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
+
+.PHONY: hosts-yandex-user
+hosts-yandex-user:
+	@case $(OS) in \
+	Linux|*BSD) mkdir -p "$(XDG_CONFIG_HOME)/yandex-browser/NativeMessagingHosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "$(XDG_CONFIG_HOME)/yandex-browser/NativeMessagingHosts/$(APP_ID).json"; \
+	            [ -e "$(XDG_CONFIG_HOME)/yandex-browser/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	Darwin)     mkdir -p "${HOME}/Library/Application Support/Yandex/NativeMessagingHosts/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Yandex/NativeMessagingHosts/$(APP_ID).json"; \
+	            [ -e "${HOME}/Library/Application Support/Yandex/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
+
 .PHONY: hosts-brave
 hosts-brave:
 	@case $(OS) in \
@@ -482,6 +510,34 @@ policies-vivaldi-user:
 	Darwin)     mkdir -p "${HOME}/Library/Application Support/Vivaldi/policies/managed/"; \
 	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Vivaldi/policies/managed/$(APP_ID).json"; \
 	            [ -e "${HOME}/Library/Application Support/Vivaldi/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
+
+.PHONY: policies-yandex
+policies-yandex:
+	@case $(OS) in \
+	Linux)      mkdir -p "/etc/opt/yandex-browser/policies/managed/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "/etc/opt/yandex-browser/policies/managed/$(APP_ID).json"; \
+	            [ -e "/etc/opt/yandex-browser/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	Darwin)     mkdir -p "/Library/Application Support/Yandex/policies/managed/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "/Library/Application Support/Yandex/policies/managed/$(APP_ID).json"; \
+	            [ -e "/Library/Application Support/Yandex/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
+	esac
+
+.PHONY: policies-yandex-user
+policies-yandex-user:
+	@case $(OS) in \
+	Linux|*BSD) mkdir -p "$(XDG_CONFIG_HOME)/yandex-browser/policies/managed/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "$(XDG_CONFIG_HOME)/yandex-browser/policies/managed/$(APP_ID).json"; \
+	            [ -e "$(XDG_CONFIG_HOME)/yandex-browser/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	            ;; \
+	Darwin)     mkdir -p "${HOME}/Library/Application Support/Yandex/policies/managed/"; \
+	            ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Yandex/policies/managed/$(APP_ID).json"; \
+	            [ -e "${HOME}/Library/Application Support/Yandex/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
 	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
