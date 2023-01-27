@@ -236,7 +236,7 @@ hosts-vivaldi-user:
 	            ;; \
 	Darwin)     mkdir -p "${HOME}/Library/Application Support/Vivaldi/NativeMessagingHosts/"; \
 	            ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Vivaldi/NativeMessagingHosts/$(APP_ID).json"; \
-	            [ -e "${HOME}/Library/Application Support/Vivaldi/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink pyandex-browseroints to a non-existent location" >&2; \
+	            [ -e "${HOME}/Library/Application Support/Vivaldi/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	            ;; \
 	*)          echo "The operating system $(OS) is not supported"; exit 1 ;; \
 	esac
