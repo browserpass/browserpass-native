@@ -161,28 +161,28 @@ See below the list of available `make` goals to configure various browsers. Use 
 
 If you provided `PREFIX` and/or `DESTDIR` while running `make install`, remember that you must provide the same parameters, for example `make PREFIX=/usr/local hosts-chromium-user`:
 
-| Command                    | Description                                                                          |
-| -------------------------- | ------------------------------------------------------------------------------------ |
-| `make hosts-chromium-user` | Configure browserpass for Chromium browser, for the current user only                |
-| `make hosts-firefox-user`  | Configure browserpass for Firefox browser, for the current user only                 |
-| `make hosts-librewolf-user`| Configure browserpass for Librewolf browser, for the current user only               |
-| `make hosts-chrome-user`   | Configure browserpass for Google Chrome or Opera browsers, for the current user only |
-| `make hosts-edge-user`     | Configure browserpass for Microsoft Edge browser, for the current user only          |
-| `make hosts-brave-user`    | Configure browserpass for Brave browser, for the current user only                   |
-| `make hosts-iridium-user`  | Configure browserpass for Iridium browser, for the current user only                 |
-| `make hosts-vivaldi-user`  | Configure browserpass for Vivaldi browser, for the current user only                 |
-| `make hosts-yandex-user`   | Configure browserpass for Yandex browser, for the current user only                 |
-| `make hosts-slimjet-user`  | Configure browserpass for Slimjet browser, for the current user only                 |
-| `sudo make hosts-chromium` | Configure browserpass for Chromium browser, system-wide                              |
-| `sudo make hosts-firefox`  | Configure browserpass for Firefox browser, system-wide                               |
-| `sudo make hosts-librewolf`| Configure browserpass for Librewolf browser, system-wide                             |
-| `sudo make hosts-chrome`   | Configure browserpass for Google Chrome or Opera browsers, system-wide               |
-| `sudo make hosts-edge`     | Configure browserpass for Microsoft Edge browser, system-wide                        |
-| `sudo make hosts-brave`    | Configure browserpass for Brave browser, system-wide                                 |
-| `sudo make hosts-iridium`  | Configure browserpass for Iridium browser, system-wide                               |
-| `sudo make hosts-vivaldi`  | Configure browserpass for Vivaldi browser, system-wide                               |
-| `sudo make hosts-yandex`   | Configure browserpass for Yandex browser, system-wide                               |
-| `sudo make hosts-slimjet`  | Configure browserpass for Slimjet browser, system-wide                               |
+| Command                     | Description                                                                          |
+| --------------------------- | ------------------------------------------------------------------------------------ |
+| `make hosts-chromium-user`  | Configure browserpass for Chromium browser, for the current user only                |
+| `make hosts-firefox-user`   | Configure browserpass for Firefox browser, for the current user only                 |
+| `make hosts-librewolf-user` | Configure browserpass for Librewolf browser, for the current user only               |
+| `make hosts-chrome-user`    | Configure browserpass for Google Chrome or Opera browsers, for the current user only |
+| `make hosts-edge-user`      | Configure browserpass for Microsoft Edge browser, for the current user only          |
+| `make hosts-brave-user`     | Configure browserpass for Brave browser, for the current user only                   |
+| `make hosts-iridium-user`   | Configure browserpass for Iridium browser, for the current user only                 |
+| `make hosts-vivaldi-user`   | Configure browserpass for Vivaldi browser, for the current user only                 |
+| `make hosts-yandex-user`    | Configure browserpass for Yandex browser, for the current user only                  |
+| `make hosts-slimjet-user`   | Configure browserpass for Slimjet browser, for the current user only                 |
+| `sudo make hosts-chromium`  | Configure browserpass for Chromium browser, system-wide                              |
+| `sudo make hosts-firefox`   | Configure browserpass for Firefox browser, system-wide                               |
+| `sudo make hosts-librewolf` | Configure browserpass for Librewolf browser, system-wide                             |
+| `sudo make hosts-chrome`    | Configure browserpass for Google Chrome or Opera browsers, system-wide               |
+| `sudo make hosts-edge`      | Configure browserpass for Microsoft Edge browser, system-wide                        |
+| `sudo make hosts-brave`     | Configure browserpass for Brave browser, system-wide                                 |
+| `sudo make hosts-iridium`   | Configure browserpass for Iridium browser, system-wide                               |
+| `sudo make hosts-vivaldi`   | Configure browserpass for Vivaldi browser, system-wide                               |
+| `sudo make hosts-yandex`    | Configure browserpass for Yandex browser, system-wide                                |
+| `sudo make hosts-slimjet`   | Configure browserpass for Slimjet browser, system-wide                               |
 
 In addition, Chromium-based browsers support the following `make` goals:
 
@@ -195,7 +195,7 @@ In addition, Chromium-based browsers support the following `make` goals:
 | `make policies-iridium-user`  | Automatically install browser extension from Web Store for Iridium browser, for the current user only        |
 | `make policies-slimjet-user`  | Automatically install browser extension from Web Store for Slimjet browser, for the current user only        |
 | `make policies-vivaldi-user`  | Automatically install browser extension from Web Store for Vivaldi browser, for the current user only        |
-| `make policies-yandex-user`   | Automatically install browser extension from Web Store for Yandex browser, for the current user only        |
+| `make policies-yandex-user`   | Automatically install browser extension from Web Store for Yandex browser, for the current user only         |
 | `sudo make policies-chromium` | Automatically install browser extension from Web Store for Chromium browser, system-wide                     |
 | `sudo make policies-chrome`   | Automatically install browser extension from Web Store for Google Chrome browser, system-wide                |
 | `sudo make policies-edge`     | Automatically install browser extension from Web Store for Microsoft Edge browser, system-wide               |
@@ -203,7 +203,7 @@ In addition, Chromium-based browsers support the following `make` goals:
 | `sudo make policies-iridium`  | Automatically install browser extension from Web Store for Iridium browser, system-wide                      |
 | `sudo make policies-slimjet`  | Automatically install browser extension from Web Store for Slimjet browser, system-wide                      |
 | `sudo make policies-vivaldi`  | Automatically install browser extension from Web Store for Vivaldi browser, system-wide                      |
-| `sudo make policies-yandex`   | Automatically install browser extension from Web Store for Yandex browser, system-wide                      |
+| `sudo make policies-yandex`   | Automatically install browser extension from Web Store for Yandex browser, system-wide                       |
 
 ## Building the app
 
