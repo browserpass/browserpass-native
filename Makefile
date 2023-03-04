@@ -78,7 +78,7 @@ clean:
 	rm -rf vendor
 
 .PHONY: dist
-dist: clean vendor browserpass-linux64 browserpass-arm browserpass-arm64 browserpass-darwin64 browserpass-darwin-arm64 browserpass-openbsd64 browserpass-freebsd64 browserpass-windows64
+dist: clean vendor browserpass-linux64 browserpass-arm browserpass-arm64 browserpass-darwin64 browserpass-darwin-arm64 browserpass-openbsd64 browserpass-freebsd64 browserpass-dragonfly64 browserpass-windows64 browserpass-windows
 	$(eval TMP := $(shell mktemp -d))
 
 	# Full source code
@@ -87,7 +87,7 @@ dist: clean vendor browserpass-linux64 browserpass-arm browserpass-arm64 browser
 	(cd "$(TMP)" && tar -cvzf "browserpass-native-$(VERSION)-src.tar.gz" "browserpass-native-$(VERSION)")
 
 	# Unix installers
-	for os in linux64 arm arm64 darwin64 darwin-arm64 openbsd64 freebsd64; do \
+	for os in linux64 arm arm64 darwin64 darwin-arm64 openbsd64 freebsd64 dragonfly64; do \
 	    mkdir $(TMP)/browserpass-"$$os"-$(VERSION); \
 	    cp -a browserpass-"$$os"* browser-files Makefile README.md LICENSE $(TMP)/browserpass-"$$os"-$(VERSION); \
         (cd $(TMP) && tar -cvzf browserpass-"$$os"-$(VERSION).tar.gz browserpass-"$$os"-$(VERSION)); \
