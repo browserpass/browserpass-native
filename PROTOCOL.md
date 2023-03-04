@@ -41,23 +41,31 @@ should be supplied as a `message` parameter.
 
 ## List of Error Codes
 
-| Code | Description                                                             | Parameters                                                  |
-| ---- | ----------------------------------------------------------------------- | ----------------------------------------------------------- |
-| 10   | Unable to parse browser request length                                  | message, error                                              |
-| 11   | Unable to parse browser request                                         | message, error                                              |
-| 12   | Invalid request action                                                  | message, action                                             |
-| 13   | Inaccessible user-configured password store                             | message, action, error, storeId, storePath, storeName       |
-| 14   | Inaccessible default password store                                     | message, action, error, storePath                           |
-| 15   | Unable to determine the location of the default password store          | message, action, error                                      |
-| 16   | Unable to read the default settings of a user-configured password store | message, action, error, storeId, storePath, storeName       |
-| 17   | Unable to read the default settings of the default password store       | message, action, error, storePath                           |
-| 18   | Unable to list files in a password store                                | message, action, error, storeId, storePath, storeName       |
-| 19   | Unable to determine a relative path for a file in a password store      | message, action, error, storeId, storePath, storeName, file |
-| 20   | Invalid password store ID                                               | message, action, storeId                                    |
-| 21   | Invalid gpg path                                                        | message, action, error, gpgPath                             |
-| 22   | Unable to detect the location of the gpg binary                         | message, action, error                                      |
-| 23   | Invalid password file extension                                         | message, action, file                                       |
-| 24   | Unable to decrypt the password file                                     | message, action, error, storeId, storePath, storeName, file |
+| Code | Description                                                             | Parameters                                                       |
+| ---- | ----------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| 10   | Unable to parse browser request length                                  | message, error                                                   |
+| 11   | Unable to parse browser request                                         | message, error                                                   |
+| 12   | Invalid request action                                                  | message, action                                                  |
+| 13   | Inaccessible user-configured password store                             | message, action, error, storeId, storePath, storeName            |
+| 14   | Inaccessible default password store                                     | message, action, error, storePath                                |
+| 15   | Unable to determine the location of the default password store          | message, action, error                                           |
+| 16   | Unable to read the default settings of a user-configured password store | message, action, error, storeId, storePath, storeName            |
+| 17   | Unable to read the default settings of the default password store       | message, action, error, storePath                                |
+| 18   | Unable to list files in a password store                                | message, action, error, storeId, storePath, storeName            |
+| 19   | Unable to determine a relative path for a file in a password store      | message, action, error, storeId, storePath, storeName, file      |
+| 20   | Invalid password store ID                                               | message, action, storeId                                         |
+| 21   | Invalid gpg path                                                        | message, action, error, gpgPath                                  |
+| 22   | Unable to detect the location of the gpg binary                         | message, action, error                                           |
+| 23   | Invalid password file extension                                         | message, action, file                                            |
+| 24   | Unable to decrypt the password file                                     | message, action, error, storeId, storePath, storeName, file      |
+| 25   | Unable to list directories in a password store                          | message, action, error, storeId, storePath, storeName            |
+| 26   | Unable to determine a relative path for a directory in a password store | message, action, error, storeId, storePath, storeName, directory |
+| 27   | The entry contents is missing                                           | message, action                                                  |
+| 28   | Unable to determine the recepients for the gpg encryption               | message, action, error, storeId, storePath, storeName, file      |
+| 29   | Unable to encrypt the password file                                     | message, action, error, storeId, storePath, storeName, file      |
+| 30   | Unable to delete the password file                                      | message, action, error, storeId, storePath, storeName, file      |
+| 31   | Unable to determine if directory is empty and can be deleted            | message, action, error, storeId, storePath, storeName, directory |
+| 32   | Unable to delete the empty directory                                    | message, action, error, storeId, storePath, storeName, directory |
 
 ## Settings
 
@@ -157,6 +165,35 @@ is the ID of a password store, the key in `"settings.stores"` object.
 }
 ```
 
+### Tree
+
+Get a list of all nested directories for each of a provided array of directory paths. The `storeN`
+is the ID of a password store, the key in `"settings.stores"` object.
+
+#### Request
+
+```
+{
+    "settings": <settings object>,
+    "action": "tree"
+}
+```
+
+#### Response
+
+```
+{
+    "status": "ok",
+    "version": <int>,
+    "data": {
+        "directories": {
+            "storeN": ["<storeNPath/directory1>", "<...>"],
+            "storeN+1": ["<storeN+1Path/directory1>", "<...>"]
+        }
+    }
+}
+```
+
 ### Fetch
 
 Get the decrypted contents of a specific file.
@@ -181,6 +218,55 @@ Get the decrypted contents of a specific file.
     "data": {
         "contents": "<decrypted file contents>"
     }
+}
+```
+
+### Save
+
+Encrypt the given contents and save to a specific file.
+
+#### Request
+
+```
+{
+    "settings": <settings object>,
+    "action": "save",
+    "storeId": "<storeId>",
+    "file": "relative/path/to/file.gpg",
+    "contents": "<contents to encrypt and save>"
+}
+```
+
+#### Response
+
+```
+{
+    "status": "ok",
+    "version": <int>
+}
+```
+
+### Delete
+
+Delete a specific file and empty parent directories caused by the deletion, if any.
+
+#### Request
+
+```
+{
+    "settings": <settings object>,
+    "action": "delete",
+    "storeId": "<storeId>",
+    "file": "relative/path/to/file.gpg"
+}
+```
+
+#### Response
+
+```
+{
+    "status": "ok",
+    "version": <int>
 }
 ```
 

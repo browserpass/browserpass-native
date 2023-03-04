@@ -1,6 +1,7 @@
 package request
 
 import (
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -10,8 +11,8 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func fetchDecryptedContents(request *request) {
-	responseData := response.MakeFetchResponse()
+func deleteFile(request *request) {
+	responseData := response.MakeDeleteResponse()
 
 	if !strings.HasSuffix(request.File, ".gpg") {
 		log.Errorf("The requested password file '%v' does not have the expected '.gpg' extension", request.File)
@@ -19,7 +20,7 @@ func fetchDecryptedContents(request *request) {
 			errors.CodeInvalidPasswordFileExtension,
 			&map[errors.Field]string{
 				errors.FieldMessage: "The requested password file does not have the expected '.gpg' extension",
-				errors.FieldAction:  "fetch",
+				errors.FieldAction:  "delete",
 				errors.FieldFile:    request.File,
 			},
 		)
@@ -35,7 +36,7 @@ func fetchDecryptedContents(request *request) {
 			errors.CodeInvalidPasswordStore,
 			&map[errors.Field]string{
 				errors.FieldMessage: "The password store is not present in the list of stores",
-				errors.FieldAction:  "fetch",
+				errors.FieldAction:  "delete",
 				errors.FieldStoreID: request.StoreID,
 			},
 		)
@@ -51,7 +52,7 @@ func fetchDecryptedContents(request *request) {
 			errors.CodeInaccessiblePasswordStore,
 			&map[errors.Field]string{
 				errors.FieldMessage:   "The password store is not accessible",
-				errors.FieldAction:    "fetch",
+				errors.FieldAction:    "delete",
 				errors.FieldError:     err.Error(),
 				errors.FieldStoreID:   store.ID,
 				errors.FieldStoreName: store.Name,
@@ -61,55 +62,16 @@ func fetchDecryptedContents(request *request) {
 	}
 	store.Path = normalizedStorePath
 
-	var gpgPath string
-	if request.Settings.GpgPath != "" || store.Settings.GpgPath != "" {
-		if request.Settings.GpgPath != "" {
-			gpgPath = request.Settings.GpgPath
-		} else {
-			gpgPath = store.Settings.GpgPath
-		}
-		err = helpers.ValidateGpgBinary(gpgPath)
-		if err != nil {
-			log.Errorf(
-				"The provided gpg binary path '%v' is invalid: %+v",
-				gpgPath, err,
-			)
-			response.SendErrorAndExit(
-				errors.CodeInvalidGpgPath,
-				&map[errors.Field]string{
-					errors.FieldMessage: "The provided gpg binary path is invalid",
-					errors.FieldAction:  "fetch",
-					errors.FieldError:   err.Error(),
-					errors.FieldGpgPath: gpgPath,
-				},
-			)
-		}
-	} else {
-		gpgPath, err = helpers.DetectGpgBinary()
-		if err != nil {
-			log.Error("Unable to detect the location of the gpg binary: ", err)
-			response.SendErrorAndExit(
-				errors.CodeUnableToDetectGpgPath,
-				&map[errors.Field]string{
-					errors.FieldMessage: "Unable to detect the location of the gpg binary",
-					errors.FieldAction:  "fetch",
-					errors.FieldError:   err.Error(),
-				},
-			)
-		}
-	}
+	filePath := filepath.Join(store.Path, request.File)
 
-	responseData.Contents, err = helpers.GpgDecryptFile(filepath.Join(store.Path, request.File), gpgPath)
+	err = os.Remove(filePath)
 	if err != nil {
-		log.Errorf(
-			"Unable to decrypt the password file '%v' in the password store '%+v': %+v",
-			request.File, store, err,
-		)
+		log.Error("Unable to delete the password file: ", err)
 		response.SendErrorAndExit(
-			errors.CodeUnableToDecryptPasswordFile,
+			errors.CodeUnableToDeletePasswordFile,
 			&map[errors.Field]string{
-				errors.FieldMessage:   "Unable to decrypt the password file",
-				errors.FieldAction:    "fetch",
+				errors.FieldMessage:   "Unable to delete the password file",
+				errors.FieldAction:    "delete",
 				errors.FieldError:     err.Error(),
 				errors.FieldFile:      request.File,
 				errors.FieldStoreID:   store.ID,
@@ -117,6 +79,53 @@ func fetchDecryptedContents(request *request) {
 				errors.FieldStorePath: store.Path,
 			},
 		)
+	}
+
+	parentDir := filepath.Dir(filePath)
+	for {
+		if parentDir == store.Path {
+			break
+		}
+
+		isEmpty, err := helpers.IsDirectoryEmpty(parentDir)
+		if err != nil {
+			log.Error("Unable to determine if directory is empty and can be deleted: ", err)
+			response.SendErrorAndExit(
+				errors.CodeUnableToDetermineIsDirectoryEmpty,
+				&map[errors.Field]string{
+					errors.FieldMessage:   "Unable to determine if directory is empty and can be deleted",
+					errors.FieldAction:    "delete",
+					errors.FieldError:     err.Error(),
+					errors.FieldDirectory: parentDir,
+					errors.FieldStoreID:   store.ID,
+					errors.FieldStoreName: store.Name,
+					errors.FieldStorePath: store.Path,
+				},
+			)
+		}
+
+		if !isEmpty {
+			break
+		}
+
+		err = os.Remove(parentDir)
+		if err != nil {
+			log.Error("Unable to delete the empty directory: ", err)
+			response.SendErrorAndExit(
+				errors.CodeUnableToDeleteEmptyDirectory,
+				&map[errors.Field]string{
+					errors.FieldMessage:   "Unable to delete the empty directory",
+					errors.FieldAction:    "delete",
+					errors.FieldError:     err.Error(),
+					errors.FieldDirectory: parentDir,
+					errors.FieldStoreID:   store.ID,
+					errors.FieldStoreName: store.Name,
+					errors.FieldStorePath: store.Path,
+				},
+			)
+		}
+
+		parentDir = filepath.Dir(parentDir)
 	}
 
 	response.SendOk(responseData)
