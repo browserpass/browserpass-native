@@ -82,7 +82,7 @@ func DetectGpgRecipients(filePath string) ([]string, error) {
 	for {
 		file, err := ioutil.ReadFile(filepath.Join(dir, ".gpg-id"))
 		if err == nil {
-			return strings.Split(strings.TrimSpace(string(file)), "\n"), nil
+			return strings.Split(strings.ReplaceAll(strings.TrimSpace(string(file)), "\r\n", "\n"), "\n"), nil
 		}
 
 		if !os.IsNotExist(err) {
