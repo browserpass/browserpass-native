@@ -28,7 +28,7 @@ This is a host application for [browserpass](https://github.com/browserpass/brow
 
 The following operating systems provide a browserpass package that can be installed using a package manager:
 
--   Arch Linux: [browserpass](https://www.archlinux.org/packages/community/x86_64/browserpass/)
+-   Arch Linux: [browserpass](https://www.archlinux.org/packages/extra/x86_64/browserpass/)
 -   Gentoo Linux: [browserpass](https://packages.gentoo.org/packages/www-plugins/browserpass)
 -   Debian sid: [webext-browserpass](https://packages.debian.org/sid/webext-browserpass) (note: users report ([#126](https://github.com/browserpass/browserpass-native/issues/126)) that it's not suitable for any browser besides Chromium and Firefox, use manual installation if you plan to use other browsers).
 -   openSUSE Tumbleweed: [browserpass-native](https://software.opensuse.org/package/browserpass-native)
