@@ -286,6 +286,30 @@ If Browserpass is unable to locate the proper `gpg` binary, try configuring a fu
 }
 ```
 
+### Setup on NixOS-WSL
+
+In the case of [NixOS-WSL](https://github.com/nix-community/NixOS-WSL) (or any WSL instance where the `bash` PowerShell command raises a `CreateProcessEntryCommon` error), the content of `C:\Program Files\Browserpass\browserpass-wsl.bat` needs a slight modification since `browserpass` needs to be executed through the [NixOS magic occurring in the `root` login shell](https://github.com/nix-community/NixOS-WSL/issues/284):
+
+```powershell
+@echo off
+wsl -- "/usr/bin/browserpass 2>/dev/null"
+```
+
+With the `wsl` command, you can also specify the WSL distribution and the user executing the command:
+
+```powershell
+wsl -d NixOS -u user -- "/usr/bin/browserpass 2>/dev/null"
+```
+
+This is especially handy if your NixOS WSL is not the default distribution.
+
+It's worth noting that if Browserpass is installed in the user environment, the path should be as follows:
+
+```powershell
+@echo off
+wsl -- "/home/user/.nix-profile/bin/browserpass 2>/dev/null"
+```
+
 ## Uninstallation
 
 If you installed Browserpass via a package manager, uninstalling the package will hopefully do all the necessary cleanup.
