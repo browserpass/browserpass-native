@@ -570,7 +570,7 @@ policies-chromium-user:
 	esac
 
 .PHONY: policies-arc
-policies-arc-user:
+policies-arc:
 	@case $(OS) in \
 	Darwin) \
 	    mkdir -p "/Library/Application Support/Arc/User Data/policies/managed/"; \
