@@ -208,6 +208,34 @@ hosts-chrome-user:
 	    ;; \
 	esac
 
+.PHONY: hosts-arc
+hosts-arc:
+	@case $(OS) in \
+	Darwin) \
+	    mkdir -p "/Library/Application Support/Arc/User Data/NativeMessagingHosts/"; \
+	    ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "/Library/Application Support/Arc/User Data/NativeMessagingHosts/$(APP_ID).json"; \
+	    [ -e "/Library/Application Support/Arc/User Data/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	    ;; \
+	*) \
+	    echo "The operating system $(OS) is not supported"; \
+	    exit 1; \
+	    ;; \
+	esac
+
+.PHONY: hosts-arc-user
+hosts-arc-user:
+	@case $(OS) in \
+	Darwin) \
+	    mkdir -p "${HOME}/Library/Application Support/Arc/User Data/NativeMessagingHosts/"; \
+	    ln -sfv "$(LIB_DIR)/browserpass/hosts/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Arc/User Data/NativeMessagingHosts/$(APP_ID).json"; \
+	    [ -e "${HOME}/Library/Application Support/Arc/User Data/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	    ;; \
+	*) \
+	    echo "The operating system $(OS) is not supported"; \
+	    exit 1; \
+	    ;; \
+	esac
+
 .PHONY: hosts-edge
 hosts-edge:
 	@case $(OS) in \
@@ -534,6 +562,34 @@ policies-chromium-user:
 	    mkdir -p "${HOME}/Library/Application Support/Chromium/policies/managed/"; \
 	    ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Chromium/policies/managed/$(APP_ID).json"; \
 	    [ -e "${HOME}/Library/Application Support/Chromium/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	    ;; \
+	*) \
+	    echo "The operating system $(OS) is not supported"; \
+	    exit 1; \
+	    ;; \
+	esac
+
+.PHONY: policies-arc
+policies-arc:
+	@case $(OS) in \
+	Darwin) \
+	    mkdir -p "/Library/Application Support/Arc/User Data/policies/managed/"; \
+	    ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "/Library/Application Support/Arc/User Data/policies/managed/$(APP_ID).json"; \
+	    [ -e "/Library/Application Support/Arc/User Data/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	    ;; \
+	*) \
+	    echo "The operating system $(OS) is not supported"; \
+	    exit 1; \
+	    ;; \
+	esac
+
+.PHONY: policies-arc-user
+policies-arc-user:
+	@case $(OS) in \
+	Darwin) \
+	    mkdir -p "${HOME}/Library/Application Support/Arc/User Data/policies/managed/"; \
+	    ln -sfv "$(LIB_DIR)/browserpass/policies/chromium/$(APP_ID).json" "${HOME}/Library/Application Support/Arc/User Data/policies/managed/$(APP_ID).json"; \
+	    [ -e "${HOME}/Library/Application Support/Arc/User Data/policies/managed/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	    ;; \
 	*) \
 	    echo "The operating system $(OS) is not supported"; \
