@@ -209,7 +209,7 @@ hosts-chrome-user:
 	esac
 
 .PHONY: hosts-arc
-hosts-arc-user:
+hosts-arc:
 	@case $(OS) in \
 	Darwin) \
 	    mkdir -p "/Library/Application Support/Arc/User Data/NativeMessagingHosts/"; \
