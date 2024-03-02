@@ -146,7 +146,7 @@ Remember to check [Hints for configuring gpg](#error-unable-to-fetch-and-parse-l
 
 The following operating systems provide packages for certain browsers that can be installed using a package manager:
 
--   Arch Linux: [browserpass-chromium](https://www.archlinux.org/packages/community/any/browserpass-chromium/) and [browserpass-firefox](https://www.archlinux.org/packages/community/any/browserpass-firefox/)
+-   Arch Linux: [browserpass-chromium](https://www.archlinux.org/packages/extra/any/browserpass-chromium/) and [browserpass-firefox](https://www.archlinux.org/packages/extra/any/browserpass-firefox/)
     -   AUR: [browserpass-chrome](https://aur.archlinux.org/packages/browserpass-chrome/)
 
 If you installed a distro package above, you are done!
