@@ -112,3 +112,21 @@ func IsDirectoryEmpty(dirPath string) (bool, error) {
 
 	return false, err
 }
+
+func GitAddAndCommit(storePath string, filePath string, message string) error {
+	cmd := exec.Command("git", "add", filePath)
+	cmd.Dir = storePath
+	_, err := cmd.Output()
+	if err != nil {
+		return err
+	}
+
+	cmd = exec.Command("git", "commit", "-m", message, "-o", filePath) // Only commit the file we added
+	cmd.Dir = storePath
+	_, err = cmd.Output()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
