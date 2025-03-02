@@ -534,6 +534,35 @@ hosts-librewolf-user:
 	    exit 1; \
 	    ;; \
 	esac
+
+.PHONY: hosts-waterfox
+hosts-waterfox:
+	@case $(OS) in \
+	Linux) \
+	    mkdir -p "$(LIB_DIR)/waterfox/native-messaging-hosts/"; \
+	    ln -sfv "$(LIB_DIR)/browserpass/hosts/firefox/$(APP_ID).json" "/usr/lib/waterfox/native-messaging-hosts/$(APP_ID).json"; \
+	    [ -e "/usr/lib/waterfox/native-messaging-hosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	    ;; \
+	*) \
+	    echo "The operating system $(OS) is not supported"; \
+	    exit 1; \
+	    ;; \
+	esac
+
+.PHONY: hosts-waterfox-user
+hosts-waterfox-user:
+	@case $(OS) in \
+	Linux|*BSD|DragonFly) \
+	    mkdir -p "${HOME}/.waterfox/native-messaging-hosts/"; \
+	    ln -sfv "$(LIB_DIR)/browserpass/hosts/firefox/$(APP_ID).json" "${HOME}/.waterfox/native-messaging-hosts/$(APP_ID).json"; \
+	    [ -e "${HOME}/.waterfox/native-messaging-hosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	    ;; \
+	*) \
+	    echo "The operating system $(OS) is not supported"; \
+	    exit 1; \
+	    ;; \
+	esac
+
 # Browser-specific policies targets
 
 .PHONY: policies-chromium
