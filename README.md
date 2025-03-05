@@ -33,7 +33,12 @@ The following operating systems provide a browserpass package that can be instal
 -   Debian sid: [webext-browserpass](https://packages.debian.org/sid/webext-browserpass) (note: users report ([#126](https://github.com/browserpass/browserpass-native/issues/126)) that it's not suitable for any browser besides Chromium and Firefox, use manual installation if you plan to use other browsers).
 -   openSUSE Tumbleweed: [browserpass-native](https://software.opensuse.org/package/browserpass-native)
 -   NixOS: [browserpass](https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/security/browserpass/default.nix) - also read [Install on Nix / NixOS](#install-on-nix--nixos)
--   macOS: [browserpass](https://github.com/Amar1729/homebrew-formulae/blob/master/Formula/browserpass.rb) in a user-contributed tap [amar1729/formulae](https://github.com/amar1729/homebrew-formulae)
+-   macOS (Homebrew): [browserpass](https://github.com/Amar1729/homebrew-formulae/blob/master/Formula/browserpass.rb) in a user-contributed tap [amar1729/formulae](https://github.com/amar1729/homebrew-formulae)
+    ```sh
+    brew tap amar1729/formulae
+    brew install browserpass # this will print further installation instructions, e.g. for Firefox:
+    PREFIX='/opt/homebrew/opt/browserpass' make hosts-firefox-user -f '/opt/homebrew/opt/browserpass/lib/browserpass/Makefile'
+    ```
 
 Once the package is installed, **refer to the section [Configure browsers](#configure-browsers)**.
 
