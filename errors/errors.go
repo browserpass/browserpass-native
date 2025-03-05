@@ -33,6 +33,7 @@ const (
 	CodeUnableToDeletePasswordFile                            Code = 30
 	CodeUnableToDetermineIsDirectoryEmpty                     Code = 31
 	CodeUnableToDeleteEmptyDirectory                          Code = 32
+	CodeUnableToCommitPasswordFile                            Code = 33
 )
 
 // Field extra field in the error response params
