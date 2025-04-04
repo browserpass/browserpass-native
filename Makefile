@@ -515,6 +515,11 @@ hosts-librewolf:
 	    ln -sfv "$(LIB_DIR)/browserpass/hosts/firefox/$(APP_ID).json" "/usr/lib/librewolf/native-messaging-hosts/$(APP_ID).json"; \
 	    [ -e "/usr/lib/librewolf/native-messaging-hosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	    ;; \
+	Darwin) \
+	    mkdir -p "/Library/Application Support/librewolf/NativeMessagingHosts/"; \
+	    ln -sfv "$(LIB_DIR)/browserpass/hosts/firefox/$(APP_ID).json" "/Library/Application Support/librewolf/NativeMessagingHosts/$(APP_ID).json"; \
+	    [ -e "/Library/Application Support/librewolf/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	    ;; \
 	*) \
 	    echo "The operating system $(OS) is not supported"; \
 	    exit 1; \
@@ -528,6 +533,11 @@ hosts-librewolf-user:
 	    mkdir -p "${HOME}/.librewolf/native-messaging-hosts/"; \
 	    ln -sfv "$(LIB_DIR)/browserpass/hosts/firefox/$(APP_ID).json" "${HOME}/.librewolf/native-messaging-hosts/$(APP_ID).json"; \
 	    [ -e "${HOME}/.librewolf/native-messaging-hosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	    ;; \
+	Darwin) \
+	    mkdir -p "${HOME}/Library/Application Support/librewolf/NativeMessagingHosts/"; \
+	    ln -sfv "$(LIB_DIR)/browserpass/hosts/firefox/$(APP_ID).json" "${HOME}/Library/Application Support/librewolf/NativeMessagingHosts/$(APP_ID).json"; \
+	    [ -e "${HOME}/Library/Application Support/librewolf/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
 	    ;; \
 	*) \
 	    echo "The operating system $(OS) is not supported"; \
