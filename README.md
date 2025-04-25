@@ -128,7 +128,8 @@ $ DESTDIR=~/.nix-profile make -f ~/.nix-profile/lib/browserpass/Makefile <desire
 
 Download [the latest Github release](https://github.com/browserpass/browserpass-native/releases/latest) for `windows64`.
 
-Run the installer, it will install all the necessary files in `C:\Program Files\Browserpass` and it will also [configure browsers](#configure-browsers).
+Run the installer, it will install all the necessary files in `C:\Program Files\Browserpass` and it will also [configure browsers](#configure-browsers).  
+Browserpass will look for the password store in `C:\Users\<user>\.password-store`. The log file can be found in `C:\Users\<user>\AppData\Local\browserpass`. 
 
 #### Install on Windows through WSL
 
