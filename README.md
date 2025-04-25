@@ -128,7 +128,8 @@ $ DESTDIR=~/.nix-profile make -f ~/.nix-profile/lib/browserpass/Makefile <desire
 
 Download [the latest Github release](https://github.com/browserpass/browserpass-native/releases/latest) for `windows64`.
 
-Run the installer, it will install all the necessary files in `C:\Program Files\Browserpass` and it will also [configure browsers](#configure-browsers).
+Run the installer, it will install all the necessary files in `C:\Program Files\Browserpass` and it will write in the Windows registry to [configure browsers](#configure-browsers).  
+Browserpass will look for the password store in `C:\Users\<user>\.password-store` by default. For troubleshooting, the log file can be found in `C:\Users\<user>\AppData\Local\browserpass`. 
 
 #### Install on Windows through WSL
 
@@ -148,6 +149,8 @@ bash -c "/usr/bin/browserpass-linux64 2>/dev/null"
 Remember to check [Hints for configuring gpg](#error-unable-to-fetch-and-parse-login-fields) on how to configure pinentry to unlock your PGP key.
 
 ### Configure browsers
+
+#### Unix-like Systems
 
 The following operating systems provide packages for certain browsers that can be installed using a package manager:
 
@@ -213,6 +216,14 @@ In addition, Chromium-based browsers support the following `make` goals:
 | `sudo make policies-vivaldi`  | Automatically install browser extension from Web Store for Vivaldi browser, system-wide                      |
 | `sudo make policies-yandex`   | Automatically install browser extension from Web Store for Yandex browser, system-wide                       |
 | `sudo make policies-arc`      | Automatically install browser extension from Web Store for Arc browser, system-wide                          |
+
+#### Windows
+
+The browser will fetch the configuration file from the registry, checking for the full path to the manifest file (such as `firefox-host.json`) in the registry in either:
+- (Firefox) `Software\Mozilla\NativeMessagingHosts\com.github.browserpass.native\(default)`
+- (Chromium-based) `Software\Google\Chrome\NativeMessagingHosts\com.github.browserpass.native\(default)`
+
+This should be automatically done for you if you ran the released installer.  
 
 ## Building the app
 
