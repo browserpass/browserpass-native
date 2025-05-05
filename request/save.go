@@ -3,6 +3,7 @@ package request
 import (
 	"path/filepath"
 	"strings"
+	"fmt"
 
 	"github.com/browserpass/browserpass-native/errors"
 	"github.com/browserpass/browserpass-native/helpers"
@@ -149,5 +150,25 @@ func saveEncryptedContents(request *request) {
 		)
 	}
 
+	err = helpers.GitAddAndCommit(store.Path, filePath, fmt.Sprintf("browserpass: save %s", request.File))
+	if err != nil {
+		log.Errorf(
+			"Unable to commit the password file '%v' in the password store '%+v': %+v",
+			request.File, store, err,
+		)
+		response.SendErrorAndExit(
+			errors.CodeUnableToCommitPasswordFile,
+			&map[errors.Field]string{
+				errors.FieldMessage:   "Unable to commit the password file",
+				errors.FieldAction:    "save",
+				errors.FieldError:     err.Error(),
+				errors.FieldFile:      request.File,
+				errors.FieldStoreID:   store.ID,
+				errors.FieldStoreName: store.Name,
+				errors.FieldStorePath: store.Path,
+			},
+		)
+	}
+	
 	response.SendOk(responseData)
 }
