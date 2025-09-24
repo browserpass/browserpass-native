@@ -107,7 +107,7 @@ dist: clean vendor browserpass-linux64 browserpass-arm browserpass-arm64 browser
 
 	mkdir -p dist
 	mv "$(TMP)/"*.tar.gz "$(TMP)/"*.msi dist
-	git -c tar.tar.gz.command="gzip -cn" archive -o dist/browserpass-native-$(VERSION).tar.gz --format tar.gz --prefix=browserpass-native-$(VERSION)/ $(VERSION)
+	git -c tar.tar.gz.command="gzip -cn" archive -o dist/browserpass-native-$(VERSION).tar.gz --format tar.gz --prefix=browserpass-native-$(VERSION)/ v$(VERSION)
 
 	for file in dist/*; do \
 	    gpg --detach-sign --armor "$$file"; \
