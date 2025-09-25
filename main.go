@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/browserpass/browserpass-native/openbsd"
-	"github.com/browserpass/browserpass-native/persistentlog"
-	"github.com/browserpass/browserpass-native/request"
-	"github.com/browserpass/browserpass-native/version"
+	"github.com/browserpass/browserpass-native/v3/openbsd"
+	"github.com/browserpass/browserpass-native/v3/persistentlog"
+	"github.com/browserpass/browserpass-native/v3/request"
+	"github.com/browserpass/browserpass-native/v3/version"
 	log "github.com/sirupsen/logrus"
 )
 

@@ -7,8 +7,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/browserpass/browserpass-native/errors"
-	"github.com/browserpass/browserpass-native/response"
+	"github.com/browserpass/browserpass-native/v3/errors"
+	"github.com/browserpass/browserpass-native/v3/response"
 	"github.com/mattn/go-zglob/fastwalk"
 	log "github.com/sirupsen/logrus"
 )
