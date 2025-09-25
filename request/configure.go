@@ -6,9 +6,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/browserpass/browserpass-native/errors"
-	"github.com/browserpass/browserpass-native/helpers"
-	"github.com/browserpass/browserpass-native/response"
+	"github.com/browserpass/browserpass-native/v3/errors"
+	"github.com/browserpass/browserpass-native/v3/helpers"
+	"github.com/browserpass/browserpass-native/v3/response"
 	log "github.com/sirupsen/logrus"
 )
 
