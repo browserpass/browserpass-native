@@ -17,6 +17,7 @@ func DetectGpgBinary() (string, error) {
 		"gpg2", "gpg",
 		"/bin/gpg2", "/usr/bin/gpg2", "/usr/local/bin/gpg2",
 		"/bin/gpg", "/usr/bin/gpg", "/usr/local/bin/gpg",
+		"/opt/homebrew/bin/gpg",
 	}
 
 	for _, binary := range gpgBinaryPriorityList {
