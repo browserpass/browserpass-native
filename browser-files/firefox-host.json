@@ -1,6 +1,6 @@
 {
     "name": "com.github.browserpass.native",
-    "description": "Browserpass native component for the Firefox extension",
+    "description": "Browserpass native component for the Firefox and Thunderbird extension",
     "path": "%%replace%%",
     "type": "stdio",
     "allowed_extensions": ["browserpass@maximbaz.com"]
