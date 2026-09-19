@@ -48,11 +48,10 @@ If your OS is not listed above, proceed with the manual installation steps below
 
 Download [the latest Github release](https://github.com/browserpass/browserpass-native/releases), choose either the source code archive (if you want to compile the app yourself) or an archive for your operating system (it contains a pre-built binary).
 
-All release files are signed with a PGP key that is available on [maximbaz.com](https://maximbaz.com/), [keybase.io](https://keybase.io/maximbaz) and various OpenPGP key servers. First, import the public key using any of these commands:
+All release files are signed with a PGP key that is available on [max.baz.nu](https://max.baz.nu/) and various OpenPGP key servers. First, import the public key using any of these commands:
 
 ```
-$ curl https://maximbaz.com/pgp_keys.asc | gpg --import
-$ curl https://keybase.io/maximbaz/pgp_keys.asc | gpg --import
+$ curl https://max.baz.nu/pgp_keys.asc | gpg --import
 $ gpg --recv-keys 56C3E775E72B0C8B1C0C1BD0B5DB77409B11B601
 ```
 
@@ -128,8 +127,8 @@ $ DESTDIR=~/.nix-profile make -f ~/.nix-profile/lib/browserpass/Makefile <desire
 
 Download [the latest Github release](https://github.com/browserpass/browserpass-native/releases/latest) for `windows64`.
 
-Run the installer, it will install all the necessary files in `C:\Program Files\Browserpass` and it will write in the Windows registry to [configure browsers](#configure-browsers).  
-Browserpass will look for the password store in `C:\Users\<user>\.password-store` by default. For troubleshooting, the log file can be found in `C:\Users\<user>\AppData\Local\browserpass`. 
+Run the installer, it will install all the necessary files in `C:\Program Files\Browserpass` and it will write in the Windows registry to [configure browsers](#configure-browsers).
+Browserpass will look for the password store in `C:\Users\<user>\.password-store` by default. For troubleshooting, the log file can be found in `C:\Users\<user>\AppData\Local\browserpass`.
 
 #### Install on Windows through WSL
 
@@ -223,7 +222,7 @@ The browser will fetch the configuration file from the registry, checking for th
 - (Firefox) `Software\Mozilla\NativeMessagingHosts\com.github.browserpass.native\(default)`
 - (Chromium-based) `Software\Google\Chrome\NativeMessagingHosts\com.github.browserpass.native\(default)`
 
-This should be automatically done for you if you ran the released installer.  
+This should be automatically done for you if you ran the released installer.
 
 ## Building the app
 
