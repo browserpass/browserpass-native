@@ -545,6 +545,44 @@ hosts-librewolf-user:
 	    ;; \
 	esac
 
+.PHONY: hosts-thunderbird
+hosts-thunderbird:
+	@case $(OS) in \
+	Linux) \
+	    mkdir -p "$(LIB_DIR)/mozilla/native-messaging-hosts/"; \
+	    ln -sfv "$(LIB_DIR)/browserpass/hosts/firefox/$(APP_ID).json" "/usr/lib/mozilla/native-messaging-hosts/$(APP_ID).json"; \
+	    [ -e "/usr/lib/mozilla/native-messaging-hosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	    ;; \
+	Darwin) \
+	    mkdir -p "/Library/Application Support/Mozilla/NativeMessagingHosts/"; \
+	    ln -sfv "$(LIB_DIR)/browserpass/hosts/firefox/$(APP_ID).json" "/Library/Application Support/Mozilla/NativeMessagingHosts/$(APP_ID).json"; \
+	    [ -e "/Library/Application Support/Mozilla/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	    ;; \
+	*) \
+	    echo "The operating system $(OS) is not supported"; \
+	    exit 1; \
+	    ;; \
+	esac
+
+.PHONY: hosts-thunderbird-user
+hosts-thunderbird-user:
+	@case $(OS) in \
+	Linux|*BSD|DragonFly) \
+	    mkdir -p "${HOME}/.thunderbird/native-messaging-hosts/"; \
+	    ln -sfv "$(LIB_DIR)/browserpass/hosts/firefox/$(APP_ID).json" "${HOME}/.thunderbird/native-messaging-hosts/$(APP_ID).json"; \
+	    [ -e "${HOME}/.thunderbird/native-messaging-hosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	    ;; \
+	Darwin) \
+	    mkdir -p "${HOME}/Library/Application Support/Thunderbird/NativeMessagingHosts/"; \
+	    ln -sfv "$(LIB_DIR)/browserpass/hosts/firefox/$(APP_ID).json" "${HOME}/Library/Application Support/Thunderbird/NativeMessagingHosts/$(APP_ID).json"; \
+	    [ -e "${HOME}/Library/Application Support/Thunderbird/NativeMessagingHosts/$(APP_ID).json" ] || echo "Error: the symlink points to a non-existent location" >&2; \
+	    ;; \
+	*) \
+	    echo "The operating system $(OS) is not supported"; \
+	    exit 1; \
+	    ;; \
+	esac
+
 .PHONY: hosts-waterfox
 hosts-waterfox:
 	@case $(OS) in \
