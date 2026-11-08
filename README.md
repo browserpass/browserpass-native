@@ -311,13 +311,13 @@ In the case of [NixOS-WSL](https://github.com/nix-community/NixOS-WSL) (or any W
 
 ```powershell
 @echo off
-wsl -u user -- "/usr/bin/browserpass 2>/dev/null"
+wsl -u user -- "/usr/bin/browserpass"
 ```
 
 With the `wsl` command, you can also specify the WSL distribution executing the command:
 
 ```powershell
-wsl -d NixOS -u user -- "/usr/bin/browserpass 2>/dev/null"
+wsl -d NixOS -u user -- "/usr/bin/browserpass"
 ```
 
 This is especially handy if your NixOS WSL is not the default distribution.
@@ -326,7 +326,7 @@ It's worth noting that if Browserpass is installed in the user environment, the 
 
 ```powershell
 @echo off
-wsl -u user -- "/home/user/.nix-profile/bin/browserpass 2>/dev/null"
+wsl -u user -- "/home/user/.nix-profile/bin/browserpass"
 ```
 
 ## Uninstallation
